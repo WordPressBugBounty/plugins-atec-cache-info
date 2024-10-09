@@ -1,0 +1,70 @@
+# Copyright (C) 2024 Chris Ahrweiler
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: atec Cache Info 1.4.7\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-05-25T17:26:06+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: atec_wpci\n"
+
+#. Plugin Name of the plugin
+msgid "atec Cache Info"
+msgstr ""
+
+msgid "used"
+msgstr ""
+
+msgid "installed"
+msgstr ""
+
+msgid "Max files"
+msgstr ""
+
+msgid "cache"
+msgstr ""
+
+msgid "is active"
+msgstr ""
+
+msgid "config"
+msgstr ""
+
+msgid "JIT is NOT enabled in php.ini"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Not in use"
+msgstr ""
+
+msgid "status is not available"
+msgstr ""
+
+msgid "Not available, please define host:port or unix path."
+msgstr ""
+
+msgid "connection failed"
+msgstr ""
+
+msgid "Memory used"
+msgstr ""
+
+msgid "class is NOT available"
+msgstr ""
+
+msgid "object cache is NOT enabled"
+msgstr ""
+
+msgid "PHP "
+msgstr ""
+
+msgid "Installed extensions"
+msgstr ""
+
+msgid "Recommended extensions for WordPress"
+msgstr ""

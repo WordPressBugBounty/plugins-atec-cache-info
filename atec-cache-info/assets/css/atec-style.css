@@ -1,0 +1,112 @@
+/*!
+atec style v1.0.0
+Copyright 2024 by Chris Ahrweiler
+*/
+
+* { box-sizing: border-box; }
+HTML { line-height: 1.15; -webkit-text-size-adjust: 100% }
+BODY { margin: 0 }
+H1 { font-size: 2em; margin: .67em 0 }
+H4 { margin-top: 0.5em; }
+HR { box-sizing: content-box; height: 0; margin-top:0; overflow: visible }
+PRE { font-family: monospace, monospace; font-size: 1em }
+SMALL { font-size: 90% }
+
+.notice	{ margin-left: 0 !important; margin-right: 0 !important; }
+p.submit	{ padding-bottom: 0.5em; }
+.atec-center	 	{ text-align: center; }
+.atec-clear		{ clear: both; margin-top: 0.5rem !important; }
+.atec-red			{ color: red !important; }
+.atec-orange		{ color: orange !important; }
+.atec-green		{ color: green !important; }
+.atec-blue			{ color: blue !important; }
+.atec-black		{ color: black !important; }
+.atec-right		{ float: right; }
+.atec-nowrap	{ white-space: nowrap; }
+
+.atec-table { border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgba(0,0,0,.04); background: white; border-spacing: 0; table-layout: fixed; }
+.atec-table TH { font-weight: bold; color: #2c3338; }
+.atec-table TD { color: #50575e; }
+.atec-table TH, .atec-table TD { text-align: left; border-bottom: 1px solid #c3c4c7; font-size: 14px; line-height: 1.4em; vertical-align: top; padding: 8px 10px; word-wrap: break-word; width: auto; }
+.atec-table TBODY TR:last-child TD { border-bottom: 1px solid transparent; } 
+.atec-table TBODY TR:nth-child(2n+1) { background: #f6f7f7; }
+.atec-table-w-100 { width: 100%; }
+.atec-table-tiny TD, .atec-table-tiny TH { padding: 4px 5px; }
+.atec-table-td TD, .atec-table-td TH { border-right: solid 1px #c3c4c7; }
+.atec-table-td TD:last-child, .atec-table-td TH:last-child { border-right: solid 1px transparent; }
+.atec-table THEAD TD, .atec-table-td-first TD:first-child { font-weight: bold; }
+
+.atec-help	 { display: none; padding: 4px; width: fit-content; margin-bottom: 20px !important; }
+.atec-help LI { list-style-type: disc; }
+.atec-help UL { margin-left: 20px; }
+.atec-help-button { border-color: orange !important; cursor:pointer; display: block !important; width: fit-content !important; font-size: 0.95em; padding: 0px 2px; vertical-align: baseline; margin-bottom: 20px !important; }
+.atec-help-button .dashicons { font-size: 22px; margin-top: 3px; }
+.atec_help_title { font-size: 1.1em; font-weight: 600; margin-bottom: 10px; vertical-align: baseline; }
+
+.atec-g 
+{ 
+	display: grid; max-width: 100%; gap: 0 1rem; align-items: start;
+	grid-template-columns: repeat(auto-fit, minmax(100%, 1fr)); margin-bottom: 20px;
+}
+
+.atec-g:last-child { margin-bottom: 0; }
+
+.atec-g-14 { grid-template-columns: repeat(7, 1fr); }
+.atec-g-25 { grid-template-columns: repeat(4, 1fr); }
+.atec-g-50 { grid-template-columns: repeat(2, 1fr); }
+.atec-g-30-70 { grid-template-columns: 1fr 2fr; }
+.atec-g-70-30 { grid-template-columns: 2fr 1fr; }
+.atec-g-100 { grid-template-columns: 1fr; }
+
+.atec-header { grid-area: header; }
+.atec-header H3 { margin: 0; }
+.atec-footer { grid-area: footer; padding: 5px; background: rgba(230, 230, 230, 0.5); text-align: center; color:#777; border:solid 1px #d0d0d0; margin-top: 20px; }
+.atec-footer A { text-decoration: none; }
+
+.atec-page { 
+	padding: 20px 20px 0 0; min-height: calc(100vh - 100px);
+	display: grid; width: 100%; height: 100%; grid-template-areas: "header" "main" "footer"; 	grid-template-columns: 1fr; grid-template-rows: 45px 1fr 105px;
+}
+.atec-main { grid-area: main; margin-top: 10px; }
+.atec-head { background: #e0e0e07d; padding: 4px 8px; border:solid 1px #d0d0d0; width: 100%; margin: 10px 0 20px 0; }
+.atec-head H3 { margin: 5px 0; }
+
+.atec-no-top { border-top: none; }
+
+@media only screen and (max-width: 1280px) 
+{
+	.atec-g { margin-bottom: 10px; }
+	.atec-g-14 { grid-template-columns: repeat(5, 1fr); }
+	.atec-g-25 { grid-template-columns: repeat(2, 1fr); }
+	.atec-g-50 { grid-template-columns: 1fr; }
+	
+	.atec-head { margin: 10px 0; }
+}
+
+@media only screen and (max-width: 782px) 
+{ 
+	.atec-g-14 { grid-template-columns: repeat(3, 1fr); }
+	.atec-g-25, .atec-g-30-70, .atec-g-70-30 { grid-template-columns: 1fr; } 
+
+	.atec-page { min-height: calc(100vh - 65px); padding: 10px 10px 0 0; grid-template-rows: 30px 1fr 90px; } 
+	.atec-main, .atec-footer { margin-top: 10px; } .atec-head,  .atec-footer { padding: 2px 4px; margin-bottom: 10px; } 
+
+	.atec-no-top { border-top: solid 1px #d0d0d0; }
+
+	#wpbody-content { padding-bottom: 0 !important; }
+}
+
+.atec-mb-1	{ margin-bottom: 1rem; }
+.atec-border { border: solid 1px #d0d0d0; padding: 10px; }
+.atec-border H2 { margin-top: 0.5rem; }
+.atec-border-white { border: solid 1px #fefefe; padding: 10px; box-shadow: 1px 1px #d4d4d4; margin-bottom: 1rem; }
+.atec-overflow { overflow-x: auto; }
+.atec-progress { width: 100%; height:3px; line-height: 3px; display: block; margin: 0 auto; }
+.atec-progressBar { background:rgba(0, 20, 129, 0.8); opacity: 1; height:100%; animation: 3s atec-progress ease-in-out; border-radius: 3px; }
+@keyframes atec-progress { 
+    0% { margin-left: 50%; width: 0%; opacity: 1; } 
+    99% { margin-left: 0.5%; width: 99%; opacity: 0.99; } 
+    100% { margin-left: 0%; width: 100%; opacity:0; }
+}
+
+.nav-tab-active { border-bottom: solid 1px #2271b1 !important; }
