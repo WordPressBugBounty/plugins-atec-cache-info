@@ -12,14 +12,14 @@ $atec_active = ['cache-apcu','cache-info','dir-scan','system-info','web-map-serv
 echo '
 <div class="atec-footer atec-center atec-fs-12">
 	<span class="atec-ml-10" style="float:left;">
-		<span class="atec-fs-12" title="', esc_attr__('Execution time','atec_footer'), '">
+		<span class="atec-fs-12" title="', esc_attr__('Execution time','atec-cache-info'), '">
 			<span class="atec-fs-12" class="',esc_attr(atec_dash_class('clock')), '"></span> ', 
 			esc_attr(intval((microtime(true) - $timestart)*1000)), 
 			' <span class="atec-fs-10">ms</span>
-		</span> &middot; <a class="atec-nodeco" href="',esc_url(get_admin_url().'admin.php?page=atec_group'),'">See all atec-', esc_attr__('plugins','atec_footer'), '.</a>
+		</span> &middot; <a class="atec-nodeco" href="',esc_url(get_admin_url().'admin.php?page=atec_group'),'">atec-',  esc_attr__('plugins','atec-cache-info'), ' – ', esc_attr__('Dashboard','atec-cache-info'), '</a>
 	</span>
 	<span style="width: fit-content;" class="atec-dilb atec-right atec-mr-10">
-		© 2023/24 by <a href="https://atecplugins.com/" target="_blank" class="atec-nodeco">atecplugins.com</a>
+		© 2023/24 <a href="https://atecplugins.com/" target="_blank" class="atec-nodeco">atecplugins.com</a>
 	</span>
 </div>';
 

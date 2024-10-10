@@ -18,13 +18,13 @@ if ($mem)
 	<table class="atec-table atec-table-tiny atec-table-td-first">
 		<tbody>
 			<tr><td>Version:</td><td>',esc_attr($mem['version']),'</td></tr>
-			<tr><td>Connection:</td><td>localhost:11211</td></tr>';
-			if (isset($mem['limit_maxbytes'])) 	echo '<tr><td>'.esc_attr__('Memory','atec_cache').':</td><td>',esc_attr(size_format($mem['limit_maxbytes'])),'</td></tr>';
-			if (isset($mem['bytes'])) echo '<tr><td>'.esc_attr__('Used','atec_cache').':</td><td>',esc_attr(size_format($mem['bytes']),' '.sprintf(" (%.1f%%)",$percent)),'</td></tr>';
-			if (isset($mem['total_items'])) echo '<tr><td>'.esc_attr__('Items','atec_cache').':</td><td>',esc_attr(number_format($mem['total_items'])),'</td></tr>';
+			<tr><td>', esc_attr__('Connection','atec-cache-info'), ':</td><td>localhost:11211</td></tr>';
+			if (isset($mem['limit_maxbytes'])) 	echo '<tr><td>'.esc_attr__('Memory','atec-cache-info').':</td><td>',esc_attr(size_format($mem['limit_maxbytes'])),'</td></tr>';
+			if (isset($mem['bytes'])) echo '<tr><td>'.esc_attr__('Used','atec-cache-info').':</td><td>',esc_attr(size_format($mem['bytes']),' '.sprintf(" (%.1f%%)",$percent)),'</td></tr>';
+			if (isset($mem['total_items'])) echo '<tr><td>'.esc_attr__('Items','atec-cache-info').':</td><td>',esc_attr(number_format($mem['total_items'])),'</td></tr>';
 			echo '
-			<tr><td>'.esc_attr(__('Hits','atec_cache')).':</td><td>',esc_attr(number_format($mem['get_hits']).sprintf(" (%.1f%%)",$hits)),'</td></tr>
-			<tr><td>'.esc_attr(__('Misses','atec_cache')).':</td><td>',esc_attr(number_format($mem['get_misses']).sprintf(" (%.1f%%)",$misses)),'</td></tr>
+			<tr><td>'.esc_attr(__('Hits','atec-cache-info')).':</td><td>',esc_attr(number_format($mem['get_hits']).sprintf(" (%.1f%%)",$hits)),'</td></tr>
+			<tr><td>'.esc_attr(__('Misses','atec-cache-info')).':</td><td>',esc_attr(number_format($mem['get_misses']).sprintf(" (%.1f%%)",$misses)),'</td></tr>
 		</tbody>
 	</table>';
 	
@@ -34,12 +34,12 @@ if ($mem)
 	$atec_wpci_key='atec_wpci_key';
 	$m->set($atec_wpci_key,'hello');
 	$success=$m->get($atec_wpci_key)=='hello';
-	atec_badge('Memcached '.esc_attr__('is writeable','atec_cache'),'Writing to cache failed',$success);
+	atec_badge('Memcached '.__('is writeable','atec-cache-info'),'Writing to cache failed',$success);
 	if ($success) $m->delete($atec_wpci_key);
 }
 else 
 {
-	$tools->p('Memcached '.esc_attr__('status is not available','atec_wpci'));
+	$tools->p('Memcached '.__('status is not available','atec-cache-info'));
 	atec_reg_inline_script('memcached_flush', 'jQuery("#Memcached_flush").hide();', true);
 }
 

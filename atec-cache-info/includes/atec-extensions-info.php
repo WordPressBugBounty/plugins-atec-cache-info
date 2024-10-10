@@ -21,10 +21,10 @@ private function blueArray($str, $arr, $array)
 	
 function __construct() {	
 
-atec_little_block('PHP '.esc_attr__('Extensions','atec_cache'));
+atec_little_block('PHP '.__('Extensions','atec-cache-info'));
 
 echo '<div class="atec-border atec-mb-10">
-<h4>'.esc_attr__('Installed extensions','atec_wpci').' (<font style="font-weight:500;" color="green">'.esc_attr__('cache','atec_wpci').'</font>):</h4>';
+<h4>'.esc_attr__('Installed extensions','atec-cache-info').' (<font style="font-weight:500;" color="green">'.esc_attr__('cache','atec-cache-info').'</font>):</h4>';
 
 	$arr=get_loaded_extensions();
 	$array = array('Zend OPcache','apcu','memcached','redis','sqlite3');
@@ -41,7 +41,7 @@ echo '<div class="atec-border atec-mb-10">
 echo '
 </div>
 <div class="atec-border atec-mb-10">
-	<h4>'.esc_attr(__('Recommended extensions for WordPress','atec_wpci')).' (<span class="atec-blue">'.esc_attr(__('installed','atec_wpci')).'</span>):</h4>';
+	<h4>'.esc_attr__('Recommended extensions for WordPress','atec-cache-info').' (<span class="atec-blue">'.esc_attr__('installed','atec-cache-info').'</span>):</h4>';
 		
 	$this->blueArray('Core', $arr, array('curl', 'dom', 'exif', 'fileinfo', 'hash', 'igbinary', 'imagick', 'intl', 'mbstring', 'openssl', 'pcre', 'xml', 'zip'));
 	$this->blueArray('Cache', $arr, array('apcu', 'memcached', 'redis', 'Zend OPcache'));

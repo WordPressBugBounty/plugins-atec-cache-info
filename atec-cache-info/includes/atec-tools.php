@@ -2,6 +2,11 @@
 if (!defined( 'ABSPATH' )) { exit; }
 define('ATEC_TOOLS_INC',true);
 
+function atec_integrity_check($dir)
+{ wp_remote_get('https://atecplugins.com/WP-Plugins/activated.php?plugin='.str_replace('/includes','',plugin_basename($dir)).'&domain='.get_bloginfo('url')); }
+
+function atec_TR_empty() { echo '<tr class="emptyTR1"><td colspan="99"></td></tr><tr class="emptyTR2"><td colspan="99"></td></tr>'; }
+
 function atec_short_string($str,$len=128): string { return strlen($str)>$len?substr($str, 0, $len).' ...':$str; }
 function atec_dash_yes_no($enabled): void 
 { 
@@ -23,14 +28,11 @@ function atec_bar_div($time,$max,$threshold1,$threshold2)
 function atec_empty_tr() { echo '<tr><td colspan="99" class="emptyTR1"></td></tr><tr><td colspan="99" class="emptyTR2"></td></tr>'; }
 function atec_dash_class($icon,$class=''): string { return 'dashicons dashicons-'.$icon.($class!==''?' '.$class:''); }
 
-function atec_integrity_check($dir)
-{ wp_remote_get('https://atecplugins.com/WP-Plugins/activated.php?plugin='.str_replace('/includes','',plugin_basename($dir)).'&domain='.get_bloginfo('url')); }
-
 function atec_check_license($licenseCode=null, $siteName=null)
 {
 	if (get_transient('atec_license_code')===true) return true;
 	if (is_null($licenseCode)) $licenseCode=get_option('atec_license_code','');
-	if ($licenseCode==='') return 'Empty license code';
+	if ($licenseCode==='') return false; // 'Empty license code';
 	if (!$siteName) $siteName=wp_parse_url(get_site_url(),PHP_URL_HOST);
 	if(!extension_loaded('openssl')) return 'OpenSSL extension is required to verify the license';
 $publicKey='-----BEGIN PUBLIC KEY-----
@@ -41,8 +43,8 @@ riq3aeQVZ8yllQ3bbwIDAQAB
 -----END PUBLIC KEY-----';
 	@openssl_public_decrypt(base64_decode($licenseCode), $decrypted, $publicKey);
 	$licenseOk=$decrypted===$siteName;
-	if ($licenseOk) set_transient('atec_license_code',true,86400); //one day
-	return $licenseOk?true:'License code not valid';
+	//if ($licenseOk) set_transient('atec_license_code',true,86400); //one day
+	return $licenseOk;
 }
 
 function atec_license_banner():void
@@ -53,7 +55,7 @@ function atec_license_banner():void
 	<div class="atec-sticky-right">
 		<a class="atec-nodeco atec-', ($licenseOk?'green':'blue') ,'" href="', esc_url($link), '">
 			<span class="', esc_attr(atec_dash_class('awards','atec-'.($licenseOk?'green':'blue'))), '" style="margin-right: 4px;"></span>',
-			($licenseOk?'PRO license activated':'Get your PRO „Lifetime-Site-License“'), '.
+			($licenseOk?esc_attr__('PRO license activated','atec-cache-info'):esc_attr__('Get your PRO „Lifetime-Site-License“','atec-cache-info')), '.
 		</a>
 	</div>';
 }
@@ -113,7 +115,7 @@ function atec_nav_tab($url, $nonce, $nav, $arr, $break=0, $pro=true, $highlight=
 {
 	$iconPath=plugins_url('assets/img/icons/',__DIR__);
 	echo '
-	<h2 class="nav-tab-wrapper" style="height:', esc_attr($pro?'auto':'30px'), ';">';
+	<h2 class="nav-tab-wrapper" style="height:', esc_attr($pro?'auto':'33px'), ';">';
 		$c 	= 0;
 		$reg = '/#([\-|\w]+)\s(.*)/i';
 		foreach($arr as $a) 
@@ -309,10 +311,10 @@ function atec_header($dir,$slug,$title,$sub_title=''): void
 		echo '
 		<div class="atec-center">	
 			<a style="position:relative;" class="atec-fs-12 atec-nodeco atec-btn-small" href="', esc_url($supportLink), '" target="_blank">
-			<span class="', esc_attr(atec_dash_class('sos')), '"></span> Plugin support.</a>';
+			<span class="', esc_attr(atec_dash_class('sos')), '"></span> Plugin support</a>';
 			if ($approved)
 			{
-				echo ' <a style="position:relative; margin-left: 10px;" class="atec-fs-12 atec-nodeco atec-btn-small" href="', esc_url($wordpress.$plugin.'/reviews/#new-post'), '" target="_blank"><span class="', esc_attr(atec_dash_class('admin-comments')), '"></span> ', esc_attr__('Post a review','atec_footer'), '.</a>';
+				echo ' <a style="position:relative; margin-left: 10px;" class="atec-fs-12 atec-nodeco atec-btn-small" href="', esc_url($wordpress.$plugin.'/reviews/#new-post'), '" target="_blank"><span class="', esc_attr(atec_dash_class('admin-comments')), '"></span> ', esc_attr__('Post a review','atec-cache-info'), '</a>';
 			}		
 		echo '
 		</div>
@@ -390,24 +392,5 @@ echo '
 	};
 echo '
 </div>';
-}
-
-function atec_donate_notice($dir,$cookie): void
-{ 
-echo '<div class="notice updated is-dismissible"';
-  if ($cookie!=null) { echo ' onmousedown="document.cookie=\'',esc_attr($cookie),'=true\'"'; }
-  echo '>';
-  $ex=explode('/',$dir); $pName=ucwords(str_replace(['-','atec'],' ',$ex[count($ex)-2]));
-  echo '<p>
-			<img alt="Paypal" style="height:14px;" src="', esc_url(plugins_url('/assets/img/paypal.svg',$dir)), '">&nbsp;
-			<a style="text-decoration:none;" href="https://www.paypal.com/paypalme/atecsystems/5eur" target="_blank">atec ', esc_attr($pName), ': ', esc_attr__('Please consider donating','atec_footer'), '.</a>
-		  </p>';
-echo '</div>';
-}
-
-function atec_donate($dir): void
-{ 
-	$cookie=atec_get_slug().'_donate';
-	if (wp_rand(0,7)==3	 && !isset($_COOKIE[$cookie])) add_action('admin_notices',  function() use ($dir,$cookie) { atec_donate_notice($dir,$cookie); });
 }
 ?>

@@ -10,13 +10,12 @@ $percent=$jit_free/$jit_size;
 echo '
 <table class="atec-table atec-table-tiny atec-table-td-first">
 <tbody>
-	<tr><td>JIT ', esc_attr__('config','atec_wpci'), ':</td><td>', esc_attr(ini_get('opcache.jit')), '</td></tr>
-	<tr><td>', esc_attr__('Memory','atec_cache'), ':</td><td>', esc_attr(size_format($jit_size)), '</td></tr>
-	<tr><td>', esc_attr__('Used','atec_cache'), ':</td><td>', esc_attr(size_format($jit_size-$jit_free), ' ', sprintf(" (%.1f%%)",$percent)), '</td></tr>
+	<tr><td>JIT ', esc_attr__('config','atec-cache-info'), ':</td><td>', esc_attr(ini_get('opcache.jit')), '</td></tr>
+	<tr><td>', esc_attr__('Memory','atec-cache-info'), ':</td><td>', esc_attr(size_format($jit_size)), '</td></tr>
+	<tr><td>', esc_attr__('Used','atec-cache-info'), ':</td><td>', esc_attr(size_format($jit_size-$jit_free), ' ', sprintf(" (%.1f%%)",$percent)), '</td></tr>
 </tbody>
 </table>';
 
 $tools->usage($percent);	
-
 }}
 ?>

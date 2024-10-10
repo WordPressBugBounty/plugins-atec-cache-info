@@ -12,8 +12,8 @@ if (isset($wp_object_cache->cache_hits))
 	echo'
 	<table class="atec-table atec-table-tiny atec-table-td-first">
 		<tbody>
-			<tr><td>Hits:</td><td>', esc_attr(number_format($wp_object_cache->cache_hits).sprintf(" (%.1f%%)",$hits)), '</td></tr>
-			<tr><td>Misses:</td><td>', esc_attr(number_format($wp_object_cache->cache_misses).sprintf(" (%.1f%%)",$misses)), '</td></tr>
+			<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td><td>', esc_attr(number_format($wp_object_cache->cache_hits).sprintf(" (%.1f%%)",$hits)), '</td></tr>
+			<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td><td>', esc_attr(number_format($wp_object_cache->cache_misses).sprintf(" (%.1f%%)",$misses)), '</td></tr>
 		</tbody>
 	</table>';
 	
@@ -32,9 +32,9 @@ if (defined('LSCWP_OBJECT_CACHE') && LSCWP_OBJECT_CACHE=='true' && (method_exist
 	echo ' 
 	<table class="atec-table atec-table-tiny atec-table-td-first">
 	<tbody>
-		<tr><td>', esc_attr__('Items','atec_cache'), ':</td><td>', esc_attr(number_format($ls_total)), '</td></tr>
-		<tr><td>', esc_attr__('Hits','atec_cache'), ':</td><td>', esc_attr(number_format($ls_hit).sprintf(" (%.1f%%)",$hits)), '</td></tr>
-		<tr><td>', esc_attr__('Misses','atec_cache'), ':</td><td>', esc_attr(number_format($ls_miss).sprintf(" (%.1f%%)",$misses)), '</td></tr>
+		<tr><td>', esc_attr__('Items','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_total)), '</td></tr>
+		<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_hit).sprintf(" (%.1f%%)",$hits)), '</td></tr>
+		<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_miss).sprintf(" (%.1f%%)",$misses)), '</td></tr>
 	</tbody>
 	</table>';
 
@@ -43,18 +43,18 @@ if (defined('LSCWP_OBJECT_CACHE') && LSCWP_OBJECT_CACHE=='true' && (method_exist
 	if (defined('LSCWP_V')) 
 	{
 		$imgSrc =plugins_url( '/assets/img/system/litespeed-icon.svg', __DIR__ );
-		echo '<p><img style="height:20px;" src="', esc_url($imgSrc), '"> LiteSpeed '.esc_attr__('cache','atec_wpci').' v.',esc_html(LSCWP_V),' '.esc_attr__('is active','atec_wpci').'.</p>';
+		echo '<p><img style="height:20px;" src="', esc_url($imgSrc), '"> LiteSpeed '.esc_attr__('cache','atec-cache-info').' v.',esc_html(LSCWP_V),' '.esc_attr__('is active','atec-cache-info').'.</p>';
 	}
 }
 
 global $_wp_using_ext_object_cache;
-if ($_wp_using_ext_object_cache) atec_success_msg('WP object cache is persistent');
+if ($_wp_using_ext_object_cache) atec_success_msg('WP '.__('object cache','atec-cache-info').' '.__('is persistent','atec-cache-info'));
 
 $testKey='atec_wp_test_key';
 wp_cache_set($testKey,'hello');
 $success=wp_cache_get($testKey)=='hello';
-atec_badge('WP '.esc_attr__('object cache','atec_cache').' '.esc_attr__('is writeable','atec_cache'),'Writing to WP '.esc_attr__('object cache','atec_cache').' failed',$success);
-if ($success) wp_cache_delete($testKey);
+atec_badge('WP '.__('object cache','atec-cache-info').' '.__('is writeable','atec-cache-info'),'Writing to WP '.__('object cache','atec-cache-info').' failed',$success);
+if ($success) 	wp_cache_delete($testKey);
 
 }}
 ?>

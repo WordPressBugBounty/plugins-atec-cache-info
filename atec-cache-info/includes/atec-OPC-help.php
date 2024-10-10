@@ -1,11 +1,10 @@
 <?php
 if (!defined( 'ABSPATH' )) { exit; }
 
-	echo '<br>';
-	atec_help('opcache','Recommended settings');
+	atec_help('opcache',__('Recommended settings','atec-cache-info'));
 	echo '
 	<div id="opcache_help" class="atec-help">
-		<p class="atec-bold atec-mb-5 atec-mt-0">Recommended settings:</p>
+		<p class="atec-bold atec-mb-5 atec-mt-0">', esc_attr__('Recommended settings','atec-cache-info'), ':</p>
 		<ul class="atec-m-0">
 			<li>opcache.enable=1</li>
 			<li>opcache.memory_consumption=128</li>

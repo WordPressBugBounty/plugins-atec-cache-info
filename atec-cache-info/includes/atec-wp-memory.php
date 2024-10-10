@@ -40,7 +40,7 @@ class ATEC_wp_memory
 					<img alt="Memory usage" src="', esc_url(plugins_url( '/assets/img/atec_memory_icon.svg', __DIR__ )), '" class="atec-vam" style="height:16px; padding: 0px 4px 0 0;">', 
 						esc_attr($match[1]).'<span class="atec-fs-8"> '.esc_attr($match[2]).' / </span>',
 				  	  	esc_attr($match2[1]).'<span class="atec-fs-8"> '.esc_attr($match2[2]).' = </span>',
-						' ≈ <span class="atec-bold atec-', ($percent<75?'green':'red'),'">', esc_attr($percent), ' <span class="atec-fs-8">%</span></span> ', esc_attr__('used','atec_wpci'), '.
+						' ≈ <span class="atec-bold atec-', ($percent<75?'green':'red'),'">', esc_attr($percent), ' <span class="atec-fs-8">%</span></span> ', esc_attr__('used','atec-cache-info'), '.
 				</div>';
 			}
 		}

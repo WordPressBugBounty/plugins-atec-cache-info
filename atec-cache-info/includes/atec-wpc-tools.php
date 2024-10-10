@@ -3,7 +3,7 @@ if (!defined( 'ABSPATH' )) { exit; }
 
 class ATEC_wpc_tools
 {
-	public function enabled($enabled,$active=false): void { echo '<span style="color:', ($enabled?($active?'black':'green'):'red'), '" title="', ($enabled?esc_attr__('Enabled','atec_wpc_tools'):esc_attr__('Disabled','atec_wpc_tools')), '" class="', esc_attr(atec_dash_class($enabled?'yes-alt':'warning')), '"></span>'; }
+	public function enabled($enabled,$active=false): void { echo '<span style="color:', ($enabled?($active?'black':'green'):'red'), '" title="', ($enabled?esc_attr__('Enabled','atec-cache-info'):esc_attr__('Disabled','atec-cache-info')), '" class="', esc_attr(atec_dash_class($enabled?'yes-alt':'warning')), '"></span>'; }
 	public function error($cache,$txt): void { echo '<p class="atec-mb-0 atec-red">', esc_attr($cache), $cache!==''?' ':'', esc_html($txt),'.</p>'; }
 	public function success($cache,$txt): void { echo '<p class="atec-mb-0">', esc_attr($cache), $cache!==''?' ':'', esc_html($txt), '.&nbsp;<span class="', esc_attr(atec_dash_class('yes-alt')), '"></span></p>'; }
 	public function p($txt): void { echo '<p class="atec-mb-0">', esc_html($txt), '.</p>'; }
@@ -11,7 +11,7 @@ class ATEC_wpc_tools
 	{
 		echo '
 		<div class="atec-db atec-border atec-bg-white atec-mb-10" style="width:180px; padding: 3px 5px 5px 5px;">
-			<div class="atec-dilb atec-fs-12">', esc_attr__('Hitrate','atec_cache'), '</div>
+			<div class="atec-dilb atec-fs-12">', esc_attr__('Hitrate','atec-cache-info'), '</div>
 			<div class="atec-dilb atec-right atec-fs-12">', esc_attr(round($hits,1)), '%</div>
 			<br>
 			<div class="ac_percent_div">
@@ -24,7 +24,7 @@ class ATEC_wpc_tools
 	{
 		echo '
 		<div class="atec-db atec-border atec-bg-white atec-mb-10" style="width:180px; padding: 3px 5px 5px 5px;">
-			<div class="atec-dilb atec-fs-12">', esc_attr__('Usage','atec_cache'), '</div>
+			<div class="atec-dilb atec-fs-12">', esc_attr__('Usage','atec-cache-info'), '</div>
 			<div class="atec-dilb atec-right atec-fs-12">', esc_attr(round($percent,1)), '%</div>
 			<br>
 			<div class="ac_percent_div">
