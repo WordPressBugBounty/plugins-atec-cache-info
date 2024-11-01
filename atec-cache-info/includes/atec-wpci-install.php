@@ -12,7 +12,7 @@ add_action('init', function()
     if (in_array($slug=atec_get_slug(), ['atec_group','atec_wpci']))
 	{
 		if (!defined('ATEC_TOOLS_INC')) require_once('atec-tools.php');	
-		add_action( 'admin_enqueue_scripts', function() { atec_reg_style('atec',__DIR__,'atec-style.min.css','1.0.001'); });
+		add_action( 'admin_enqueue_scripts', function() { atec_reg_style('atec',__DIR__,'atec-style.min.css','1.0.002'); });
 
 		if (!function_exists('atec_load_pll')) { require_once('atec-translation.php'); }
 		atec_load_pll(__DIR__,'cache-info');

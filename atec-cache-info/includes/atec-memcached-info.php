@@ -1,7 +1,7 @@
 <?php
 if (!defined( 'ABSPATH' )) { exit; }
 
-class ATEC_memcached_info { function __construct($tools) {	
+class ATEC_memcached_info { function __construct($wpc_tools) {	
 
 $m = new Memcached();
 $m->addServer('localhost', 11211);
@@ -28,8 +28,8 @@ if ($mem)
 		</tbody>
 	</table>';
 	
-	$tools->usage($percent);	
-	$tools->hitrate($hits,$misses);
+	$wpc_tools->usage($percent);	
+	$wpc_tools->hitrate($hits,$misses);
 
 	$atec_wpci_key='atec_wpci_key';
 	$m->set($atec_wpci_key,'hello');
@@ -39,7 +39,7 @@ if ($mem)
 }
 else 
 {
-	$tools->p('Memcached '.__('status is not available','atec-cache-info'));
+	$wpc_tools->p('Memcached '.__('status is not available','atec-cache-info'));
 	atec_reg_inline_script('memcached_flush', 'jQuery("#Memcached_flush").hide();', true);
 }
 

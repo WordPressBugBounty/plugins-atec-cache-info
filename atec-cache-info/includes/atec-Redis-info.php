@@ -1,7 +1,7 @@
 <?php
 if (!defined( 'ABSPATH' )) { exit; }
 
-class ATEC_Redis_info { function __construct($url,$nonce,$tools,$redisSettings) {	
+class ATEC_Redis_info { function __construct($url,$nonce,$wpc_tools,$redisSettings) {	
 	
 if (class_exists('Redis'))
 {
@@ -23,14 +23,14 @@ if (class_exists('Redis'))
 			catch (Exception $e) 	
 			{ 
 				$redisSuccess=false;
-				$tools->error('Redis',(strtolower($e->getMessage())));
+				$wpc_tools->error('Redis',(strtolower($e->getMessage())));
 			}
 		}
 		else $redisSuccess=false;
 		
 		if ($redisSuccess===false)
 		{
-			$tools->error('Redis',(strtolower($e->getMessage())));
+			$wpc_tools->error('Redis',(strtolower($e->getMessage())));
 			echo '<p>', esc_attr__('Not available, please define host:port or unix path.','atec-cache-info'), '</p>';
 
 			echo
@@ -57,7 +57,7 @@ if (class_exists('Redis'))
 		try
 		{
 			$pong=@$redis->ping();
-			if (!$redis->ping()) { $tools->error('Redis',esc_attr(__('connection failed','atec-cache-info'))); }
+			if (!$redis->ping()) { $wpc_tools->error('Redis',esc_attr(__('connection failed','atec-cache-info'))); }
 			else
 			{
 				$server=$redis->info('server');
@@ -79,7 +79,7 @@ if (class_exists('Redis'))
 				</tbody>
 				</table>';
 				
-				$tools->hitrate($hits,$misses);
+				$wpc_tools->hitrate($hits,$misses);
 				
 				$testKey='atec_redis_test_key';
 				$redis->set($testKey,'hello');
@@ -88,11 +88,11 @@ if (class_exists('Redis'))
 				if ($success) $redis->del($testKey);
 			}
 		}
-		catch (Exception $e) { $tools->error('Redis',(strtolower($e->getMessage()))); }
+		catch (Exception $e) { $wpc_tools->error('Redis',(strtolower($e->getMessage()))); }
 	}
 	else atec_reg_inline_script('redis_flush', 'jQuery("#Redis_flush").hide();', true);
 }
-else $tools->error('Redis',esc_attr(__('class is NOT available','atec-cache-info')));
+else $wpc_tools->error('Redis',esc_attr(__('class is NOT available','atec-cache-info')));
 	
 }}
 ?>

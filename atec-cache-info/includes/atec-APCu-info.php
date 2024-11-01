@@ -1,7 +1,7 @@
 <?php
 if (!defined( 'ABSPATH' )) { exit; }
 
-class ATEC_APCu_info { function __construct($tools) {	
+class ATEC_APCu_info { function __construct($wpc_tools) {	
 	
 $apcu_cache=apcu_cache_info(true);
 if ($apcu_cache)
@@ -30,13 +30,13 @@ if ($apcu_cache)
 	</tbody>
 	</table>';	
 
-	$tools->usage($percent);	
-	$tools->hitrate($hits,$misses);
+	$wpc_tools->usage($percent);	
+	$wpc_tools->hitrate($hits,$misses);
 
-	if ($percent>90) $tools->error('', __('APCu usage is beyond 90%. Please consider increasing „apc.shm_size“ option','atec-cache-info'));
+	if ($percent>90) $wpc_tools->error('', __('APCu usage is beyond 90%. Please consider increasing „apc.shm_size“ option','atec-cache-info'));
 	elseif ($percent===0)
 	{
-		$tools->p(__('Not in use','atec-cache-info'));
+		$wpc_tools->p(__('Not in use','atec-cache-info'));
 		atec_reg_inline_script('APCu_flush', 'jQuery("#APCu_flush").hide();',true);
 	}
 	
@@ -48,7 +48,7 @@ if ($apcu_cache)
 }
 else 
 { 
-	$tools->error('APCu',__('cache data could NOT be retrieved','atec-cache-info')); 
+	$wpc_tools->error('APCu',__('cache data could NOT be retrieved','atec-cache-info')); 
 }
 
 }}

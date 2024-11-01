@@ -1,7 +1,7 @@
 <?php
 if (!defined( 'ABSPATH' )) { exit; }
 
-class ATEC_WPcache_info { function __construct($op_conf,$op_status,$opcache_file_only,$tools) {	
+class ATEC_WPcache_info { function __construct($op_conf,$op_status,$opcache_file_only,$wpc_tools) {	
 
 global $wp_object_cache;
 if (isset($wp_object_cache->cache_hits))
@@ -17,7 +17,7 @@ if (isset($wp_object_cache->cache_hits))
 		</tbody>
 	</table>';
 	
-	$tools->hitrate($hits,$misses);
+	$wpc_tools->hitrate($hits,$misses);
 }
 
 if (defined('LSCWP_OBJECT_CACHE') && LSCWP_OBJECT_CACHE=='true' && (method_exists('WP_Object_Cache', 'debug'))) 
@@ -38,7 +38,7 @@ if (defined('LSCWP_OBJECT_CACHE') && LSCWP_OBJECT_CACHE=='true' && (method_exist
 	</tbody>
 	</table>';
 
-	$tools->hitrate($hits,$misses);
+	$wpc_tools->hitrate($hits,$misses);
 
 	if (defined('LSCWP_V')) 
 	{

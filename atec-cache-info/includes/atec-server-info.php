@@ -21,17 +21,9 @@ private function tblHeader($icon,$title,$arr): void
 {
 	echo '
 	<div class="atec-mb-5">
-		<div style="padding: 0 0 5px 10px;">',
-			'<img class="atec-sys-icon" src="', esc_url($this->createIcon($icon)), '"><span class="atec-label">', esc_attr($title), '</span>',
-		'</div>
-		<table class="atec-table atec-table-td-first atec-mb-10">
-			<thead>
-				<tr>';
-					foreach($arr as $a) { echo '<th>',esc_attr($a),'</th>'; }
-				echo '
-				</tr>
-			</thead>
-		<tbody>
+		<div style="padding: 0 0 5px 10px;"><img class="atec-sys-icon" src="', esc_url($this->createIcon($icon)), '"><span class="atec-label">', esc_attr($title), '</span></div>';
+		atec_table_header_tiny($arr,'','atec-mb-10');
+		echo '
 		<tr>';
 }
 
@@ -43,8 +35,18 @@ private function tblFooter(): void
 }
 
 function __construct() {	
-	
-$host	= sanitize_text_field(php_uname('n'));
+
+$empty = './.';
+$php_uname = ['n'=>$empty,'s'=>$empty,'r'=>$empty,'m'=>$empty];
+if (function_exists('php_uname'))
+{
+	$arr=['n','s','r','m'];
+	foreach($arr as $a) $php_uname[$a]=php_uname($a);
+}
+if ($php_uname['s']===$empty) $php_uname['s']=PHP_OS;
+if ($php_uname['m']===$empty) $php_uname['m']=$_ENV['PROCESSOR_ARCHITECTURE']??$empty;
+
+$host = $php_uname['n'];
 $ip		= $this->envExists('SERVER_ADDR');
 if ($ip!='') { $host .= ($host!==''?' | ':'').$ip; }
 if (function_exists('curl_version')) { $curl = @curl_version(); }
@@ -53,7 +55,7 @@ else { $curl=array('version'=>'n/a', 'ssl_version'=>'n/a'); }
 global $wpdb;
 $mysql_version = $wpdb->db_version();
 
-$peak='./.';
+$peak=$empty;
 if (function_exists('memory_get_peak_usage')) { $peak=size_format(memory_get_peak_usage(true)); }
 
 atec_little_block('Server Info');
@@ -87,9 +89,8 @@ echo '
 	$this->tblHeader('computer',__('Operating system','atec-cache-info'),['OS','Version',__('Architecture','atec-cache-info'),__('Date/Time','atec-cache-info'),'Disk&nbsp;total','Disk&nbsp;'.__('free','atec-cache-info')]);
 		echo '
 		<td class="atec-nowrap">';
-			$os=php_uname('s');
 			$icon='';
-			switch ($os)
+			switch ($php_uname['s'])
 			{
 				case 'Darwin': $icon='apple'; break;
 				case 'Windows': $icon='windows'; break;
@@ -97,14 +98,13 @@ echo '
 				case 'Ubuntu': $icon='ubuntu'; break;
 			}
 			if ($icon!=='') echo '<img class="atec-sys-icon" src="', esc_url($this->createIcon($icon)), '">';
-			echo 
-			esc_attr(php_uname('s')), 
+			echo esc_attr($php_uname['s']), 
 		'</td>
-		<td>', esc_attr(php_uname('r')), '</td>
-		<td>', esc_attr(php_uname('m')), '</td>
+		<td>', esc_attr($php_uname['r']), '</td>
+		<td>', esc_attr($php_uname['m']), '</td>
 		<td>', esc_attr(date_format($now,"Y-m-d H:i")), ' ', esc_attr($tz.' '.$this->offset2Str($tzOffset)), '</td>	
-		<td class="atec-nowrap">', ($dt?esc_attr(size_format($dt)):'./.'), '</td>
-		<td class="atec-nowrap">', ($df?esc_attr(size_format($df)):'./.'), '&nbsp;', esc_attr($dp), '</td>';		
+		<td class="atec-nowrap">', ($dt?esc_attr(size_format($dt)):$empty), '</td>
+		<td class="atec-nowrap">', ($df?esc_attr(size_format($df)):$empty), '&nbsp;', esc_attr($dp), '</td>';		
 	$this->tblFooter();
 	
 	$headArray=['Host','IP'];
@@ -137,7 +137,7 @@ echo '
 	if ($unlimited)
 	{
 		$this->tblHeader('wordpress','Wordpress',['WP '.__('root','atec-cache-info'),'WP&nbsp;'.__('size','atec-cache-info')]);
-		echo '<td>', esc_url(defined('ABSPATH')?ABSPATH:'./.'),'</td>
+		echo '<td>', esc_url(defined('ABSPATH')?ABSPATH:$empty),'</td>
 			<td class="atec-nowrap">', esc_attr(size_format(get_dirsize(get_home_path()))),'</td>';
 		$this->tblFooter();
 	
@@ -151,13 +151,13 @@ echo '
 	$ram='';
 	if (function_exists('exec'))
 	{
-		if ($os=='Darwin')
+		if ($php_uname['s']=='Darwin')
 		{
 			$output=null; $retval=null; $cmd='/usr/sbin/sysctl -n hw.memsize';
 			@exec($cmd, $output, $retval);
 			$ram=($retval==0 && getType($output)=='array' && !empty($output))?intval($output[0]):0;
 		}
-		elseif ($os!=='Windows')
+		elseif ($php_uname['s']!=='Windows')
 		{
 			$output=null; $retval=null; $cmd='free';
 			@exec($cmd, $output, $retval);
@@ -191,7 +191,6 @@ echo '
 	
 	if ($unlimited)
 	{
-		global $wpdb;
 		// @codingStandardsIgnoreStart
 		$db_soft 					= $wpdb->get_results('SHOW VARIABLES LIKE "version_comment"');
 		$db_ver 					= $wpdb->get_var('SELECT VERSION() AS version from DUAL');
@@ -206,17 +205,17 @@ echo '
 		{ $db_disk += $tablestatus->Data_length; $db_index += $tablestatus->Index_length; }
 		
 		$this->tblHeader('database',__('Database','atec-cache-info'),['DB '.__('driver','atec-cache-info'),'DB&nbsp;ver.','DB&nbsp;'.__('user','atec-cache-info'),'DB&nbsp;'.__('user','atec-cache-info')]);
-		echo '<td>', ($db_soft?esc_html($db_soft[0]->Value):'./.'), '</td>
-				<td>Ver.&nbsp;', ($db_ver?esc_attr($db_ver):'./.'), '</td>
-				<td>', esc_attr(defined('DB_NAME')?DB_NAME:'./.'), '</td>
-				<td>', esc_attr(defined('DB_USER')?DB_USER:'./.'), '</td>';
+		echo '<td>', ($db_soft?esc_html($db_soft[0]->Value):$empty), '</td>
+				<td>Ver.&nbsp;', ($db_ver?esc_attr($db_ver):$empty), '</td>
+				<td>', esc_attr(defined('DB_NAME')?DB_NAME:$empty), '</td>
+				<td>', esc_attr(defined('DB_USER')?DB_USER:$empty), '</td>';
 		$this->tblFooter();
 	
 		$this->tblHeader('database',__('Database settings','atec-cache-info'),['DB&nbsp;max.&nbsp;'.__('conn.','atec-cache-info'),'DB&nbsp;max.&nbsp;'.__('packages','atec-cache-info'),'DB&nbsp;size','DB&nbsp;Index&nbsp;'.__('size','atec-cache-info')]);
-		echo '<td>', ($db_max_conn?esc_attr($db_max_conn[0]->Value):'./.'), '</td>
-				<td class="atec-nowrap">', ($db_max_package?esc_attr(size_format($db_max_package[0]->Value)):'./.'), '</td>
-				<td class="atec-nowrap">', ($db_disk?esc_attr(size_format($db_disk)):'./.'), '</td>
-				<td class="atec-nowrap">', ($db_index?esc_attr(size_format($db_index)):'./.'), '</td>';
+		echo '<td>', ($db_max_conn?esc_attr($db_max_conn[0]->Value):$empty), '</td>
+				<td class="atec-nowrap">', ($db_max_package?esc_attr(size_format($db_max_package[0]->Value)):$empty), '</td>
+				<td class="atec-nowrap">', ($db_disk?esc_attr(size_format($db_disk)):$empty), '</td>
+				<td class="atec-nowrap">', ($db_index?esc_attr(size_format($db_index)):$empty), '</td>';
 		$this->tblFooter();
 	}
 

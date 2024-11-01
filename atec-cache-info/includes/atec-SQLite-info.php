@@ -1,7 +1,7 @@
 <?php
 if (!defined( 'ABSPATH' )) { exit; }
 
-class ATEC_SQLite_info { function __construct($tools, $wp_object_cache) {	
+class ATEC_SQLite_info { function __construct($wpc_tools, $wp_object_cache) {	
 	
 $total=$wp_object_cache->cache_hits+$wp_object_cache->cache_misses+0.001;
 $hits=$wp_object_cache->cache_hits*100/$total;
@@ -16,7 +16,7 @@ echo'
 </tbody>
 </table>';
 
-$tools->hitrate($hits,$misses);
+$wpc_tools->hitrate($hits,$misses);
 	
 }}
 ?>

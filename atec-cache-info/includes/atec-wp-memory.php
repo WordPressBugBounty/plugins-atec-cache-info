@@ -33,13 +33,21 @@ class ATEC_wp_memory
 			preg_match('/([\d]+)\s?([\w]+)/', size_format($peak), $match);
 			preg_match('/([\d]+)\s?([\w]+)/', size_format($memLimit), $match2);
 			
+			
+			switch (PHP_OS_FAMILY)
+			{
+				case 'Darwin': $icon='apple'; break;
+				case 'Windows': $icon='windows'; break;
+				case 'Linux': $icon='linux'; break;
+			}
+			
 			if (isset($match[2]) && isset($match2[2]))
 			{
 				echo '
 				<div class="atec-sticky-left">
-					<img alt="Memory usage" src="', esc_url(plugins_url( '/assets/img/atec_memory_icon.svg', __DIR__ )), '" class="atec-vam" style="height:16px; padding: 0px 4px 0 0;">', 
+					<img alt="', esc_attr(PHP_OS_FAMILY), '" src="', esc_url(plugins_url( '/assets/img/system/'.$icon.'-icon.svg', __DIR__ )), '" class="atec-sys-icon" style="height:16px;"><img alt="Memory usage" src="', esc_url(plugins_url( '/assets/img/atec_memory_icon.svg', __DIR__ )), '" class="atec-vam" style="height:16px; padding: 0px 4px 0 0;">', 
 						esc_attr($match[1]).'<span class="atec-fs-8"> '.esc_attr($match[2]).' / </span>',
-				  	  	esc_attr($match2[1]).'<span class="atec-fs-8"> '.esc_attr($match2[2]).' = </span>',
+				  	  	esc_attr($match2[1]).'<span class="atec-fs-8"> '.esc_attr($match2[2]).' </span>',
 						' ≈ <span class="atec-bold atec-', ($percent<75?'green':'red'),'">', esc_attr($percent), ' <span class="atec-fs-8">%</span></span> ', esc_attr__('used','atec-cache-info'), '.
 				</div>';
 			}

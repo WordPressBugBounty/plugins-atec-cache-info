@@ -9,6 +9,27 @@ function __construct() {
 	
 if (!defined('ATEC_TOOLS_INC')) require_once('atec-tools.php');	
 
+$url				= atec_get_url();
+$nonce 		= wp_create_nonce(atec_nonce());
+$action 		= atec_clean_request('action');
+
+$atec_slug_arr = ['wpb','wpca','wpci','wpc','wpdb',		'wpd','wpdp','wpds','wpm','wpo',	'wppp','wppo','wppr','wpsm','wps',		'wpsi','wpsv','wpur','wms','wpwp'];
+
+$license 			= $this->atec_clean_request_license('license');
+if ($license==='') $license = atec_clean_request('license');
+
+$plugin = $this->atec_clean_request_license('plugin');
+if ($plugin==='') $plugin = atec_clean_request('plugin');
+
+$integrity			= $this->atec_clean_request_license('integrity');
+$integrityString 	= '';
+if ($integrity!=='')
+{
+	$integrityString='Thank you. Connection to atecplugins.com is '.($integrity=='true'?'enabled':'disabled');
+	if ($integrity=='true') atec_integrity_check(__DIR__,$plugin);
+	update_option('atec_allow_integrity_check',$integrity);
+}
+
 echo '
 <div class="atec-page">';
 	atec_header(__DIR__ ,'','atec','Plugins');	
@@ -16,66 +37,61 @@ echo '
 	echo '
 	<div class="atec-main">';
 		atec_progress();
-
-		$url					= atec_get_url();
-		$nonce 			= wp_create_nonce(atec_nonce());
-		$action 			= atec_clean_request('action');
-
-		$license 			= $this->atec_clean_request_license('license');
-		$licenseCode 	= atec_clean_request('licenseCode');
-
-		if ($action==='save_license') 
-		{ update_option('atec_license_code',$licenseCode,'auto'); }
-
-		if ($license=='true' || $action==='save_license')
+		if ($integrityString!=='') { echo '<br><center>'; atec_success_msg($integrityString); echo '</center>'; }
+		if ($license=='true')
 		{
-			$url = atec_get_url();          
-			$nonce = wp_create_nonce(atec_nonce());
-			if ($licenseCode==='') $licenseCode=get_option('atec_license_code','');
-			$siteName=wp_parse_url(get_site_url(),PHP_URL_HOST);
-			$licenseOk=atec_check_license($licenseCode,$siteName);
-			atec_little_block(__('„Lifetime-Site-License“','atec-cache-info'));
+			atec_little_block(__('atec-Plugins „PRO“ package','atec-cache-info'));
 			echo '
-			<div class="atec-g atec-border-white atec-center" style="background: #fafafa; padding: 30px 0;">';
-			if ($licenseOk) { echo '<h4>', esc_attr__('Thank you for activating your „Lifetime-Site-License“.','atec-cache-info'),'</h4>'; 	}
-			else
-			{
-				echo '
-				<h4>', esc_attr__('Get your „Lifetime-Site-License“ for ALL our plugins.','atec-cache-info'), '</h4>
-				<p class="atec-mt-5">',
-					esc_attr__('A single license code will unlock the PRO features of ALL our plugins, site-wide','atec-cache-info'), '.<br>',
-					esc_attr__('Just pay via PayPal and send us the domain name of your site','atec-cache-info'), '.<br>',
-					esc_attr__('You will get your license code via email.','atec-cache-info'), '<br><b>', esc_attr__('No registration required.','atec-cache-info'), '</b>
-				</p>';
-				echo '<a class="atec-nodeco" style="width: fit-content !important; margin: 10px auto;" href="https://atecplugins.com/license/" target="_blank">
-				<button class="button button-primary">', esc_attr__('GET YOUR LICENSE NOW','atec-cache-info'), '</button></a>
-				<span class="atec-small">Links to ', str_contains(plugin_basename(__DIR__),'mega-cache')?'https://wpmegacache.com':'https://atecplugins.com/license', '</span>';
-			}
+			<div class="atec-g atec-border atec-center" style="padding: 20px 10px;">
+				<h3 class="atec-mt-0">
+					<sub><img alt="Plugin icon" src="', esc_url( plugins_url( '/assets/img/atec-group/atec_logo_blue.png', __DIR__ )), '" style="height:22px;"></sub>&nbsp;', 
+					esc_attr__('atec-Plugins „PRO“ package','atec-cache-info'), 
+				'</h3>
+				<div id="atec_group_pro_package">
+					<div id="pro_package_welcome" class="atec-fit" style="margin: 0 auto;">
+						<div class="atec-mt-5 atec-border-white atec-bg-w atec-fit" style="font-size: 16px !important; padding: 10px;">
+							<ul class="atec-m-0">
+							<li>⭐ ', esc_attr__('21 valuable plugins','atec-cache-info'), '.</li>					
+							<li>⭐ ', esc_attr__('Access to all the „PRO“ features','atec-cache-info'), '.</li>
+							<li>⭐ ', esc_attr__('„Lifetime-site-License“ for your site (domain)','atec-cache-info'), '.</li>
+							</ul>
+						</div>
+					</div>
+				<br>';
 
-			echo '
-				<div style="background: #f0f0f0; width: fit-content; padding: 0px 20px 20px 20px; border: solid 1px #dedede; margin: 10px auto;">
-				<p><span style="font-size: 24px;" class="', esc_attr(atec_dash_class('admin-site')), '"></span> ', esc_attr($siteName), '</p>
-				<form style="background: #e8e8e8; border: solid 1px #dedede; padding: 10px;" name="atec_license" method="post" action="', esc_url($url), '&action=save_license&_wpnonce=', esc_attr($nonce), '">
-					  <div><label><b>', esc_attr__('License code','atec-cache-info'), '</b></label></div>
-					<div><textarea cols="30" rows="5" name="licenseCode">', esc_textarea($licenseCode), '</textarea></div>
-					<div><br><input type="submit" name="submit" id="submit" class="button button-primary" value="', esc_attr__('Save','atec-cache-info'), '"></div>
-				  </form>
-				  </div>';
-			  
-			if ($licenseCode!=='')
+			$c=0;
+			echo '<div><center>';
+			foreach ($atec_slug_arr as $a)
 			{
-				echo '<div class="atec-center">';
-				atec_badge(__('License code is valid for your site','atec-cache-info'),__('License code not valid','atec-cache-info'),$licenseOk);
-				echo '</div>';
+				$c++;
+				if ($c % 10===0) echo '<br>';
+				echo '<img src="', esc_url( plugins_url( '/assets/img/atec-group/atec_'.esc_attr($a).'_icon.svg', __DIR__ ) ) ,'" style="height:22px; margin: 0 5px 10px 5px;">';
 			}
+			echo '</center></div>';
+
+			echo '<a class="atec-nodeco" style="width: fit-content !important; margin: 10px auto;" href="https://atecplugins.com/license/" target="_blank">
+			<button class="button button-primary">', esc_attr__('GET YOUR „PRO“ PACKAGE NOW','atec-cache-info'), '</button></a>
+			<div class="atec-small">Links to ', ($plugin==='mega-cache'?'https://wpmegacache.com/license/':'https://atecplugins.com/license'), '</div>';
+
+			echo '<p styl="font-size: 18px !important;">',
+				esc_attr__('Buy the „PRO“ package through one time payment','atec-cache-info'), '.<br>',
+				esc_attr__('The license is valid for the lifetime of your site (domain)','atec-cache-info'), '.<br><b>',
+				esc_attr__('No subscription. No registration required.','atec-cache-info'), '</b>
+			</p>
+			</div>';
+
+			if (!class_exists('ATEC_pro')) @include_once('atec-pro.php');
+			if (class_exists('ATEC_pro')) { (new ATEC_pro)->atec_pro_form($url, $nonce, atec_clean_request('licenseCode'), $plugin); }
 
 			echo '
 			</div>';
+
 		}
 		else
 		{
 
-		echo '<br class="atec-clear">
+		echo '
+		<br class="atec-clear">
 		<div class="atec-g">
 			<table style="width: auto; margin:0 auto;" class="atec-table">
 			<thead>
@@ -83,7 +99,6 @@ echo '
 				<th></th>
 				<th>Name (Link)</th>
 				<th>', esc_attr__('Size','atec-cache-info'), '</th>
-				<th colspan="2"><span class="', esc_attr(atec_dash_class('clock','atec-dil')), '"></span><span style="font-size:8px;">&nbsp;(ms)</span></th>
 				<th>Status</th>
 				<th>', esc_attr__('Preview','atec-cache-info'), '</th>
 				<th>', esc_attr__('Installed','atec-cache-info'), '</th>
@@ -93,36 +108,36 @@ echo '
 			<tbody>';
 
 		$atec_group_arr	= [
-			'cache-apcu','cache-info','code','database','debug',
-			'deploy','dir-scan','meta','optimize','page-performance',
-			'poly-addon','profiler','smtp-mail','stats','system-info',
-			'web-map-service','webp'];
+			'backup','cache-apcu','cache-info','code','database',
+			'debug','deploy','dir-scan','meta','optimize',
+			'page-performance','poly-addon','profiler','smtp-mail','stats',
+			'system-info','SVG','user-roles','web-map-service','webp'];
 
-		$atec_group_arr_size 	= [119,104,68,90,81,		65,107,64,114,367,			78,79,100,76,103,	436,63];
-		$atec_front_et 				= [0.2,0,0.1,0,0,				0,0,0,0.3,0,						0,0,0,0,	0,					0,0];
-		$atec_back_et				= [0.3,0.1,0.1,0,0,			0.1,0.1,0.1,0.1,0.3,0.1,		0.1,0.1,0,0.1,0,			0.1,0.1];
-		$atec_active					= ['cache-apcu','cache-info','dir-scan','system-info','web-map-service'];
-		$atec_review					= ['database'];
-		$atec_slug_arr				= ['wpca','wpci','wpc','wpdb','wpd',	'wpdp','wpds','wpm','wpo','wppp',		'wppo','wppr','wpsm','wps','wpsi',		'wms','wpwp'];
+		$atec_group_arr_size 	= [83,112,99,68,85,		82,70,111,65,115,	371,79,85,100,822,	115,68,72,440,78];
+		$atec_active			= ['cache-apcu','cache-info','database','debug','dir-scan','stats','system-info','web-map-service'];
+		$atec_review			= ['webp'];
 		$atec_desc_arr		= [
+							__('All-in-one Backup and restore solution – fast & reliable','atec-cache-info'),
 							__('APCu object and page cache','atec-cache-info'),
 							__('atec Cache Info & Statistics (OPcache, WP-object-cache, JIT, APCu, Memcached, Redis, SQLite-object-cache)','atec-cache-info'),
 							__('Custom code snippets for WP','atec-cache-info'),	
 							__('Optimize WP database tables','atec-cache-info'),
-							__('Show debug log in admin bar','atec-cache-info'),	
-																	
+
+							__('Show debug log in admin bar','atec-cache-info'),																	
 							__('Install and auto update `atec´ plugins','atec-cache-info'),
 							__('Dir Scan & Statistics (Number of files and size per directory)','atec-cache-info'),
 							__('Add custom meta tags to the head section','atec-cache-info'),
 							__('Lightweight performance tuning plugin','atec-cache-info'),
+
 							__('Measure the PageScore and SpeedIndex of your WordPress site','atec-cache-info'),
-							
 							__('Custom translation strings for polylang plugin','atec-cache-info'),
 							__('Measure plugins & theme plus pages execution time','atec-cache-info'),	
 							__('Add custom SMTP mail settings to WP_Mail','atec-cache-info'),	
-							__('Lightweight and GDPR compliant WP statistics','atec-cache-info'),								
+							__('Lightweight and GDPR compliant WP statistics','atec-cache-info'),				
+
 							__('System Information (OS, server, memory, PHP and database details, php.ini, wp-config, .htaccess and PHP extensions)','atec-cache-info'),
-							
+							__('Ads SVG support for media uploads.','atec-cache-info'),
+							__('Manage WordPress User Roles and Capabilities','atec-cache-info'),
 							__('Web map, conform with privacy regulations','atec-cache-info'),
 							__('Auto convert all images to WebP format','atec-cache-info')
 						];
@@ -144,9 +159,7 @@ echo '
 				$link=$isWP?'https://wordpress.org/plugins/atec-'.esc_attr($a).'/':$atecplugins;
 				echo '
 				<td><a class="atec-nodeco" href="', esc_url($link) ,'" target="_blank">', esc_attr(fixName($atec_group_arr[$c])), '</a></td>
-				<td class="atec-table-right">', esc_attr(size_format($atec_group_arr_size[$c]*1024,$atec_group_arr_size[$c]>1024?1:0)), '</td>
-				<td class="atec-table-right">', esc_attr(number_format($atec_front_et[$c],1)), '</td>
-				<td class="atec-table-right">', esc_attr(number_format($atec_back_et[$c],1)), '</td>';
+				<td class="atec-table-right">', esc_attr(size_format($atec_group_arr_size[$c]*1024,$atec_group_arr_size[$c]>1024?1:0)), '</td>';
 				if ($isWP) echo '
 					<td><span title="', esc_attr__('Published','atec-cache-info'), '" class="',esc_attr(atec_dash_class('wordpress')), '"></span></td>
 					<td><a class="atec-nodeco" title="WordPress Playground" href="https://playground.wordpress.net/?plugin=atec-', esc_attr($atec_group_arr[$c]), '&blueprint-url=https://wordpress.org/plugins/wp-json/plugins/v1/plugin/atec-', esc_attr($atec_group_arr[$c]), '/blueprint.json" target="_blank"><span class="',esc_attr(atec_dash_class('welcome-view-site')), '"></span></a></td>';
@@ -158,7 +171,7 @@ echo '
 						<span title="', $inReview?esc_attr__('In review','atec-cache-info'):esc_attr__('In progress','atec-cache-info'), '"><span class="',esc_attr(atec_dash_class($inReview?'visibility':'')) ,'"></span>
 					</td>';
 				}
-				if ($installed) echo '<td><span class="',esc_attr(atec_dash_class(($active?'plugins-checked':'admin-plugins'), 'atec-'.($active?'green':'blue'))), '"></span></td>';
+				if ($installed) echo '<td title="Installed', ($active?' and active':''), '"><span class="',esc_attr(atec_dash_class(($active?'plugins-checked':'admin-plugins'), 'atec-'.($active?'green':'blue'))), '"></span></td>';
 				else echo '
 				<td>
 					<a title="Download from atecplugins.com" class="atec-nodeco atec-vam button button-secondary" style="padding: 0px 4px;" target="_blank" href="', esc_url($atecplugins), '/WP-Plugins/atec-', esc_attr($a), '.zip" download><span style="padding-top: 4px;" class="', esc_attr(atec_dash_class('download','')), '"></span></a></td>';
@@ -169,10 +182,12 @@ echo '
 		echo '</tbody></table>
 		</div>
 		<center>
-			<p style="max-width:80%;">',
+			<p class="atec-fs-10" style="max-width:80%;">',
 				esc_attr__('All our plugins are optimized for speed, size and CPU footprint (frontend & backend)','atec-cache-info'), '.<br>',
 				esc_attr__('Also, they share the same `atec-WP-plugin´ framework – so that shared code will only load once, even with multiple plugins enabled','atec-cache-info'), '.	<br>',
-				esc_attr__('With an average of 1 ms CPU time, we consider our plugins to be super fast. Other plugins typically require much more time (Polylang ≈ 45 ms, WooCommerce ≈ 500 ms)','atec-cache-info'), '.
+				esc_attr__('With an average of 1 ms CPU time, we consider our plugins to be super fast – other plugins typically require much more time','atec-cache-info'), '.<br>',
+				esc_attr__('OSs supported: Linux (CloudLinux, Debian, Ubuntu), Windows & Mac-OS','atec-cache-info'), '.<br>',
+				esc_attr__('Webservers tested: Apache, NGINX & LiteSpeed','atec-cache-info'), '.
 			</p>
 			<a class="atec-nodeco" class="button atec-center" href="https://de.wordpress.org/plugins/search/atec/" target="_blank">', esc_attr__('All atec-plugins in the WordPress directory','atec-cache-info'), '.</a>
 		</center>';
@@ -182,13 +197,10 @@ echo '
 	</div>
 </div>';
 	
-	if (!str_contains(add_query_arg(null,null),'?page=atec_group') && !class_exists('ATEC_footer')) require_once('atec-footer.php');
-	else 
-	{
-		atec_reg_inline_script('group','
-		jQuery(".atec-page").css("gridTemplateRows","45px 1fr");
-		jQuery("#atec_loading").css("opacity",0);', true);
-	}
+	if ($license) @require_once('atec-footer.php');
+	atec_reg_inline_script('group','
+	jQuery(".atec-page").css("gridTemplateRows","45px 1fr");
+	jQuery("#atec_loading").css("opacity",0);', true);
 	
 }}
 

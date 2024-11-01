@@ -7,10 +7,11 @@ class ATEC_wpc_tools
 	public function error($cache,$txt): void { echo '<p class="atec-mb-0 atec-red">', esc_attr($cache), $cache!==''?' ':'', esc_html($txt),'.</p>'; }
 	public function success($cache,$txt): void { echo '<p class="atec-mb-0">', esc_attr($cache), $cache!==''?' ':'', esc_html($txt), '.&nbsp;<span class="', esc_attr(atec_dash_class('yes-alt')), '"></span></p>'; }
 	public function p($txt): void { echo '<p class="atec-mb-0">', esc_html($txt), '.</p>'; }
+	
 	public function hitrate($hits,$misses)
 	{
 		echo '
-		<div class="atec-db atec-border atec-bg-white atec-mb-10" style="width:180px; padding: 3px 5px 5px 5px;">
+		<div class="atec-db atec-border atec-bg-w atec-mb-10" style="width:180px; padding: 3px 5px 5px 5px;">
 			<div class="atec-dilb atec-fs-12">', esc_attr__('Hitrate','atec-cache-info'), '</div>
 			<div class="atec-dilb atec-right atec-fs-12">', esc_attr(round($hits,1)), '%</div>
 			<br>
@@ -23,7 +24,7 @@ class ATEC_wpc_tools
 	public function usage($percent)
 	{
 		echo '
-		<div class="atec-db atec-border atec-bg-white atec-mb-10" style="width:180px; padding: 3px 5px 5px 5px;">
+		<div class="atec-db atec-border atec-bg-w atec-mb-10" style="width:180px; padding: 3px 5px 5px 5px;">
 			<div class="atec-dilb atec-fs-12">', esc_attr__('Usage','atec-cache-info'), '</div>
 			<div class="atec-dilb atec-right atec-fs-12">', esc_attr(round($percent,1)), '%</div>
 			<br>

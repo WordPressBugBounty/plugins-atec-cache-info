@@ -1,11 +1,10 @@
 === atec Cache Info ===
 Contributors: DocJoJo
-Donate link: https://www.paypal.com/paypalme/atecsystems/5eur
 Tags: OPcache, Object-Cache, APCu, Memcached, Redis
 Requires at least: 5.2
-Tested up to: 6.6.3
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.6.8
+Stable tag: 1.6.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +21,7 @@ Frontend CPU footprint: <1 ms.
 
 == 3rd party as a service ==
 
-Once, when activating the plugin, an integrity check is requested from our server (https://atecplugins.com/).
+Once, when activating the plugin, an integrity check is requested from our server (https://atecplugins.com/) – if you give your permission.
 Privacy policy: https://atecplugins.com/privacy-policy/
 
 == Installation ==
@@ -40,6 +39,9 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.6.9 [2024.10.24] =
+* jit
 
 = 1.6.8 [2024.10.09] =
 * new translation
