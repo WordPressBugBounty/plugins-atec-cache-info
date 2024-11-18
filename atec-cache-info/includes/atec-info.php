@@ -13,13 +13,13 @@ $readme			= $wp_filesystem->get_contents($readmePath);
 echo '
 <div class="atec-mb-0">
 	<div class="atec-dilb">';	atec_little_block('Info'); echo '</div>';
-	if (!is_null($url))
-	{
-		echo '
-		<div class="atec-dilb atec-right">
-			<span class="atec-dilb atec-bg-w atec-border-tiny atec-box-30">'; atec_readme_button_close($url,$nonce); echo '</span>
-		</div>';
-	}
+	// if (!is_null($url))
+	// {
+	// 	echo '
+	// 	<div class="atec-dilb atec-right">
+	// 		<span class="atec-dilb atec-bg-w atec-border-tiny atec-box-30">'; atec_readme_button_close($url,$nonce); echo '</span>
+	// 	</div>';
+	// }
 echo '
 </div>
 

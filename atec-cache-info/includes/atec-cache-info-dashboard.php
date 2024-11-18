@@ -161,7 +161,12 @@ echo '
 						echo '
 						</h4><hr>';
 						if ($apcu_enabled) { require_once('atec-APCu-info.php'); new ATEC_APCu_info($wpc_tools); }
-						else { $wpc_tools->p('APCu '.esc_attr(__('extension is NOT installed/enabled','atec-cache-info'))); }
+						else 
+						{
+							$wpc_tools->p('APCu '.esc_attr__('extension is NOT installed/enabled','atec-cache-info'));
+							echo '<div class="atec-mt-5">'; require_once('atec-APCu-help.php'); echo '</div>';
+						}
+	
 					echo '
 					</div>
 					
@@ -199,7 +204,11 @@ echo '
 			elseif ($nav=='PHP_'.__('Extensions','atec-cache-info')) 
 			{ 
 				if (atec_pro_feature('`Extension´ lists all active PHP extensions and checks whether recommended extensions are installed')) 
-				{ @include_once('atec-extensions-info.php'); atec_missing_class_check('ATEC_extensions_info'); }
+				{ 
+					atec_include_if_exists(__DIR__,'atec-extensions-info.php');
+					if (class_exists('ATEC_extensions_info')) new ATEC_extensions_info();
+					else atec_missing_class_check();
+				}
 			}
 		
 		echo '

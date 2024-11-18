@@ -51,7 +51,7 @@ echo '
 					<div id="pro_package_welcome" class="atec-fit" style="margin: 0 auto;">
 						<div class="atec-mt-5 atec-border-white atec-bg-w atec-fit" style="font-size: 16px !important; padding: 10px;">
 							<ul class="atec-m-0">
-							<li>⭐ ', esc_attr__('21 valuable plugins','atec-cache-info'), '.</li>					
+							<li>⭐ ', esc_attr__('20 valuable plugins','atec-cache-info'), '.</li>					
 							<li>⭐ ', esc_attr__('Access to all the „PRO“ features','atec-cache-info'), '.</li>
 							<li>⭐ ', esc_attr__('„Lifetime-site-License“ for your site (domain)','atec-cache-info'), '.</li>
 							</ul>
@@ -64,7 +64,7 @@ echo '
 			foreach ($atec_slug_arr as $a)
 			{
 				$c++;
-				if ($c % 10===0) echo '<br>';
+				if ($c % 11===0) echo '<br>';
 				echo '<img src="', esc_url( plugins_url( '/assets/img/atec-group/atec_'.esc_attr($a).'_icon.svg', __DIR__ ) ) ,'" style="height:22px; margin: 0 5px 10px 5px;">';
 			}
 			echo '</center></div>';
@@ -80,7 +80,8 @@ echo '
 			</p>
 			</div>';
 
-			if (!class_exists('ATEC_pro')) @include_once('atec-pro.php');
+			$include=__DIR__.'/atec-pro.php';
+			if (!class_exists('ATEC_pro') && file_exists($include)) @include_once($include);
 			if (class_exists('ATEC_pro')) { (new ATEC_pro)->atec_pro_form($url, $nonce, atec_clean_request('licenseCode'), $plugin); }
 
 			echo '
@@ -93,7 +94,7 @@ echo '
 		echo '
 		<br class="atec-clear">
 		<div class="atec-g">
-			<table style="width: auto; margin:0 auto;" class="atec-table">
+			<table style="width: auto; margin:0 auto;" class="atec-table atec-table-med">
 			<thead>
 				<tr>
 				<th></th>
@@ -103,6 +104,7 @@ echo '
 				<th>', esc_attr__('Preview','atec-cache-info'), '</th>
 				<th>', esc_attr__('Installed','atec-cache-info'), '</th>
 				<th>', esc_attr__('Description','atec-cache-info'), '</th>
+				<th>', '<span class="', esc_attr(atec_dash_class('awards')), '" style="margin-right: 4px;"></span>', esc_attr__('PRO features','atec-cache-info'), '</th>			
 				</tr>
 			</thead>
 			<tbody>';
@@ -112,6 +114,12 @@ echo '
 			'debug','deploy','dir-scan','meta','optimize',
 			'page-performance','poly-addon','profiler','smtp-mail','stats',
 			'system-info','SVG','user-roles','web-map-service','webp'];
+			
+		$atec_pro_arr = [
+		'FTP storage','Advanced page cache','PHP extensions','PHP-snippets','Cleanup comments, posts, revisions, transients and options',
+		'Show queries, includes and wp-config.php; manage cron jobs','./.','Deep scan for folder sizes','Automatically add description tag per page','Enable performance and WooCommerce tweaks',
+		'./.','./.','Monitor page performance and queries','DKIM support and test; SPAM filter','Statistics on a world map',
+		'Show the php.ini file, PHP-extensions and system variables; wp-config.php and .htaccess content','./.','List and manage users','Discount on atecmap.com API key','PNG, GIF and BMP support'];
 
 		$atec_group_arr_size 	= [83,112,99,68,85,		82,70,111,65,115,	371,79,85,100,822,	115,68,72,440,78];
 		$atec_active			= ['cache-apcu','cache-info','database','debug','dir-scan','stats','system-info','web-map-service'];
@@ -136,7 +144,7 @@ echo '
 							__('Lightweight and GDPR compliant WP statistics','atec-cache-info'),				
 
 							__('System Information (OS, server, memory, PHP and database details, php.ini, wp-config, .htaccess and PHP extensions)','atec-cache-info'),
-							__('Ads SVG support for media uploads.','atec-cache-info'),
+							__('Adds SVG support for media uploads.','atec-cache-info'),
 							__('Manage WordPress User Roles and Capabilities','atec-cache-info'),
 							__('Web map, conform with privacy regulations','atec-cache-info'),
 							__('Auto convert all images to WebP format','atec-cache-info')
@@ -158,7 +166,7 @@ echo '
 				$atecplugins='https://atecplugins.com/';
 				$link=$isWP?'https://wordpress.org/plugins/atec-'.esc_attr($a).'/':$atecplugins;
 				echo '
-				<td><a class="atec-nodeco" href="', esc_url($link) ,'" target="_blank">', esc_attr(fixName($atec_group_arr[$c])), '</a></td>
+				<td class="atec-nowrap"><a class="atec-nodeco" href="', esc_url($link) ,'" target="_blank">', esc_attr(fixName($atec_group_arr[$c])), '</a></td>
 				<td class="atec-table-right">', esc_attr(size_format($atec_group_arr_size[$c]*1024,$atec_group_arr_size[$c]>1024?1:0)), '</td>';
 				if ($isWP) echo '
 					<td><span title="', esc_attr__('Published','atec-cache-info'), '" class="',esc_attr(atec_dash_class('wordpress')), '"></span></td>
@@ -175,19 +183,19 @@ echo '
 				else echo '
 				<td>
 					<a title="Download from atecplugins.com" class="atec-nodeco atec-vam button button-secondary" style="padding: 0px 4px;" target="_blank" href="', esc_url($atecplugins), '/WP-Plugins/atec-', esc_attr($a), '.zip" download><span style="padding-top: 4px;" class="', esc_attr(atec_dash_class('download','')), '"></span></a></td>';
-				echo '<td>',esc_attr($atec_desc_arr[$c]),'</td>
+				echo '
+				<td>',esc_attr($atec_desc_arr[$c]),'</td>
+				<td><small>',esc_attr($atec_pro_arr[$c]),'</small></td>
 				</tr>';
 			$c++;
 		} 
 		echo '</tbody></table>
 		</div>
 		<center>
-			<p class="atec-fs-10" style="max-width:80%;">',
-				esc_attr__('All our plugins are optimized for speed, size and CPU footprint (frontend & backend)','atec-cache-info'), '.<br>',
+			<p class="atec-fs-12" style="max-width:80%;">',
+				esc_attr__('All our plugins are optimized for speed, size and CPU footprint with an average of only 1 ms CPU time (frontend & backend)','atec-cache-info'), '.<br>',
 				esc_attr__('Also, they share the same `atec-WP-plugin´ framework – so that shared code will only load once, even with multiple plugins enabled','atec-cache-info'), '.	<br>',
-				esc_attr__('With an average of 1 ms CPU time, we consider our plugins to be super fast – other plugins typically require much more time','atec-cache-info'), '.<br>',
-				esc_attr__('OSs supported: Linux (CloudLinux, Debian, Ubuntu), Windows & Mac-OS','atec-cache-info'), '.<br>',
-				esc_attr__('Webservers tested: Apache, NGINX & LiteSpeed','atec-cache-info'), '.
+				esc_attr__('Tested with','atec-cache-info'), ': Linux (CloudLinux, Debian, Ubuntu), Windows & Mac-OS, Apache, NGINX & LiteSpeed.
 			</p>
 			<a class="atec-nodeco" class="button atec-center" href="https://de.wordpress.org/plugins/search/atec/" target="_blank">', esc_attr__('All atec-plugins in the WordPress directory','atec-cache-info'), '.</a>
 		</center>';
