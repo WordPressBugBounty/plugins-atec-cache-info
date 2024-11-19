@@ -3,7 +3,7 @@ if (!defined( 'ABSPATH' )) { exit; }
 
 class ATEC_APCu_info { function __construct($wpc_tools) {	
 	
-$apcu_cache=apcu_cache_info(true);
+$apcu_cache=function_exists('apcu_cache_info')?apcu_cache_info(true):false;
 if ($apcu_cache)
 {
 	$apcu_mem	= apcu_sma_info();
@@ -48,7 +48,7 @@ if ($apcu_cache)
 }
 else 
 { 
-	$wpc_tools->error('APCu',__('cache data could NOT be retrieved','atec-cache-info')); 
+	atec_error_msg('APCu '.__('cache data could NOT be retrieved','atec-cache-info')); 
 }
 
 }}

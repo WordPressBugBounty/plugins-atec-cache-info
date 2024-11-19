@@ -396,8 +396,19 @@ function atec_progress_div(): void
 	atec_reg_inline_script('progress', 'setTimeout(()=>{ jQuery("#atec_loading").css("opacity",0); },4500);', true); 
 }
 
-function atec_progress(): void { @ob_start(); 	while (@ob_end_flush()); @flush(); }
-function atec_flush(): void { while (@ob_end_flush()); @flush(); }
+function atec_progress(): void 
+{ 
+	@ob_start(); 
+	if (@ob_get_length()>0) @ob_end_flush(); 
+	if (@ob_get_level() > 0) @ob_flush(); 
+	@flush(); 
+}
+function atec_flush(): void 
+{ 
+	if (@ob_get_length()>0) @ob_end_flush(); 
+	if (@ob_get_level() > 0) @ob_flush();
+	@flush(); 
+}
 
 function atec_get_version($slug) { return wp_cache_get('atec_'.esc_attr($slug).'_version'); }
 

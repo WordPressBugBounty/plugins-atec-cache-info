@@ -79,7 +79,9 @@ echo '
 			elseif ($nav=='Server') { require_once('atec-server-info.php'); }
 			else if ($nav=='Cache')
 			{				
-				atec_little_block('Zend Opcode & WP '.__('Object Cache','atec-cache-info'));
+				$arr=array('Zlib'=>ini_get('zlib.output_compression')?'#yes-alt':'#dismiss');
+				atec_little_block_with_info('Zend Opcode & WP '.__('Object Cache','atec-cache-info'), $arr);
+								
 				atec_reg_style('atec_cache_info',__DIR__,'atec-cache-info-style.min.css','1.0.001');
 
 				$apcu_enabled=extension_loaded('apcu')  && apcu_enabled();
