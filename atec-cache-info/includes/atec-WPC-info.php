@@ -56,5 +56,10 @@ $success=wp_cache_get($testKey)=='hello';
 atec_badge('WP '.__('object cache','atec-cache-info').' '.__('is writeable','atec-cache-info'),'Writing to WP '.__('object cache','atec-cache-info').' failed',$success);
 if ($success) 	wp_cache_delete($testKey);
 
+atec_help('WPcache','WP object cache explained');
+echo '<div id="WPcache_help" class="atec-help atec-dn">
+The WP object cache boosts performance by storing keys that might be used by multiple scripts while handling a page request.
+Nonetheless, this cache is solely valid for the current request, unless a persistent object cache, such as APCu, is installed.</div>';
+
 }}
 ?>

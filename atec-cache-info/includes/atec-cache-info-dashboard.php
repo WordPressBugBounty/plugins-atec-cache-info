@@ -15,7 +15,8 @@ echo '
 	
 	echo '
 	<div class="atec-main">';
-	
+		atec_progress();
+
 		global $wp_object_cache;
 		$redis_enabled=class_exists('redis');			
 		if ($redis_enabled)
@@ -35,8 +36,6 @@ echo '
 			echo '
 			<div class="notice is-dismissible">
 				<p>', esc_attr__('Flushing','atec-cache-info'), ' ', esc_html($flush),' ... ';
-
-			atec_progress();
 	
 			$result=false;
 			switch ($flush) 
@@ -69,7 +68,7 @@ echo '
 		if ($nav=='') $nav='Cache';
 				
 		$licenseOk=atec_check_license()===true;
-		atec_nav_tab($url, $nonce, $nav, ['#memory Cache','#server Server','#php PHP '.__('Extensions','atec-cache-info')], 2, !$licenseOk);
+		atec_nav_tab($url, $nonce, $nav, ['#memory Cache','#server Server','#scroll OPC Scripts','#php PHP '.__('Extensions','atec-cache-info')], 2, !$licenseOk);
 	
 		echo '
 		<div class="atec-border">';
@@ -202,6 +201,15 @@ echo '
 					echo '
 					</div>
 				</div>';
+			}
+			elseif ($nav=='OPC_Scripts') 
+			{ 
+				if (atec_pro_feature('`OPC Scripts´ lists all scripts files and statistics of in the OPcache memory')) 
+				{ 
+					atec_include_if_exists(__DIR__,'atec-cache-OPC-groups.php');
+					if (class_exists('ATEC_oc_groups')) new ATEC_oc_groups();
+					else atec_missing_class_check();
+				}
 			}
 			elseif ($nav=='PHP_'.__('Extensions','atec-cache-info')) 
 			{ 

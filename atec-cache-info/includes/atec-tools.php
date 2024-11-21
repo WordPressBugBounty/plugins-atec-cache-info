@@ -202,7 +202,7 @@ function atec_nav_tab_dashboard($url, $nonce, $nav, $dir)
 	</h2>';
 }
 
-function atec_nav_tab($url, $nonce, $nav, $arr, $break=0, $pro=true, $highlight='', $about=false): void
+function atec_nav_tab($url, $nonce, $nav, $arr, $break=0, $pro=false, $highlight='', $about=false): void
 {
 	$iconPath=plugins_url('assets/img/icons/',__DIR__);
 	echo '
@@ -398,7 +398,7 @@ function atec_progress_div(): void
 
 function atec_progress(): void 
 { 
-	@ob_start(); 
+	ob_start(); 
 	if (@ob_get_length()>0) @ob_end_flush(); 
 	if (@ob_get_level() > 0) @ob_flush(); 
 	@flush(); 
@@ -492,8 +492,9 @@ function atec_little_block_with_info($str,$arr,$class='',$buttons=[],$url='',$no
 {
 	$iconPath=plugins_url('assets/img/icons/',__DIR__);
 	$reg = '/#([\-|\w]+)\s?(.*)/i';
+	// style="border-bottom: solid 1px #d0d0d0; padding-bottom:5px;"
 	echo '
-	<div class="atec-db atec-mb-10" style="border-bottom: solid 1px #d0d0d0; padding-bottom:5px;">
+	<div class="atec-db atec-mb-10">
 		<div class="atec-dilb atec-mr-10">'; atec_little_block($str,'H3','atec-head atec-mb-0'); echo '</div>';
 		foreach ($buttons as $b)
 		{ 
