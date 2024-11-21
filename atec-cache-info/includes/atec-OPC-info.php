@@ -65,6 +65,7 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 
 					echo '
 					<tr><td>',esc_attr__('&nbsp;&nbsp;Used','atec-cache-info'),':</td><td>',esc_attr(size_format($op_status['memory_usage']['used_memory']).' '.sprintf(" (%.1f%%)",$percent)),'</td></tr>
+					<tr><td>',esc_attr__('&nbsp;&nbsp;Free','atec-cache-info'),':</td><td>',esc_attr(size_format($op_status['memory_usage']['free_memory'])),'</td></tr>
 					<tr><td>',esc_attr__('&nbsp;&nbsp;Hits','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['hits']).sprintf(" (%.1f%%)",$hits)),'</td></tr>
 					<tr><td>',esc_attr__('&nbsp;&nbsp;Misses','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['misses']).sprintf(" (%.1f%%)",$misses)),'</td></tr>';
 				}

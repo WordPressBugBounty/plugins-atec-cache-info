@@ -62,9 +62,9 @@ echo '
 			echo '</p></div>';
 		}
 	
-		$url		    = atec_get_url();
+		$url	= atec_get_url();
 		$nonce 	= wp_create_nonce(atec_nonce());
-		$nav 		= atec_clean_request('nav');
+		$nav 	= atec_clean_request('nav');
 		if ($nav=='') $nav='Cache';
 				
 		$licenseOk=atec_check_license()===true;
@@ -146,7 +146,7 @@ echo '
 							<p class="atec-bold atec-mb-5 atec-mt-0">', esc_attr__('Recommended settings','atec-cache-info'), ':</p>
 							<ul class="atec-m-0">
 								<li>opcache.jit=1254</li>
-								<li>opcache.jit_buffer_size=8</li>
+								<li>opcache.jit_buffer_size=8M</li>
 							</ul>
 						</div>						
 					</div>
