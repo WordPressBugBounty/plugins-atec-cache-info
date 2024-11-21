@@ -12,8 +12,8 @@ if (isset($wp_object_cache->cache_hits))
 	echo'
 	<table class="atec-table atec-table-tiny atec-table-td-first">
 		<tbody>
-			<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td><td>', esc_attr(number_format($wp_object_cache->cache_hits).sprintf(" (%.1f%%)",$hits)), '</td></tr>
-			<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td><td>', esc_attr(number_format($wp_object_cache->cache_misses).sprintf(" (%.1f%%)",$misses)), '</td></tr>
+			<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td><td>', esc_attr(number_format($wp_object_cache->cache_hits)), '<small>', esc_attr(sprintf(" (%.1f%%)",$hits)), '</small></td></tr>
+			<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td><td>', esc_attr(number_format($wp_object_cache->cache_misses)), '<small>', esc_attr(sprintf(" (%.1f%%)",$misses)), '</small></td></tr>
 		</tbody>
 	</table>';
 	
@@ -33,8 +33,8 @@ if (defined('LSCWP_OBJECT_CACHE') && LSCWP_OBJECT_CACHE=='true' && (method_exist
 	<table class="atec-table atec-table-tiny atec-table-td-first">
 	<tbody>
 		<tr><td>', esc_attr__('Items','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_total)), '</td></tr>
-		<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_hit).sprintf(" (%.1f%%)",$hits)), '</td></tr>
-		<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_miss).sprintf(" (%.1f%%)",$misses)), '</td></tr>
+		<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_hit)), '<small>', esc_attr(sprintf(" (%.1f%%)",$hits)), '</small></td></tr>
+		<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_miss)), '<small>', esc_attr(sprintf(" (%.1f%%)",$misses)), '</small></td></tr>
 	</tbody>
 	</table>';
 

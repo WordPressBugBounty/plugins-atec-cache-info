@@ -21,10 +21,12 @@ if ($apcu_cache)
 		if ($percent>0)
 		{
 			echo '
-			<tr><td>',esc_attr__('Used','atec-cache-info'),':</td><td>',esc_attr(size_format($apcu_cache['mem_size'])),' <font color="#ff7721">',esc_attr(sprintf(" (%.1f%%)",$percent)),'</font></td></tr>
-			<tr><td>',esc_attr__('Items','atec-cache-info'),':</td><td>',esc_attr(number_format($apcu_cache['num_entries'])),'</td></tr>
-			<tr><td>',esc_attr__('Hits','atec-cache-info'),':</td><td>',esc_attr(number_format($apcu_cache['num_hits']).sprintf(" (%.1f%%)",$hits)),'</td></tr>
-			<tr><td>',esc_attr__('Misses','atec-cache-info'),':</td><td>',esc_attr(number_format($apcu_cache['num_misses']).sprintf(" (%.1f%%)",$misses)),'</td></tr>';
+			<tr><td>',esc_attr__('Used','atec-cache-info'),':</td><td>',esc_attr(size_format($apcu_cache['mem_size'])),' <small>', esc_attr(sprintf(" (%.1f%%)",$percent)), '</small></td></tr>
+			<tr><td>',esc_attr__('Items','atec-cache-info'),':</td><td>',esc_attr(number_format($apcu_cache['num_entries'])),'</td></tr>';
+			atec_empty_TR();
+			echo '
+			<tr><td>',esc_attr__('Hits','atec-cache-info'),':</td><td>',esc_attr(number_format($apcu_cache['num_hits'])), '<small>', esc_attr(sprintf(" (%.1f%%)",$hits)),'</small></td></tr>
+			<tr><td>',esc_attr__('Misses','atec-cache-info'),':</td><td>',esc_attr(number_format($apcu_cache['num_misses'])), '<small>', esc_attr(sprintf(" (%.1f%%)",$misses)),'</small></td></tr>';
 		}
 	echo '
 	</tbody>

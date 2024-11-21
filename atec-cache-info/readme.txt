@@ -4,7 +4,7 @@ Tags: OPcache, Object-Cache, APCu, Memcached, Redis
 Requires at least: 5.2
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.7.3
+Stable tag: 1.7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,9 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.4 [2024.11.21] =
+* Added OPC Override & Max waste
 
 = 1.7.3 [2024.11.21] =
 * Added OPC free_memory
