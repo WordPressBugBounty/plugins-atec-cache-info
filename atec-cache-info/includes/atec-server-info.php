@@ -160,8 +160,7 @@ echo '
 				$ram=($retval==0 && getType($output)=='array' && !empty($output) && count($output)>=1)?$output[1]:'';
 				if ($ram!=='') 
 				{
-					$re = '/\s+([\d]*)\s+/';		
-					preg_match($re, $ram, $match);
+					preg_match('/\s+([\d]*)\s+/', $ram, $match);
 					$ram=$match[1] ?? '';
 				}
 			}

@@ -43,6 +43,20 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 				</tbody>
 			</table>';
 
+			echo '
+			<table class="atec-table atec-table-tiny atec-table-td-first">
+				<tbody>
+					<tr><td>',esc_attr__('Strings','atec-cache-info'),':</td><td>',esc_attr($op_conf['directives']['opcache.interned_strings_buffer']),' MB</td></tr>';
+					if ($opStats)
+					{
+						$percent = $op_status['interned_strings_usage']['used_memory']*100/$op_status['interned_strings_usage']['buffer_size'];
+						echo '
+						<tr><td>',esc_attr__('&nbsp;&nbsp;Used','atec-cache-info'),':</td><td>',esc_attr(size_format($op_status['interned_strings_usage']['used_memory'])), '<small>', esc_attr(sprintf(" (%.1f%%)",$percent)), '</small></td></tr>';
+					}
+				echo '
+				</tbody>
+			</table>';
+			
 			if ($opStats)
 			{
 				$wpc_tools->usage($percent);	
@@ -58,30 +72,28 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 				echo '
 				</p>';
 			}
-
+			
 			echo '
-			<table class="atec-table atec-table-tiny atec-table-td-first">
-				<tbody>
-					<tr><td>',esc_attr__('Strings','atec-cache-info'),':</td><td>',esc_attr($op_conf['directives']['opcache.interned_strings_buffer']),' MB</td></tr>';
-					if ($opStats)
-					{
-						$percent = $op_status['interned_strings_usage']['used_memory']*100/$op_status['interned_strings_usage']['buffer_size'];
-						echo '
-						<tr><td>',esc_attr__('&nbsp;&nbsp;Used','atec-cache-info'),':</td><td>',esc_attr(size_format($op_status['interned_strings_usage']['used_memory'])), '<small>', esc_attr(sprintf(" (%.1f%%)",$percent)), '</small></td></tr>';
-					}
-				echo '
-				</tbody>
-			</table>
 			</div>
 			<div class="atec-border-white">
 			<h4>OPcache ', esc_attr__('Details','atec-cache-info'), '</h4><hr>
 			<table class="atec-table atec-table-tiny atec-table-td-first">
 				<tbody>
-					<tr><td>',esc_attr__('Version','atec-cache-info').':</td><td>',esc_attr($op_conf['version']['version']), esc_attr($shutdown),'</td></tr>
+					<tr><td>',esc_attr__('Version','atec-cache-info').':</td><td>',esc_attr($op_conf['version']['version']), '</td></tr>
 					<tr><td>',esc_attr__('Revalidate freq.','atec-cache-info').':</td><td>',esc_attr($op_conf['directives']['opcache.revalidate_freq']),' s</td></tr>
 					<tr><td>',esc_attr__('Validate TS.','atec-cache-info').':</td><td>',esc_attr($op_conf['directives']['opcache.validate_timestamps']?'On':'Off'),'</td></tr>
-					<tr><td>',esc_attr__('Override','atec-cache-info').':</td><td>',esc_attr($op_conf['directives']['opcache.enable_file_override']?'On':'Off'),'</td></tr>
+
+					<tr><td>',esc_attr__('Override','atec-cache-info').':</td>
+					<td class="', $op_conf['directives']['opcache.enable_file_override']?'atec-green':'atec-red', '">',esc_attr($op_conf['directives']['opcache.enable_file_override']?'On':'Off'),'</td></tr>
+					
+					<tr><td>',esc_attr__('Comments','atec-cache-info').':</td>
+					<td class="', !$op_conf['directives']['opcache.save_comments']?'atec-green':'atec-red', '">',esc_attr($op_conf['directives']['opcache.save_comments']?'On':'Off'),'</td></tr>
+					
 					<tr><td>',esc_attr__('Max waste','atec-cache-info').':</td><td>',esc_attr($op_conf['directives']['opcache.max_wasted_percentage']),'</td></tr>
+					
+					<tr><td>',esc_attr__('Consistency','atec-cache-info').':</td>
+					<td class="', $op_conf['directives']['opcache.consistency_checks']?'atec-red':'atec-green', '">',esc_attr($op_conf['directives']['opcache.consistency_checks']?'On':'Off'),'</td></tr>
+					
 				</tbody>
 			</table>
 			<table class="atec-table atec-table-tiny atec-table-td-first">

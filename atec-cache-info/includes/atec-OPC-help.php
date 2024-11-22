@@ -12,6 +12,9 @@ if (!defined( 'ABSPATH' )) { exit; }
 			<li>opcache.max_accelerated_files=10000</li>
 			<li>opcache.validate_timestamps=1</li>
 			<li>opcache.revalidate_freq=60</li>
+			<li>opcache.consistency_checks=0</li>
+			<li>opcache.save_comments=0</li>
+			<li>opcache.enable_file_override=1</li>
 		</ul>
 		A revalidate_freq of 0 will result in OPcache checking for updates on every request.
 	</div>';	

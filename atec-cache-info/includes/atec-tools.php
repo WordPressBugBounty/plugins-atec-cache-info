@@ -482,7 +482,7 @@ function atec_reg_inline_script($id, $js, $jquery=false):void { $id='atec_'.$id;
 function atec_get_url(): string
 { 
 	$url_parts	= wp_parse_url( home_url() );
-	$url			= $url_parts['scheme'] . "://" . $url_parts['host'] . (isset($url_parts['port'])?':'.$url_parts['port']:'') .add_query_arg( NULL, NULL );
+	$url			= $url_parts['scheme'] . "://" . $url_parts['host'] . (isset($url_parts['port'])?':'.$url_parts['port']:'') .atec_query();
 	return rtrim(strtok($url, '&'),'/');
 } 
 

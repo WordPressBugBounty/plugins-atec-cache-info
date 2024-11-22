@@ -7,7 +7,7 @@ private function atec_clean_request_license($t): string { return atec_clean_requ
 	
 function __construct() {
 	
-if (!defined('ATEC_TOOLS_INC')) require_once('atec-tools.php');	
+if (!defined('ATEC_TOOLS_INC')) @require_once(__DIR__.'/atec-tools.php');	
 
 $url				= atec_get_url();
 $nonce 		= wp_create_nonce(atec_nonce());

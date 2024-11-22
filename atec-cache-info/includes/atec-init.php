@@ -2,8 +2,9 @@
 if (!defined( 'ABSPATH' )) { exit; }
 define('ATEC_INIT_INC',true);
 
+function atec_query() { return add_query_arg(null,null); }
 function atec_nonce(): string { return atec_get_slug().'_nonce'; }
-function atec_get_slug(): string { preg_match('/\?page=([\w_]+)/', add_query_arg( NULL, NULL ), $match); return $match[1] ?? ''; }
+function atec_get_slug(): string { preg_match('/\?page=([\w_]+)/', atec_query(), $match); return $match[1] ?? ''; }
 function atec_get_plugin($dir): string { $plugin=plugin_basename($dir); return substr($plugin,0,strpos($plugin,DIRECTORY_SEPARATOR)); }
 function atec_group_page($dir): void { if (!class_exists('ATEC_group')) require_once(plugin_dir_path($dir).'includes/atec-group.php'); } 
 
@@ -40,6 +41,6 @@ function atec_admin_debug($name,$slug): void
 	if ($notice) { atec_new_admin_notice($notice['type']??'info',$name.': '.$notice['message']??''); delete_option($slug); }
 }
 
-function atec_admin_notice($type,$message): void { echo '<div class="notice notice-',esc_attr($type),' is-dismissible"><p>',esc_attr($message),'</p></div>'; }
+function atec_admin_notice($type,$message): void { echo '<div class="notice notice-',esc_attr($type),' is-dismissible atec-notice"><p>',esc_attr($message),'</p></div>'; }
 function atec_new_admin_notice($type,$message): void { add_action('admin_notices', function() use ( $type, $message ) { atec_admin_notice($type,$message); }); }
 ?>
