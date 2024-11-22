@@ -12,8 +12,10 @@ if (isset($wp_object_cache->cache_hits))
 	echo'
 	<table class="atec-table atec-table-tiny atec-table-td-first">
 		<tbody>
-			<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td><td>', esc_attr(number_format($wp_object_cache->cache_hits)), '<small>', esc_attr(sprintf(" (%.1f%%)",$hits)), '</small></td></tr>
-			<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td><td>', esc_attr(number_format($wp_object_cache->cache_misses)), '<small>', esc_attr(sprintf(" (%.1f%%)",$misses)), '</small></td></tr>
+			<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td>
+				<td>', esc_attr(number_format($wp_object_cache->cache_hits)), '</td><td><small>', esc_attr(sprintf("%.1f%%",$hits)), '</small></td></tr>
+			<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td>
+				<td>', esc_attr(number_format($wp_object_cache->cache_misses)), '</td><td><small>', esc_attr(sprintf("%.1f%%",$misses)), '</small></td></tr>
 		</tbody>
 	</table>';
 	
@@ -32,9 +34,11 @@ if (defined('LSCWP_OBJECT_CACHE') && LSCWP_OBJECT_CACHE=='true' && (method_exist
 	echo ' 
 	<table class="atec-table atec-table-tiny atec-table-td-first">
 	<tbody>
-		<tr><td>', esc_attr__('Items','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_total)), '</td></tr>
-		<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_hit)), '<small>', esc_attr(sprintf(" (%.1f%%)",$hits)), '</small></td></tr>
-		<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_miss)), '<small>', esc_attr(sprintf(" (%.1f%%)",$misses)), '</small></td></tr>
+		<tr><td>', esc_attr__('Items','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_total)), '</td><td></td></tr>
+		<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td>
+			<td>', esc_attr(number_format($ls_hit)), '</td><td><small>', esc_attr(sprintf(" (%.1f%%)",$hits)), '</small></td></tr>
+		<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td>
+			<td>', esc_attr(number_format($ls_miss)), '</td><td><small>', esc_attr(sprintf(" (%.1f%%)",$misses)), '</small></td></tr>
 	</tbody>
 	</table>';
 

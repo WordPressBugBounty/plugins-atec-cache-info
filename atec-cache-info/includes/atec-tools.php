@@ -40,7 +40,7 @@ function atec_integrity_check($dir,$plugin='')
 	wp_remote_get('https://atecplugins.com/WP-Plugins/activated.php?plugin='.esc_attr($plugin).'&domain='.get_bloginfo('url')); 
 }
 
-function atec_TR_empty() { echo '<tr class="emptyTR1"><td colspan="99"></td></tr><tr class="emptyTR2"><td colspan="99"></td></tr>'; }
+function atec_TR_empty() { echo '<tr><td class="emptyTR1" colspan="99"></td></tr><tr><td class="emptyTR2" colspan="99"></td></tr>'; }
 
 function atec_short_string($str,$len=128): string 
 { 

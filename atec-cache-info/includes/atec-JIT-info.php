@@ -18,10 +18,13 @@ else
 echo '
 <table class="atec-table atec-table-tiny atec-table-td-first">
 <tbody>
-	<tr><td>JIT ', esc_attr__('config','atec-cache-info'), ':</td><td>', esc_attr(ini_get('opcache.jit')), '</td></tr>
-	<tr><td>Debug:</td><td>', esc_attr(ini_get('opcache.jit_debug')), '</td></tr>
-	<tr><td>', esc_attr__('Memory','atec-cache-info'), ':</td><td>', esc_attr(size_format($jit_size)), '</td></tr>';
-	if ($percent) echo '<tr><td>', esc_attr__('Used','atec-cache-info'), ':</td><td>', esc_attr(size_format($jit_size-$jit_free)), '<small>', sprintf(" (%.1f%%)",$percent), '</small></td></tr>';
+	<tr><td>JIT ', esc_attr__('config','atec-cache-info'), ':</td><td>', esc_attr(ini_get('opcache.jit')), '</td><td></td></tr>
+	<tr><td>Debug:</td><td>', esc_attr(ini_get('opcache.jit_debug')), '</td><td></td></tr>';
+	atec_empty_tr();
+	echo '
+	<tr><td>', esc_attr__('Memory','atec-cache-info'), ':</td><td>', esc_attr(size_format($jit_size)), '</td><td></td></tr>';
+	if ($percent) echo '<tr><td>', esc_attr__('Used','atec-cache-info'), ':</td>
+		<td>', esc_attr(size_format($jit_size-$jit_free)), '</td><td><small>', sprintf("%.1f%%",$percent), '</small></td></tr>';
 echo '
 </tbody>
 </table>';

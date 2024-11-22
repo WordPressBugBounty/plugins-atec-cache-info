@@ -71,11 +71,21 @@ if (class_exists('Redis'))
 				echo'
 				<table class="atec-table atec-table-tiny atec-table-td-first">
 				<tbody>
-					<tr><td>Version:</td><td>', esc_attr($server['redis_version']), '</td></tr>
-					<tr><td>', esc_attr__('Connection','atec-cache-info'), ':</td><td>', esc_html($redisSuccess==='host'?$host.':'.$port:$redisSettings['unix']), '</td></tr>
-					<tr><td>', esc_attr__('Used','atec-cache-info').':</td><td>', esc_attr(size_format($memory['used_memory'])), '</td></tr>
-					<tr><td>', esc_attr__('Hits','atec-cache-info').':</td><td>', esc_attr(number_format($stats['keyspace_hits']).sprintf(" (%.1f%%)",$hits)), '</td></tr>
-					<tr><td>', esc_attr__('Misses','atec-cache-info').':</td><td>', esc_attr(number_format($stats['keyspace_misses']).sprintf(" (%.1f%%)",$misses)), '</td></tr>
+					<tr><td>Version:</td><td>', esc_attr($server['redis_version']), '</td><td></td></tr>';
+					if ($redisSuccess==='host')
+					{
+						echo '
+						<tr><td>', esc_attr__('Hort','atec-cache-info'), ':</td><td>', esc_html($host), '</td><td></td></tr>
+						<tr><td>', esc_attr__('Port','atec-cache-info'), ':</td><td>', esc_html($port), '</td><td></td></tr>';
+					}
+					else echo '<tr><td>', esc_attr__('Socket','atec-cache-info'), ':</td><td>', esc_html($redisSettings['unix']), '</td><td></td></tr>';
+					atec_empty_tr();
+					echo '
+					<tr><td>', esc_attr__('Used','atec-cache-info').':</td><td>', esc_attr(size_format($memory['used_memory'])), '</td><td></td></tr>
+					<tr><td>', esc_attr__('Hits','atec-cache-info').':</td>
+						<td>', esc_attr(number_format($stats['keyspace_hits'])), '</td><td><small>', sprintf(" (%.1f%%)",$hits), '</small></td></tr>
+					<tr><td>', esc_attr__('Misses','atec-cache-info').':</td>
+						<td>', esc_attr(number_format($stats['keyspace_misses'])), '</td><td><small>', sprintf(" (%.1f%%)",$misses), '</small></td></tr>
 				</tbody>
 				</table>';
 				

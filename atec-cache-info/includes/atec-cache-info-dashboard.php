@@ -79,6 +79,12 @@ echo '
 			elseif ($nav=='Server') {@require_once(__DIR__.'/atec-server-info.php'); }
 			else if ($nav=='Cache')
 			{				
+				atec_reg_inline_style('atec_wpci_cache', '
+				table td:nth-of-type(2), table td:nth-of-type(3) { text-align: right; } 
+				table td:nth-of-type(3) { padding-left: 0; } 
+				SMALL { font-size: 10px; }
+				');
+				
 				$arr=array('Zlib'=>ini_get('zlib.output_compression')?'#yes-alt':'#dismiss');
 				atec_little_block_with_info('Zend Opcode & WP '.__('Object Cache','atec-cache-info'), $arr);
 								

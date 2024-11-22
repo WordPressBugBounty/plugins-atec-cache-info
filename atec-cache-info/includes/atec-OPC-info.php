@@ -21,42 +21,39 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 			echo '
 			<table class="atec-table atec-table-tiny atec-table-td-first">
 				<tbody>
-				<tr><td>',esc_attr__('Memory','atec-cache-info'),':</td><td>',esc_attr(size_format($op_conf['directives']['opcache.memory_consumption'])),'</td></tr>';
+				<tr><td>',esc_attr__('Memory','atec-cache-info'),':</td><td>',esc_attr(size_format($op_conf['directives']['opcache.memory_consumption'])),'</td><td></td></tr>';
 				if ($opStats)
 				{
-					$total		= $op_status['opcache_statistics']['hits']+$op_status['opcache_statistics']['misses']+0.001;
-					$hits		= $op_status['opcache_statistics']['hits']*100/$total;
-					$misses		= $op_status['opcache_statistics']['misses']*100/$total;
-					$percent	= $op_status['memory_usage']['used_memory']*100/($op_status['memory_usage']['used_memory']+$op_status['memory_usage']['free_memory']);
+					$totalStats 	= $op_status['opcache_statistics']['hits']+$op_status['opcache_statistics']['misses']+0.001;
+					$hits				= $op_status['opcache_statistics']['hits']/$totalStats*100;
+					$misses		= $op_status['opcache_statistics']['misses']/$totalStats*100;
+					
+					$totalMem	= $op_status['memory_usage']['used_memory']+$op_status['memory_usage']['free_memory'];
+					$percent		= $op_status['memory_usage']['used_memory']/$totalMem*100;
 
 					echo '
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Used','atec-cache-info'),':</td><td>',esc_attr(size_format($op_status['memory_usage']['used_memory'])), '<small>', esc_attr(sprintf(" (%.1f%%)",$percent)), '</small></td></tr>
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Free','atec-cache-info'),':</td><td>',esc_attr(size_format($op_status['memory_usage']['free_memory'])),'</td></tr>
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Wasted','atec-cache-info'),':</td><td>',esc_attr(size_format($op_status['memory_usage']['wasted_memory'])),'</td></tr>';
+					<tr><td>',esc_attr__('&nbsp;&nbsp;Real','atec-cache-info'),':</td>
+						<td>',esc_attr(size_format($totalMem)), '</small></td><td></td></tr>
+					<tr><td>',esc_attr__('&nbsp;&nbsp;Used','atec-cache-info'),':</td>
+						<td>',esc_attr(size_format($op_status['memory_usage']['used_memory'])), '</td>
+						<td><small>', esc_attr(sprintf("%.1f%%",$percent)), '</small></td></tr>
+					<tr><td>',esc_attr__('&nbsp;&nbsp;Free','atec-cache-info'),':</td>
+						<td>',esc_attr(size_format($op_status['memory_usage']['free_memory'])),'</td><td></td></tr>
+					<tr><td>',esc_attr__('&nbsp;&nbsp;Wasted','atec-cache-info'),':</td>
+						<td>',esc_attr(size_format($op_status['memory_usage']['wasted_memory'])),'</td><td></td></tr>';
 					atec_empty_TR();
 					echo '
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Hits','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['hits'])), '<small>', esc_attr(sprintf(" (%.1f%%)",$hits)), '</small></td></tr>
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Misses','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['misses'])), '<small>', esc_attr(sprintf(" (%.1f%%)",$misses)), '</small></td></tr>';
+					<tr><td>',esc_attr__('&nbsp;&nbsp;Hits','atec-cache-info'),':</td>
+						<td>',esc_attr(number_format($op_status['opcache_statistics']['hits'])), '</td>
+						<td><small>', esc_attr(sprintf("%.1f%%",$hits)), '</small></td></tr>
+					<tr><td>',esc_attr__('&nbsp;&nbsp;Misses','atec-cache-info'),':</td>
+						<td>',esc_attr(number_format($op_status['opcache_statistics']['misses'])), '</td>
+						<td><small>', esc_attr(sprintf("%.1f%%",$misses)), '</small></td></tr>';
 				}
-				// <tr><td>',esc_attr__('Free','atec-cache-info').':</td><td>',esc_attr(size_format($op_status['memory_usage']['free_memory'])),'</td></tr>
 				echo '
 				</tbody>
 			</table>';
-
-			echo '
-			<table class="atec-table atec-table-tiny atec-table-td-first">
-				<tbody>
-					<tr><td>',esc_attr__('Strings','atec-cache-info'),':</td><td>',esc_attr($op_conf['directives']['opcache.interned_strings_buffer']),' MB</td></tr>';
-					if ($opStats)
-					{
-						$percent = $op_status['interned_strings_usage']['used_memory']*100/$op_status['interned_strings_usage']['buffer_size'];
-						echo '
-						<tr><td>',esc_attr__('&nbsp;&nbsp;Used','atec-cache-info'),':</td><td>',esc_attr(size_format($op_status['interned_strings_usage']['used_memory'])), '<small>', esc_attr(sprintf(" (%.1f%%)",$percent)), '</small></td></tr>';
-					}
-				echo '
-				</tbody>
-			</table>';
-			
+		
 			if ($opStats)
 			{
 				$wpc_tools->usage($percent);	
@@ -72,6 +69,26 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 				echo '
 				</p>';
 			}
+			
+			echo '
+			<table class="atec-table atec-table-tiny atec-table-td-first">
+				<tbody>
+					<tr><td>',esc_attr__('Strings','atec-cache-info'),':</td>
+						<td>',esc_attr($op_conf['directives']['opcache.interned_strings_buffer']),' MB</td><td></td></tr>';
+					if ($opStats)
+					{
+						$percentStrings = $op_status['interned_strings_usage']['used_memory']*100/$op_status['interned_strings_usage']['buffer_size'];
+						echo '
+						<tr><td>',esc_attr__('&nbsp;&nbsp;Used','atec-cache-info'),':</td>
+							<td>',esc_attr(size_format($op_status['interned_strings_usage']['used_memory'])), '</td>
+							<td><small>', esc_attr(sprintf("%.1f%%",$percentStrings)), '</small></td></tr>';
+					}
+				echo '
+				</tbody>
+			</table>';
+			
+			atec_help('OPcache','OPcache explained');
+			echo '<div id="OPcache_help" class="atec-help atec-dn">OPcache improves PHP performance by storing precompiled script bytecode in shared memory, thereby removing the need for PHP to load and parse scripts on each request.</div>';
 			
 			echo '
 			</div>
@@ -111,11 +128,6 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 				</tbody>
 			</table>';
 		}
-
-		echo '<br>';
-		atec_help('OPcache','OPcache explained');
-		echo '<div id="OPcache_help" class="atec-help atec-dn">OPcache improves PHP performance by storing precompiled script bytecode in shared memory, thereby removing the need for PHP to load and parse scripts on each request.</div>';
-
 
 	}	
 	

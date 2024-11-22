@@ -15,18 +15,23 @@ if ($apcu_cache)
 	echo'
 	<table class="atec-table atec-table-tiny atec-table-td-first">
 	<tbody>
-		<tr><td>',esc_attr__('Version','atec-cache-info'),':</td><td>',esc_attr(phpversion('apcu')),'</td></tr>
-		<tr><td>',esc_attr__('Type','atec-cache-info'),':</td><td>',esc_attr($apcu_cache['memory_type']),'</td></tr>
-		<tr><td>',esc_attr__('Memory','atec-cache-info'),':</td><td>',esc_attr(size_format($apcu_mem['num_seg']*$apcu_mem['seg_size'])),'</td></tr>';
+		<tr><td>',esc_attr__('Version','atec-cache-info'),':</td><td>',esc_attr(phpversion('apcu')),'</td><td></td></tr>
+		<tr><td>',esc_attr__('Type','atec-cache-info'),':</td><td>',esc_attr($apcu_cache['memory_type']),'</td><td></td></tr>';
+		atec_empty_TR();
+		echo '
+		<tr><td>',esc_attr__('Memory','atec-cache-info'),':</td><td>',esc_attr(size_format($apcu_mem['num_seg']*$apcu_mem['seg_size'])),'</td><td></td></tr>';
 		if ($percent>0)
 		{
 			echo '
-			<tr><td>',esc_attr__('Used','atec-cache-info'),':</td><td>',esc_attr(size_format($apcu_cache['mem_size'])),' <small>', esc_attr(sprintf(" (%.1f%%)",$percent)), '</small></td></tr>
-			<tr><td>',esc_attr__('Items','atec-cache-info'),':</td><td>',esc_attr(number_format($apcu_cache['num_entries'])),'</td></tr>';
+			<tr><td>',esc_attr__('Used','atec-cache-info'),':</td>
+				<td>',esc_attr(size_format($apcu_cache['mem_size'])),'</td><td><small>', esc_attr(sprintf("%.1f%%",$percent)), '</small></td></tr>
+			<tr><td>',esc_attr__('Items','atec-cache-info'),':</td><td>',esc_attr(number_format($apcu_cache['num_entries'])),'</td><td></td></tr>';
 			atec_empty_TR();
 			echo '
-			<tr><td>',esc_attr__('Hits','atec-cache-info'),':</td><td>',esc_attr(number_format($apcu_cache['num_hits'])), '<small>', esc_attr(sprintf(" (%.1f%%)",$hits)),'</small></td></tr>
-			<tr><td>',esc_attr__('Misses','atec-cache-info'),':</td><td>',esc_attr(number_format($apcu_cache['num_misses'])), '<small>', esc_attr(sprintf(" (%.1f%%)",$misses)),'</small></td></tr>';
+			<tr><td>',esc_attr__('Hits','atec-cache-info'),':</td>
+				<td>',esc_attr(number_format($apcu_cache['num_hits'])), '</td><td><small>', esc_attr(sprintf("%.1f%%",$hits)),'</small></td></tr>
+			<tr><td>',esc_attr__('Misses','atec-cache-info'),':</td>
+				<td>',esc_attr(number_format($apcu_cache['num_misses'])), '</td><td><small>', esc_attr(sprintf("%.1f%%",$misses)),'</small></td></tr>';
 		}
 	echo '
 	</tbody>
