@@ -26,13 +26,13 @@ if ($mem)
 			if (isset($mem['limit_maxbytes'])) 	echo '<tr><td>', esc_attr__('Memory','atec-cache-info'), ':</td><td>', esc_attr(size_format($mem['limit_maxbytes'])), '</td><td></td></tr>';
 			if (isset($mem['bytes'])) echo '<tr><td>', esc_attr__('Used','atec-cache-info'), ':</td>
 				<td>', esc_attr(size_format($mem['bytes'])), '</td>
-				<td><small>', sprintf("%.1f%%",$percent), '</small></td></tr>';
+				<td><small>', esc_attr(sprintf("%.1f%%",$percent)), '</small></td></tr>';
 			if (isset($mem['total_items'])) echo '<tr><td>', esc_attr__('Items','atec-cache-info'), ':</td><td>', esc_attr(number_format($mem['total_items'])), '</td><td></td></tr>';
 			echo '
 			<tr><td>', esc_attr(__('Hits','atec-cache-info')), ':</td>
-				<td>', esc_attr(number_format($mem['get_hits'])), '</td><td><small>', sprintf("%.1f%%",$hits), '</small></td></tr>
+				<td>', esc_attr(number_format($mem['get_hits'])), '</td><td><small>', esc_attr(sprintf("%.1f%%",$hits)), '</small></td></tr>
 			<tr><td>', esc_attr(__('Misses','atec-cache-info')), ':</td>
-				<td>', esc_attr(number_format($mem['get_misses'])), '</td><td><small>', sprintf("%.1f%%",$misses), '</small></td></tr>
+				<td>', esc_attr(number_format($mem['get_misses'])), '</td><td><small>', esc_attr(sprintf("%.1f%%",$misses)), '</small></td></tr>
 		</tbody>
 	</table>';
 	

@@ -12,9 +12,9 @@ echo'
 <tbody>
 	<tr><td>Version:</td><td>', esc_attr(SQLite_Object_Cache()->_version), '</td><td></td></tr>
 	<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td>
-		<td>', esc_attr(number_format($wp_object_cache->cache_hits)), '</td><td><small>', sprintf("%.1f%%",$hits), '</small></td></tr>
+		<td>', esc_attr(number_format($wp_object_cache->cache_hits)), '</td><td><small>', esc_attr(sprintf("%.1f%%",$hits)), '</small></td></tr>
 	<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td>
-		<td>', esc_attr(number_format($wp_object_cache->cache_misses)) , '</td><td><small>', sprintf("%.1f%%",$misses), '</small></td></tr>
+		<td>', esc_attr(number_format($wp_object_cache->cache_misses)) , '</td><td><small>', esc_attr(sprintf("%.1f%%",$misses)), '</small></td></tr>
 </tbody>
 </table>';
 

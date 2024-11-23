@@ -32,7 +32,7 @@ if (function_exists('opcache_get_status')) $op_status=opcache_get_status();
 if ($action=='scan')
 {
 	atec_little_block('OPC Scripts');
-	echo '<p><strong>Number of script files in root folder:</strong> ', $this->scan_for_scripts(ABSPATH), '
+	echo '<p><strong>Number of script files in root folder:</strong> ', esc_attr($this->scan_for_scripts(ABSPATH)), '
 	<br>You should set `opcache.max_accelerated_files‘ option accordingly.</p>';
 }
 else
@@ -49,7 +49,7 @@ if (!$op_status) atec_error_msg('The function `opcache_get_status´ does not exi
 else
 {
 	$c=0; $total=0; $keys=[];
-	atec_table_header_tiny(['#',__('Key','atec-cache-apcu'),__('Hits','atec-cache-apcu'),__('Size','atec-cache-apcu'),'Last used',__('Revalidate','atec-cache-apcu').' (s)']);
+	atec_table_header_tiny(['#',__('Key','atec-cache-info'),__('Hits','atec-cache-info'),__('Size','atec-cache-info'),'Last used',__('Revalidate','atec-cache-info').' (s)']);
 		$scripts=[];
 		foreach ($op_status['scripts'] as $key => $value) { $scripts[]=array_merge(array('key'=>$key),$value); }
 

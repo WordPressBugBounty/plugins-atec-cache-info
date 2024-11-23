@@ -104,12 +104,12 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 					<td class="', $op_conf['directives']['opcache.enable_file_override']?'atec-green':'atec-red', '">',esc_attr($op_conf['directives']['opcache.enable_file_override']?'On':'Off'),'</td></tr>
 					
 					<tr><td>',esc_attr__('Comments','atec-cache-info').':</td>
-					<td class="', !$op_conf['directives']['opcache.save_comments']?'atec-green':'atec-red', '">',esc_attr($op_conf['directives']['opcache.save_comments']?'On':'Off'),'</td></tr>
+					<td class="', (!$op_conf['directives']['opcache.save_comments']?'atec-green':'atec-red'), '">',esc_attr($op_conf['directives']['opcache.save_comments']?'On':'Off'),'</td></tr>
 					
 					<tr><td>',esc_attr__('Max waste','atec-cache-info').':</td><td>',esc_attr($op_conf['directives']['opcache.max_wasted_percentage']),'</td></tr>
 					
 					<tr><td>',esc_attr__('Consistency','atec-cache-info').':</td>
-					<td class="', $op_conf['directives']['opcache.consistency_checks']?'atec-red':'atec-green', '">',esc_attr($op_conf['directives']['opcache.consistency_checks']?'On':'Off'),'</td></tr>
+					<td class="', ($op_conf['directives']['opcache.consistency_checks']?'atec-red':'atec-green'), '">',esc_attr($op_conf['directives']['opcache.consistency_checks']?'On':'Off'),'</td></tr>
 					
 				</tbody>
 			</table>
@@ -119,7 +119,9 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 					if ($opStats)
 					{
 						echo '
-						<tr><td>',esc_attr__('&nbsp;&nbsp;Max cached','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['max_cached_keys'])),'</td></tr>
+						<tr><td>',esc_attr__('&nbsp;&nbsp;Max real','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['max_cached_keys'])),'</td></tr>';
+						atec_empty_tr();
+						echo '
 						<tr><td>',esc_attr__('&nbsp;&nbsp;Scripts cached','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['num_cached_scripts'])),'</td></tr>
 						<tr><td>',esc_attr__('&nbsp;&nbsp;Keys cached','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['num_cached_keys'])),'</td></tr>
 						<tr><td>',esc_attr__('&nbsp;&nbsp;Total cached','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['num_cached_scripts']+$op_status['opcache_statistics']['num_cached_keys'])),'</td></tr>';

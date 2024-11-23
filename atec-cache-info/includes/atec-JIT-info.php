@@ -24,7 +24,7 @@ echo '
 	echo '
 	<tr><td>', esc_attr__('Memory','atec-cache-info'), ':</td><td>', esc_attr(size_format($jit_size)), '</td><td></td></tr>';
 	if ($percent) echo '<tr><td>', esc_attr__('Used','atec-cache-info'), ':</td>
-		<td>', esc_attr(size_format($jit_size-$jit_free)), '</td><td><small>', sprintf("%.1f%%",$percent), '</small></td></tr>';
+		<td>', esc_attr(size_format($jit_size-$jit_free)), '</td><td><small>', esc_attr(sprintf("%.1f%%",$percent)), '</small></td></tr>';
 echo '
 </tbody>
 </table>';

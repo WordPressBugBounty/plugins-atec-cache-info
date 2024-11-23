@@ -147,7 +147,7 @@ echo '
 
 							__('System Information (OS, server, memory, PHP and database details, php.ini, wp-config, .htaccess and PHP extensions)','atec-cache-info'),
 							__('Adds SVG support for media uploads.','atec-cache-info'),
-							__('Create temporary admin accounts for maintenance purposes','atec-deploy'),
+							__('Create temporary admin accounts for maintenance purposes','atec-cache-info'),
 							__('Manage WordPress User Roles and Capabilities','atec-cache-info'),
 							__('Web map, conform with privacy regulations','atec-cache-info'),
 							
