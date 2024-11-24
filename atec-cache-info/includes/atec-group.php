@@ -124,8 +124,8 @@ echo '
 		'PNG, GIF and BMP support'];
 
 		$atec_group_arr_size 	= [83,112,99,68,85,		82,70,111,65,115,	371,79,85,100,822,		115,68,72,72,440,		78];
-		$atec_active			= ['cache-apcu','cache-info','database','debug','dir-scan','stats','system-info','web-map-service'];
-		$atec_review			= ['webp'];
+		$atec_active			= ['cache-apcu','cache-info','database','debug','dir-scan','stats','system-info','web-map-service','webp'];
+		$atec_review			= ['backup'];
 		$atec_desc_arr		= [
 							__('All-in-one Backup and restore solution – fast & reliable','atec-cache-info'),
 							__('APCu object and page cache','atec-cache-info'),
