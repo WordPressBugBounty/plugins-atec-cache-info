@@ -71,7 +71,7 @@ else
 		}
 		if ($c>0)
 		{
-			atec_TR_empty();
+			atec_empty_tr();
 			echo '<tr class="atec-table-tr-bold"><td>', esc_attr($c), '</td><td></td><td></td><td class="atec-nowrap atec-table-right">', esc_html(size_format($total)), '</td><td colspan="2"></td></tr>';
 		}
 	

@@ -13,7 +13,7 @@ $url				= atec_get_url();
 $nonce 		= wp_create_nonce(atec_nonce());
 $action 		= atec_clean_request('action');
 
-$atec_slug_arr = ['wpb','wpca','wpci','wpc','wpdb',		'wpd','wpdp','wpds','wpm','wpo',	'wppp','wppo','wppr','wpsm','wps',		'wpsi','wpsv','wpta','wpur','wms',	'wpwp'];
+$atec_slug_arr = ['wpb','wpca','wpci','wpc','wpdb',		'wpd','wpdp','wpds','wpm','wpo',	'wppp','wppo','wppr','wpsh','wpsm',	'wps','wpsi','wpsv','wpta','wpur',		'wms','wpwp'];
 
 $license 			= $this->atec_clean_request_license('license');
 if ($license==='') $license = atec_clean_request('license');
@@ -51,7 +51,7 @@ echo '
 					<div id="pro_package_welcome" class="atec-fit" style="margin: 0 auto;">
 						<div class="atec-mt-5 atec-border-white atec-bg-w atec-fit" style="font-size: 16px !important; padding: 10px;">
 							<ul class="atec-m-0">
-							<li>⭐ ', esc_attr__('21 valuable plugins','atec-cache-info'), '.</li>					
+							<li>⭐ ', esc_attr__('22 valuable plugins','atec-cache-info'), '.</li>					
 							<li>⭐ ', esc_attr__('Access to all the „PRO“ features','atec-cache-info'), '.</li>
 							<li>⭐ ', esc_attr__('„Lifetime-site-License“ for your site (domain)','atec-cache-info'), '.</li>
 							</ul>
@@ -112,18 +112,18 @@ echo '
 		$atec_group_arr	= [
 			'backup','cache-apcu','cache-info','code','database',
 			'debug','deploy','dir-scan','meta','optimize',
-			'page-performance','poly-addon','profiler','smtp-mail','stats',
-			'system-info','SVG','temp-admin','user-roles','web-map-service',
-			'webp'];
+			'page-performance','poly-addon','profiler','shell','smtp-mail',
+			'stats','system-info','SVG','temp-admin','user-roles',
+			'web-map-service','webp'];
 			
 		$atec_pro_arr = [
 		'FTP storage','Advanced page cache','PHP extensions','PHP-snippets','Cleanup comments, posts, revisions, transients and options',
 		'Show queries, includes and wp-config.php; manage cron jobs','./.','Deep scan for folder sizes','Automatically add description tag per page','Enable performance and WooCommerce tweaks',
-		'./.','./.','Monitor page performance and queries','DKIM support and test; SPAM filter','Statistics on a world map',
-		'Show the php.ini file, PHP-extensions and system variables; wp-config.php and .htaccess content','./.','./.','List and manage users','Discount on atecmap.com API key',
-		'PNG, GIF and BMP support'];
+		'./.','./.','Monitor page performance and queries','./.','DKIM support and test; SPAM filter',
+		'Statistics on a world map','Show the php.ini file, PHP-extensions and system variables; wp-config.php and .htaccess content','./.','./.','List and manage users',
+		'Discount on atecmap.com API key','PNG, GIF and BMP support'];
 
-		$atec_group_arr_size 	= [83,112,99,68,85,		82,70,111,65,115,	371,79,85,100,822,		115,68,72,72,440,		78];
+		$atec_group_arr_size 	= [83,112,99,68,85,		82,70,111,65,115,	371,79,85,76,100,	822,115,68,72,72,	440,78];
 		$atec_active			= ['cache-apcu','cache-info','database','debug','dir-scan','stats','system-info','web-map-service','webp'];
 		$atec_review			= ['backup'];
 		$atec_desc_arr		= [
@@ -141,16 +141,17 @@ echo '
 
 							__('Measure the PageScore and SpeedIndex of your WordPress site','atec-cache-info'),
 							__('Custom translation strings for polylang plugin','atec-cache-info'),
-							__('Measure plugins & theme plus pages execution time','atec-cache-info'),	
+							__('Measure plugins & theme plus pages execution time','atec-cache-info'),
+							__('Connect to a remote server via SSH','atec-cache-info'),
 							__('Add custom SMTP mail settings to WP_Mail','atec-cache-info'),	
-							__('Lightweight and GDPR compliant WP statistics','atec-cache-info'),				
 
+							__('Lightweight and GDPR compliant WP statistics','atec-cache-info'),				
 							__('System Information (OS, server, memory, PHP and database details, php.ini, wp-config, .htaccess and PHP extensions)','atec-cache-info'),
 							__('Adds SVG support for media uploads.','atec-cache-info'),
 							__('Create temporary admin accounts for maintenance purposes','atec-cache-info'),
 							__('Manage WordPress User Roles and Capabilities','atec-cache-info'),
-							__('Web map, conform with privacy regulations','atec-cache-info'),
-							
+
+							__('Web map, conform with privacy regulations','atec-cache-info'),						
 							__('Auto convert all images to WebP format','atec-cache-info')
 						];
 					

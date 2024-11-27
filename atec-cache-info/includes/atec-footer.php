@@ -23,7 +23,9 @@ echo '
 	</span>
 </div>';
 
-atec_reg_inline_script('footer','jQuery("#atec_loading").css("opacity",0);', true);
+atec_reg_inline_script('footer','
+jQuery("#atec_loading").css("opacity",0);
+jQuery("#footer-upgrade").html("PHP: '.esc_attr(phpversion()).' | WP: '.esc_attr(get_bloginfo('version')).'");', true);
 
 }}
 

@@ -1,11 +1,10 @@
 <?php
 if (!defined( 'ABSPATH' )) { exit; }
 
-$atec_wp_memory_admin_bar=false;
 function atec_wp_memory_admin_bar($wp_admin_bar): void
 {
-	global $atec_wp_memory_admin_bar;
-	if (!$atec_wp_memory_admin_bar && function_exists('memory_get_peak_usage')) 
+	define('ATEC_WP_MEMORY_ADMIN_BAR',true);
+	if (function_exists('memory_get_peak_usage')) 
 	{ 
 		$memLimit	= wp_convert_hr_to_bytes(!defined('WP_MEMORY_LIMIT') || WP_MEMORY_LIMIT==''?'40M':WP_MEMORY_LIMIT);
 		$peak 			= memory_get_peak_usage(true);
@@ -17,7 +16,6 @@ function atec_wp_memory_admin_bar($wp_admin_bar): void
 						</span>'];
 		$wp_admin_bar->add_node($args);
 	}
-	$atec_wp_memory_admin_bar=true;
 }
 
 class ATEC_wp_memory

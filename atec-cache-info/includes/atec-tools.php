@@ -2,7 +2,15 @@
 if (!defined( 'ABSPATH' )) { exit; }
 define('ATEC_TOOLS_INC',true);
 
-function atec_little_ext_box($ext)
+function atec_notice(&$notice,$type,$str): void
+{
+	$message = ($notice['message']??'')!=='';
+	$message.= ($message===''?' ':'').$str;
+	if (($notice['type']??'')!=='') $type=$notice['type']==='info'?$type:$notice['type'];
+	$notice['type']=$type; $notice['message']=$message;
+}
+
+function atec_little_ext_box($ext): void
 {
 	$enabled 	= extension_loaded(strtolower($ext));
 	$bg 			= $enabled?'#f0fff0':'#fff0f0';
@@ -10,37 +18,37 @@ function atec_little_ext_box($ext)
 	esc_attr($ext), '</strong></span>';
 }
 
-function atec_is_linux() { return (DIRECTORY_SEPARATOR=='/'); }
-function atec_fix_separator($str) 
+function atec_is_linux(): string { return (DIRECTORY_SEPARATOR=='/'); }
+function atec_fix_separator($str): string
 { 
 	if (atec_is_linux()) return $str;
 	return str_replace('/',DIRECTORY_SEPARATOR,$str);
 }
-function atec_trailingslashit( $str ) { return rtrim($str,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR; }
+function atec_trailingslashit($str): string { return rtrim($str,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR; }
 
-function atec_replace_seperator(&$str) { $str=str_replace(DIRECTORY_SEPARATOR,'/',$str); }
+function atec_replace_seperator(&$str): string { $str=str_replace(DIRECTORY_SEPARATOR,'/',$str); }
 
-function atec_random_string($length,$lower=false) 
+function atec_random_string($length,$lower=false): string
 { 
 	$charset = 'abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ'; $string = ''; 
 	while(strlen($string)<$length) { $string .= substr($charset,wp_rand(0,61),1); } 
 	return $lower?strtolower($string):$string;
 }
 
-function atec_htaccess_exists()
+function atec_htaccess_exists(): bool
 {
 	global $wp_filesystem; WP_Filesystem();
 	return $wp_filesystem->exists(ABSPATH.'.htaccess');
 }
 
-function atec_integrity_check($dir,$plugin='')
+function atec_integrity_check($dir,$plugin=''): void
 {
 	if ($plugin==='') $plugin=str_replace('/includes','',plugin_basename($dir));
 	if (get_option('atec_allow_integrity_check')===true) 
 	wp_remote_get('https://atecplugins.com/WP-Plugins/activated.php?plugin='.esc_attr($plugin).'&domain='.get_bloginfo('url')); 
 }
 
-function atec_TR_empty() { echo '<tr><td class="emptyTR1" colspan="99"></td></tr><tr><td class="emptyTR2" colspan="99"></td></tr>'; }
+function atec_empty_tr(): void { echo '<tr><td colspan="99" class="emptyTR1"></td></tr><tr><td colspan="99" class="emptyTR2"></td></tr>'; }
 
 function atec_short_string($str,$len=128): string 
 { 
@@ -52,7 +60,7 @@ function atec_dash_yes_no($enabled): void
 	echo '<span style="color:', ($enabled?'green':'red'), '" title="', ($enabled?'Enabled':'Disabled'), '" class="', esc_attr(atec_dash_class($enabled?'yes-alt':'warning')), '"></span>'; 
 }
 
-function atec_bar_div($time,$max,$threshold1,$threshold2)
+function atec_bar_div($time,$max,$threshold1,$threshold2): void
 {
 	echo '
 	<div class="atec-barDiv">
@@ -64,16 +72,37 @@ function atec_bar_div($time,$max,$threshold1,$threshold2)
 	</div>';
 }
 	
-function atec_empty_tr() { echo '<tr><td colspan="99" class="emptyTR1"></td></tr><tr><td colspan="99" class="emptyTR2"></td></tr>'; }
 function atec_dash_class($icon,$class=''): string { return 'dashicons dashicons-'.$icon.($class!==''?' '.$class:''); }
 
-function atec_include_if_exists($dir,$php)
+function atec_include_if_exists($dir,$php): void
 {
 	$include=$dir.'/'.$php;
 	if (file_exists($include)) @include_once($include);
+	else echo '<!-- ', esc_attr($include), ' -- not found -->';
 }
 
-function atec_check_license($licenseCode=null, $siteName=null)
+function atec_mkdir_if_not_exists($dir): bool
+{
+	global $wp_filesystem; WP_Filesystem();
+	$success = $wp_filesystem->exists($dir);
+	if (!$success) { $success = $wp_filesystem->mkdir($dir); }
+	return $success;
+}	
+
+function atec_copy_install_files($dir,$uploadDir,$arr,&$success)
+{
+	global $wp_filesystem; WP_Filesystem();
+	$installDir=plugin_dir_path($dir).'install'.DIRECTORY_SEPARATOR;
+	foreach($arr as $key=>$value) { $success = $success && $wp_filesystem->copy($installDir.$key, $uploadDir.DIRECTORY_SEPARATOR.$value, true); }
+}
+
+function atec_get_upload_dir($p): string
+{
+	$p = $p==='mega-cache'?$p:'atec-'.$p;
+	return atec_fix_separator(wp_get_upload_dir()['basedir'].'/'.$p);
+}
+	
+function atec_check_license($licenseCode=null, $siteName=null): bool
 {
 	// @codingStandardsIgnoreStart
 	// This function should have a low CPU footprint, therefore no $wp_filesystem.
@@ -116,14 +145,21 @@ function atec_license_banner($dir):void
 	</div>';
 }
 
-function atec_br($str)
+function atec_nr($str): void
+{
+	$c		= 0;
+	$ex 	= explode("\n",$str);
+	foreach ($ex as $t) { $c++; echo esc_html($t).($c<count($ex)?'<br>':''); }
+}
+
+function atec_br($str): void
 {
 	$c		= 0;
 	$ex 	= explode('<br>',$str);
 	foreach ($ex as $t) { $c++; echo esc_html($t).($c<count($ex)?'<br>':''); }
 }
 
-function atec_pro_feature($desc='',$small=false)
+function atec_pro_feature($desc='',$small=false): bool
 { 
 	$licenseOk=atec_check_license()===true; 
 	if (!$licenseOk) 
@@ -167,7 +203,7 @@ function atec_pro_feature($desc='',$small=false)
 	return $licenseOk; 
 }
 
-function atec_pro_feature_mini($desc='')
+function atec_pro_feature_mini($desc=''): bool
 { 
 	$licenseOk=atec_check_license();
 	if (!$licenseOk)
@@ -184,7 +220,7 @@ function atec_pro_feature_mini($desc='')
 	return $licenseOk;
 }
 
-function atec_nav_tab_dashboard($url, $nonce, $nav, $dir)
+function atec_nav_tab_dashboard($url, $nonce, $nav, $dir): void
 {
 	$iconPath=plugins_url('assets/img/icons/',$dir);
 	echo '
@@ -410,7 +446,7 @@ function atec_flush(): void
 	@flush(); 
 }
 
-function atec_get_version($slug) { return wp_cache_get('atec_'.esc_attr($slug).'_version'); }
+function atec_get_version($slug): string { return wp_cache_get('atec_'.esc_attr($slug).'_version'); }
 
 function atec_help($id,$title,$hide=false,$margin=true): void
 { 
@@ -486,7 +522,8 @@ function atec_get_url(): string
 	return rtrim(strtok($url, '&'),'/');
 } 
 
-function atec_little_block($str,$tag='H3',$class='atec-head',$classTag=''): void { echo '<div class="',esc_attr($class),'"><',esc_attr($tag),' class="',esc_attr($classTag),'">',esc_html($str),'</',esc_attr($tag),'></div>'; }
+function atec_little_block($str,$tag='H3',$class='atec-head',$classTag=''): void 
+{ echo '<div class="',esc_attr($class),'"><',esc_attr($tag),' class="',esc_attr($classTag),'">',esc_html($str),'</',esc_attr($tag),'></div>'; }
 
 function atec_little_block_with_info($str,$arr,$class='',$buttons=[],$url='',$nonce='',$nav='',$licenseCheck=false): void
 {

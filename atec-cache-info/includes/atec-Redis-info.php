@@ -19,7 +19,7 @@ if (class_exists('Redis'))
 	{ 
 		if (($redisSettings['unix']??'')!=='')
 		{
-			try { $redis->connect(esc_url($redisSettings['unix'])); $redisSuccess = 'unix'; }
+			try { $redis->connect($redisSettings['unix']); $redisSuccess = 'unix'; }
 			catch (Exception $e) 	
 			{ 
 				$redisSuccess=false;
@@ -30,18 +30,17 @@ if (class_exists('Redis'))
 		
 		if ($redisSuccess===false)
 		{
-			$wpc_tools->error('Redis',(strtolower($e->getMessage())));
 			echo '<p>', esc_attr__('Not available, please define host:port or unix path.','atec-cache-info'), '</p>';
 
 			echo
 				'<form class="atec-border-tiny" method="post" action="'.esc_url($url).'&_wpnonce='.esc_attr($nonce).'">
 					<table>
 					<tr>
-						<td><lable for="redis_host">', esc_attr__('Host','atec-cache-info'), '</lable><br><input size="24" type="text" placeholder="Host" name="redis_host" value="', esc_url($redisSettings['host']??''), '"></td>
-						<td><lable for="redis_port">', esc_attr__('Port','atec-cache-info'), '</lable><br><input size="6" type="text" placeholder="Port" name="redis_port" value="', esc_url($redisSettings['port']??''), '"></td>
+						<td><lable for="redis_host">', esc_attr__('Host','atec-cache-info'), '</lable><br><input size="24" type="text" placeholder="Host" name="redis_host" value="', esc_attr($redisSettings['host']??''), '"></td>
+						<td><lable for="redis_port">', esc_attr__('Port','atec-cache-info'), '</lable><br><input size="6" type="text" placeholder="Port" name="redis_port" value="', esc_attr($redisSettings['port']??''), '"></td>
 					</tr>
 					<tr>
-						<td colspan="2"><lable for="redis_unix">', esc_attr__('Unix socket','atec-cache-info'), '</lable><br><input size="35" type="text" placeholder="Unix socket" name="redis_unix" value="', esc_url($redisSettings['unix']??''), '"></td>
+						<td colspan="2"><lable for="redis_unix">', esc_attr__('Unix socket','atec-cache-info'), '</lable><br><input size="35" type="text" placeholder="Unix socket" name="redis_unix" value="', esc_textarea($redisSettings['unix']??''), '"></td>
 					</tr>
 					<tr>
 						<td colspan="2"><br><input class="button button-primary"  type="submit" value="', esc_attr__('Save','atec-cache-info'), '"></td>
