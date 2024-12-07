@@ -2,6 +2,7 @@
 if (!defined( 'ABSPATH' )) { exit; }
 class ATEC_wpci_results { function __construct() {
 
+atec_check_admin_bar();
 if (!class_exists('ATEC_wpc_tools')) @require_once('atec-wpc-tools.php');
 if (!class_exists('ATEC_wp_memory')) @require_once('atec-wp-memory.php');
 	
