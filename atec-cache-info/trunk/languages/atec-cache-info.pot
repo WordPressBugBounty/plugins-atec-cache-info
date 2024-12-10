@@ -1,0 +1,367 @@
+# Copyright (C) 2024 Chris Ahrweiler
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: atec Cache Info\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-05-25T12:27:15+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: atec-cache-info\n"
+
+# ## ### GENERAL
+msgid "Save"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Key"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Post a review"
+msgstr ""
+
+# ## ### PLUGIN SPECIFIC
+
+msgid "atec Cache Info"
+msgstr ""
+
+msgid "used"
+msgstr ""
+
+msgid "installed"
+msgstr ""
+
+msgid "Max files"
+msgstr ""
+
+msgid "is active"
+msgstr ""
+
+msgid "config"
+msgstr ""
+
+msgid "JIT is NOT enabled in php.ini"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Not available, please define host:port or unix path."
+msgstr ""
+
+msgid "connection failed"
+msgstr ""
+
+msgid "Connection"
+msgstr ""
+
+msgid "Memory used"
+msgstr ""
+
+msgid "class is NOT available"
+msgstr ""
+
+msgid "object cache is NOT enabled"
+msgstr ""
+
+msgid "PHP "
+msgstr ""
+
+msgid "Installed extensions"
+msgstr ""
+
+msgid "Recommended extensions for WordPress"
+msgstr ""
+
+# ## ### CACHE
+
+msgid "status is not available"
+msgstr ""
+
+msgid "OPcache usage is beyond 90%. Please consider increasing „memory_consumption“ option"
+msgstr ""
+
+msgid "APCu usage is beyond 90%. Please consider increasing „apc.shm_size“ option"
+msgstr ""
+
+msgid "cache"
+msgstr ""
+
+msgid "Extension"
+msgstr ""
+
+msgid "Extensions"
+msgstr ""
+
+msgid "extension is NOT installed/enabled"
+msgstr ""
+
+msgid "cache data could NOT be retrieved"
+msgstr ""
+
+msgid "not available"
+msgstr ""
+
+msgid "Persistent"
+msgstr ""
+
+msgid "object cache"
+msgstr ""
+
+msgid "Object Cache"
+msgstr ""
+
+msgid "is writeable"
+msgstr ""
+
+msgid "Statistics"
+msgstr ""
+
+msgid "successful"
+msgstr ""
+
+msgid "failed"
+msgstr ""
+
+msgid "Empty cache"
+msgstr ""
+
+msgid "Flush"
+msgstr ""
+
+msgid "Flushing"
+msgstr ""
+
+msgid "Memory"
+msgstr ""
+
+msgid "Used"
+msgstr ""
+
+msgid "Usage"
+msgstr ""
+
+msgid "Items"
+msgstr ""
+
+msgid "items"
+msgstr ""
+
+msgid "Hits"
+msgstr ""
+
+msgid "Misses"
+msgstr ""
+
+msgid "Hitrate"
+msgstr ""
+
+msgid "Not in use"
+msgstr ""
+
+msgid "Max. files"
+msgstr ""
+
+msgid "String buffer"
+msgstr ""
+
+msgid "Revalidate"
+msgstr ""
+
+msgid "Recommended settings"
+msgstr ""
+
+# ## ### WPC-TOOLS
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "enabled"
+msgstr ""
+
+msgid "disabled"
+msgstr ""
+
+# ## ### FOOTER
+
+msgid "plugins"
+msgstr "Plugins"
+
+msgid "Execution time"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+# ## ### GROUP
+
+msgid "APCu object and page cache"
+msgstr ""
+
+msgid "atec Cache Info & Statistics (OPcache, WP-object-cache, JIT, APCu, Memcached, Redis, SQLite-object-cache)"
+msgstr ""
+
+msgid "Custom code snippets for WP"
+msgstr ""
+
+msgid "DDoS block (Distributed Denial of Service Attacks)"
+msgstr ""
+
+msgid "Show debug log in admin bar"
+msgstr ""
+
+msgid "Dir Scan & Statistics (Number of files and size per directory)"
+msgstr ""
+
+msgid "Add custom meta tags to the head section"
+msgstr ""
+
+msgid "Lightweight performance tuning plugin"
+msgstr ""
+
+msgid "Custom translation strings for polylang plugin"
+msgstr ""
+
+msgid "Measure plugins & theme execution time"
+msgstr ""
+
+msgid "Add custom SMTP mail settings to WP_Mail"
+msgstr ""
+
+msgid "System Information (OS, server, memory, PHP and database details, php.ini, wp-config, .htaccess and PHP extensions)"
+msgstr ""
+
+msgid "Web map, conform with privacy regulations"
+msgstr ""
+
+msgid "Published"
+msgstr ""
+
+msgid "In review"
+msgstr ""
+
+msgid "In progress"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "All our plugins are optimized for speed, size and CPU footprint (frontend & backend)"
+msgstr ""
+
+msgid "Also, they share the same `atec-WP-plugin´ framework – so that shared code will only load once, even with multiple plugins enabled"
+msgstr ""
+
+msgid "With an average of 1 ms CPU time, we consider our plugins to be super fast. Other plugins typically require much more time (Polylang ≈ 45 ms, WooCommerce ≈ 500 ms)"
+msgstr ""
+
+msgid "All atec-plugins in the WordPress directory"
+msgstr ""
+
+msgid "Install and auto update `atec´ plugins"
+msgstr ""
+
+# ## ### SERVER
+
+msgid "Operating system"
+msgstr ""
+
+msgid "Architecture"
+msgstr ""
+
+msgid "Date/Time"
+msgstr ""
+
+msgid "free"
+msgstr ""
+
+msgid "Location"
+msgstr ""
+
+msgid "root"
+msgstr ""
+
+msgid "size"
+msgstr ""
+
+msgid "Versions"
+msgstr ""
+
+msgid "usage (peak)"
+msgstr ""
+
+msgid "Database"
+msgstr ""
+
+msgid "driver"
+msgstr ""
+
+msgid "user"
+msgstr ""
+
+# ## ### LICENSE
+
+msgid "PRO license activated"
+msgstr ""
+
+msgid "Get your PRO „Lifetime-Site-License“"
+msgstr ""
+
+msgid "„Lifetime-Site-License“"
+msgstr ""
+
+msgid "Thank you for activating your „Lifetime-Site-License“."
+msgstr ""
+
+msgid "Get your „Lifetime-Site-License“ for ALL our plugins."
+msgstr ""
+
+msgid "A single license code will unlock the PRO features of ALL our plugins, site-wide"
+msgstr ""
+
+msgid "Just pay via PayPal and send us the domain name of your site"
+msgstr ""
+
+msgid "You will get your license code via email"
+msgstr ""
+
+msgid "No registration required."
+msgstr ""
+
+msgid "License code is valid for your site"
+msgstr ""
+
+msgid "License code not valid"
+msgstr ""
+
+msgid "GET YOUR LICENSE NOW"
+msgstr ""
+
+msgid "License code"
+msgstr ""
+

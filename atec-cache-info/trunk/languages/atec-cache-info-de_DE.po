@@ -1,0 +1,360 @@
+# Copyright (C) 2024 Chris Ahrweiler
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: atec Cache Info\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-05-25T12:27:15+00:00\n"
+"PO-Revision-Date: 2024-05-25T12:27:15+00:00\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: atec-cache-info\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# ## ### GENERAL
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Size"
+msgstr "Größe"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Key"
+msgstr "Schlüssel"
+
+msgid "Value"
+msgstr "Wert"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Post a review"
+msgstr "Bewertung abgeben"
+
+# ## ### PLUGIN SPECIFIC
+
+msgid "used"
+msgstr "benutzt"
+
+msgid "installed"
+msgstr "installiert"
+
+msgid "Max files"
+msgstr "Max. Dateien"
+
+msgid "is active"
+msgstr "ist aktiv"
+
+msgid "config"
+msgstr "Konfiguration"
+
+msgid "JIT is NOT enabled in php.ini"
+msgstr "JIT ist in der php.ini nicht aktiviert"
+
+msgid "Not available, please define host:port or unix path."
+msgstr "Nicht erreichbar, bitte definieren Sie den Host:Port oder UNIX Pfad"
+
+msgid "connection failed"
+msgstr "Verbindung fehlgeschlagen"
+
+msgid "Connection"
+msgstr "Verbindung"
+
+msgid "Memory used"
+msgstr "Speicher benutzt"
+
+msgid "class is NOT available"
+msgstr "Klasse existiert nicht"
+
+msgid "object cache is NOT enabled"
+msgstr "Object-Cache ist NICHT aktiviert"
+
+msgid "Installed extensions"
+msgstr "Installierte Erweiterungen"
+
+msgid "Recommended extensions for WordPress"
+msgstr "Empfohlene Erweiterungen für WordPress"
+
+# ## ### CACHE
+
+msgid "status is not available"
+msgstr "Status ist nicht vorhanden"
+
+msgid "OPcache usage is beyond 90%. Please consider increasing „memory_consumption“ option"
+msgstr "OPcache Gebrauch ist über 90%. Erhöhen Sie die „memory_consumption“ Einstellung bei Bedarf"
+
+msgid "APCu usage is beyond 90%. Please consider increasing „apc.shm_size“ option"
+msgstr "APCu Gebrauch ist über 90%. Erhöhen Sie die „apc.shm_size“ Einstellung bei Bedarf"
+
+msgid "cache"
+msgstr "Cache"
+
+msgid "Extension"
+msgstr "Erweiterung"
+
+msgid "Extensions"
+msgstr "Erweiterungen"
+
+msgid "extension is NOT installed/enabled"
+msgstr "Erweiterung ist NICHT installiert/aktiviert"
+
+msgid "cache data could NOT be retrieved"
+msgstr "Cache-Daten konnten NICHT abgerufen werden"
+
+msgid "not available"
+msgstr "nicht verfügbar"
+
+msgid "Persistent"
+msgstr "Persistenter"
+
+msgid "object cache"
+msgstr "Objekt-Cache"
+
+msgid "Object Cache"
+msgstr "Objekt-Cache"
+
+msgid "is writeable"
+msgstr "ist beschreibbar"
+
+msgid "Statistics"
+msgstr "Statistik"
+
+msgid "successful"
+msgstr "erfolgreich"
+
+msgid "failed"
+msgstr "fehlgeschlagen"
+
+msgid "Empty cache"
+msgstr "Cache leeren"
+
+msgid "Flush"
+msgstr "Leeren"
+
+msgid "Flushing"
+msgstr "Ausleeren des"
+
+msgid "Memory"
+msgstr "Speicher"
+
+msgid "Used"
+msgstr "Benutzt"
+
+msgid "Usage"
+msgstr "Benutzt"
+
+msgid "Items"
+msgstr "Einträge"
+
+msgid "items"
+msgstr "Einträge"
+
+msgid "Hits"
+msgstr "Treffer"
+
+msgid "Misses"
+msgstr "Fehlschläge"
+
+msgid "Hitrate"
+msgstr "Trefferrate"
+
+msgid "Not in use"
+msgstr "Nicht in Gebrauch"
+
+msgid "Max. files"
+msgstr "Max. Dateien"
+
+msgid "String buffer"
+msgstr "String Puffer"
+
+msgid "Revalidate"
+msgstr "Validieren"
+
+msgid "Recommended settings"
+msgstr "Empfohlene Einstellung"
+
+# ## ### WPC-TOOLS
+msgid "Enabled"
+msgstr "Aktiviert"
+
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+msgid "enabled"
+msgstr "aktiviert"
+
+msgid "disabled"
+msgstr "deaktiviert"
+
+# ## ### FOOTER
+
+msgid "plugins"
+msgstr "Plugins"
+
+msgid "Execution time"
+msgstr "Ausführungszeit"
+
+msgid "Dashboard"
+msgstr "Übersicht"
+
+# ## ### GROUP
+
+msgid "APCu object and page cache"
+msgstr "APCu-Objekt- und Seiten-Cache"
+
+msgid "atec Cache Info & Statistics (OPcache, WP-object-cache, JIT, APCu, Memcached, Redis, SQLite-object-cache)"
+msgstr "atec Cache Info & Statistik (OPcache, WP-object-cache, JIT, APCu, Memcached, Redis, SQLite-object-cache)"
+
+msgid "Custom code snippets for WP"
+msgstr "Benutzerdefinierte Codeausschnitte für WP"
+
+msgid "DDoS block (Distributed Denial of Service Attacks)"
+msgstr "DDoS-Blockierung (Distributed Denial of Service-Angriffe)"
+
+msgid "Show debug log in admin bar"
+msgstr "Debug-Protokoll in der Admin-Leiste anzeigen"
+
+msgid "Dir Scan & Statistics (Number of files and size per directory)"
+msgstr "Verzeichnisscan und Statistik (Anzahl der Dateien und Größe pro Verzeichnis)"
+
+msgid "Add custom meta tags to the head section"
+msgstr "Benutzerdefinierte Meta-Tags zum Kopfbereich hinzufügen"
+
+msgid "Lightweight performance tuning plugin"
+msgstr "Leichgewichtiges Plugin zur Leistungsoptimierung"
+
+msgid "Custom translation strings for polylang plugin"
+msgstr "Benutzerdefinierte Übersetzungszeichenfolgen für das Polylang-Plugin"
+
+msgid "Measure plugins & theme execution time"
+msgstr "Plugins und Theme-Ausführungszeit messen"
+
+msgid "Add custom SMTP mail settings to WP_Mail"
+msgstr "Benutzerdefinierte SMTP-Mail-Einstellungen zu WP_Mail hinzufügen"
+
+msgid "System Information (OS, server, memory, PHP and database details, php.ini, wp-config, .htaccess and PHP extensions)"
+msgstr "Systeminformationen (Betriebssystem, Server, Speicher, PHP- und Datenbankdetails, php.ini, wp-config, .htaccess und PHP-Erweiterungen)"
+
+msgid "Web map, conform with privacy regulations"
+msgstr "Webkarte, DSGVO konform"
+
+msgid "Published"
+msgstr "Veröffentlicht"
+
+msgid "In review"
+msgstr "In Rezension"
+
+msgid "In progress"
+msgstr "In der Entwicklung"
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "Installed"
+msgstr "Installiert"
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "All our plugins are optimized for speed, size and CPU footprint (frontend & backend)"
+msgstr "Alle unsere Plugins sind hinsichtlich Geschwindigkeit, Größe und CPU-Fußabdruck (Frontend und Backend) optimiert"
+
+msgid "Also, they share the same `atec-WP-plugin´ framework – so that shared code will only load once, even with multiple plugins enabled"
+msgstr "Außerdem teilen sie sich das gleiche `atec-WP-plugin´-Framework, sodass gemeinsam genutzter Code nur einmal geladen wird, selbst wenn mehrere Plugins aktiviert sind."
+
+msgid "With an average of 1 ms CPU time, we consider our plugins to be super fast. Other plugins typically require much more time (Polylang ≈ 45 ms, WooCommerce ≈ 500 ms)"
+msgstr "Mit einer durchschnittlichen Ausführungszeit von 1 ms sind die `atec-WP-Plugins´ super schnell. Andere Plugins sind deutlich langsamer (Polylang ≈ 45 ms, WooCommerce ≈ 500 ms)"
+
+msgid "All atec-plugins in the WordPress directory"
+msgstr "Alle atec-Plugins im WordPress-Verzeichnis"
+
+msgid "Install and auto update `atec´ plugins"
+msgstr "`atec´ Plugins verwalten (automatisch aktualisieren)"
+
+# ## ### SERVER
+msgid "Operating system"
+msgstr "Betriebssystem"
+
+msgid "Architecture"
+msgstr "Architektur"
+
+msgid "Date/Time"
+msgstr "Datum/Uhrzeit"
+
+msgid "free"
+msgstr "frei"
+
+msgid "Location"
+msgstr "Standort"
+
+msgid "root"
+msgstr "Wurzel"
+
+msgid "size"
+msgstr "Größe"
+
+msgid "Versions"
+msgstr "Versionen"
+
+msgid "usage (peak)"
+msgstr "Nutzung (Spitze)"
+
+msgid "Database"
+msgstr "Datenbank"
+
+msgid "driver"
+msgstr "Treiber"
+
+msgid "user"
+msgstr "Benutzer"
+
+# ## ### LICENSE
+
+msgid "PRO license activated"
+msgstr "PRO Lizenz aktiviert"
+
+msgid "Get your PRO „Lifetime-Site-License“"
+msgstr "PRO Lizenz kaufen"
+
+msgid "„Lifetime-Site-License“"
+msgstr "„Lebenszeit-Site-Lizenz“"
+
+msgid "Thank you for activating your „Lifetime-Site-License“."
+msgstr "„Lebenszeit-Site-Lizenz“"
+
+msgid "Get your „Lifetime-Site-License“ for ALL our plugins."
+msgstr "„Lebenszeit-Site-Lizenz“"
+
+msgid "A single license code will unlock the PRO features of ALL our plugins, site-wide"
+msgstr "Ein einziger Lizenz-Code schaltet alle PRO-Funktionen aller atec-Plugins für Ihre Website frei"
+
+msgid "Just pay via PayPal and send us the domain name of your site"
+msgstr "Zahlen Sie einfach per PayPal und schicken Sie uns den Domain-Namen Ihrer Website"
+
+msgid "You will get your license code via email"
+msgstr "Sie erhalten Ihren Lizenz-Code per Email"
+
+msgid "No registration required."
+msgstr "Keine Registrierung erforderlich."
+
+msgid "License code is valid for your site"
+msgstr "Der Lizenz-Code ist für Ihre Site gültig"
+
+msgid "License code not valid"
+msgstr "Der Lizenz-Code ist ungültig"
+
+msgid "GET YOUR LICENSE NOW"
+msgstr "LIZENZ KAUFEN"
+
+msgid "License code"
+msgstr "Lizenz-Code"
+
