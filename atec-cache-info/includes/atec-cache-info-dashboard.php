@@ -2,7 +2,6 @@
 if (!defined( 'ABSPATH' )) { exit; }
 class ATEC_wpci_results { function __construct() {
 
-atec_check_admin_bar();
 if (!class_exists('ATEC_wpc_tools')) @require_once('atec-wpc-tools.php');
 if (!class_exists('ATEC_wp_memory')) @require_once('atec-wp-memory.php');
 	
@@ -19,17 +18,20 @@ echo '
 		atec_progress();
 
 		global $wp_object_cache;
-		$redis_enabled=class_exists('redis');			
-		if ($redis_enabled)
+		$options=get_option('atec_WPCI_settings',[]);
+		if ($redis_enabled=class_exists('redis'))
 		{
-			$redisSettings=array();
-			$redisSettings['unix'] = atec_clean_request('redis_unix');
-			$redisSettings['host'] = atec_clean_request('redis_host');
-			$redisSettings['port'] = atec_clean_request('redis_port');
-			$options=get_option('atec_WPCI_settings',[]);
-			if ($redisSettings['unix'].$redisSettings['host'].$redisSettings['port']!=='') { $options['redis']=$redisSettings; update_option('atec_WPCI_settings', $options, false); }
-			else $redisSettings=$options['redis']??[];
+			$update=false;
+			$redisOptions=$options['redis']??[];
+			foreach(['unix','host','port','pwd'] as $o)
+			{
+				$request = atec_clean_request('redis_'.$o);
+				if ($request!=='') { $update=true; $redisOptions[$o]=$request; }
+			}
+			if ($update) { $options['redis']=$redisOptions; update_option('atec_WPCI_settings', $options, false); }
+			$redisSettings=$redisOptions;
 		}
+		else $redisSettings=$options['redis']??[];
 
 		$flush=atec_clean_request('flush');
 		if ($flush!='')
@@ -51,10 +53,14 @@ echo '
 						try 
 						{ 
 							if (($redisSettings['unix']??'')!=='') $redis->connect(esc_url($redisSettings['unix']));
-							else $redis->connect(($redisSettings['host']??'')!==''?$redisSettings['host']:'127.0.0.1', ($redisSettings['port']??'')!==''?absint($redisSettings['port']):6379); 
+							else 
+							{
+								$redis->connect(($redisSettings['host']??'')!==''?$redisSettings['host']:'127.0.0.1', ($redisSettings['port']??'')!==''?absint($redisSettings['port']):6379); 
+								if ($redisSettings['pwd']!=='') $redisSuccess=$redis->auth($redisSettings['pwd']);
+							}
                         	$result=$redis->flushAll();
                     	}
-						catch (Exception $e) 	{  echo '<font color="red">', esc_html(strtolower($e->getMessage())), '.', '</font>'; }
+						catch (RedisException $e) { echo '<font color="red">', esc_html(strtolower($e->getMessage())), '.', '</font>'; }
 						break;
 					}
 				case 'SQLite': $result=$wp_object_cache->flush(); break;

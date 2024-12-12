@@ -5,7 +5,7 @@ Requires at least: 5.2
 Tested up to: 6.7.1
 Requires PHP: 7.4
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.11
+Stable tag: 1.7.14
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,15 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.14 [2024.12.12] =
+* Toogle admin bar – improved
+
+= 1.7.13 [2024.12.11] =
+* $redisSettings
+
+= 1.7.12 [2024.12.11] =
+* $redis->auth($pwd);
 
 = 1.7.11 [2024.12.07] =
 * Toogle admin bar display
