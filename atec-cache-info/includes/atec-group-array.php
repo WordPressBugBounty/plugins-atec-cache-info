@@ -24,18 +24,19 @@ $atec_group_arr =
 	['slug'=>'wppp', 'name'=>'page-performance','desc'=>__('Measure the PageScore and SpeedIndex of your WordPress site','atec-cache-info'),'pro'=>'./.','wp'=>false],
 	['slug'=>'wppo', 'name'=>'poly-addon','desc'=>__('Custom translation strings for polylang plugin','atec-cache-info'),'pro'=>'./.','wp'=>false],
 		['slug'=>'wppr', 'name'=>'profiler','desc'=>__('Measure plugins & theme plus pages execution time','atec-cache-info'),'pro'=>'Monitor page performance and queries','wp'=>false],
+	['slug'=>'wpsr', 'name'=>'search-replace','desc'=>__('Search & Replace strings in all tables','atec-cache-info'),'pro'=>'./.','wp'=>false],
 	['slug'=>'wpsh', 'name'=>'shell','desc'=>__('Connect to a remote server via SSH','atec-cache-info'),'pro'=>'./.','wp'=>false],
+
 	['slug'=>'wpsm', 'name'=>'smtp-mail','desc'=>__('Add custom SMTP mail settings to WP_Mail','atec-cache-info'),'pro'=>'DKIM support and test; SPAM filter','wp'=>false],
-	
 	['slug'=>'wps', 'name'=>'stats','desc'=>__('Lightweight and GDPR compliant WP statistics','atec-cache-info'),'pro'=>'Statistics on a world map','wp'=>true],
-	['slug'=>'wpsi', 'name'=>'system-info','desc'=>__('System Information (OS, server, memory, PHP info and more)','atec-cache-info'),'pro'=>'List PHP-extensions & system variables; Show the php.ini, wp-config.php & .htaccess files','wp'=>true],
-		['slug'=>'wpsv', 'name'=>'svg','desc'=>__('Adds SVG support for media uploads.','atec-cache-info'),'pro'=>'./.','wp'=>false],
+		['slug'=>'wpsi', 'name'=>'system-info','desc'=>__('System Information (OS, server, memory, PHP info and more)','atec-cache-info'),'pro'=>'List PHP-extensions & system variables; Show the php.ini, wp-config.php & .htaccess files','wp'=>true],
+	['slug'=>'wpsv', 'name'=>'svg','desc'=>__('Adds SVG support for media uploads.','atec-cache-info'),'pro'=>'./.','wp'=>false],
 	['slug'=>'wpta', 'name'=>'temp-admin','desc'=>__('Create temporary admin accounts for maintenance purposes','atec-cache-info'),'pro'=>'./.','wp'=>false],
-	['slug'=>'wpur', 'name'=>'user-roles','desc'=>__('Manage WordPress User Roles and Capabilities','atec-cache-info'),'pro'=>'List and manage users','wp'=>false],
 	
+	['slug'=>'wpur', 'name'=>'user-roles','desc'=>__('Manage WordPress User Roles and Capabilities','atec-cache-info'),'pro'=>'List and manage users','wp'=>false],
 	['slug'=>'wms', 'name'=>'web-map-service','desc'=>__('Web map, conform with privacy regulations','atec-cache-info'),'pro'=>'Discount on atecmap.com API key','wp'=>true],
-	['slug'=>'wpwp', 'name'=>'webp','desc'=>__('Auto convert all images to WebP format','atec-cache-info'),'pro'=>'PNG, GIF and BMP support','wp'=>true],
-		['slug'=>'wpmc', 'name'=>'mega-cache','desc'=>__('Ultra fast page cache to improve site speed.','atec-cache-info'),'pro'=>'Multiple storage options: APCu, Redis, Memcached, SQLite, MongoDB, MariaDB, MySQL','wp'=>true],
+		['slug'=>'wpwp', 'name'=>'webp','desc'=>__('Auto convert all images to WebP format','atec-cache-info'),'pro'=>'PNG, GIF and BMP support','wp'=>true],
+	['slug'=>'wpmc', 'name'=>'mega-cache','desc'=>__('Ultra fast page cache to improve site speed.','atec-cache-info'),'pro'=>'Multiple storage options: APCu, Redis, Memcached, SQLite, MongoDB, MariaDB, MySQL','wp'=>true],
 ];
 	
 ?>

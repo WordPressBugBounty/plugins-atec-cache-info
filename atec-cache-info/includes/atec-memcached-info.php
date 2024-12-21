@@ -22,7 +22,7 @@ if ($mem)
 	<table class="atec-table atec-table-tiny atec-table-td-first">
 		<tbody>
 			<tr><td>Version:</td><td>', esc_attr($mem['version']), '</td><td></td></tr>
-			<tr><td>', esc_attr__($memUnix===''?'Host':'Socket','atec-cache-info'), ':</td><td>', esc_html($memUnix===''?$memHost:$memUnix), '</td><td></td></tr>
+			<tr><td>', esc_attr($memUnix===''?'Host':'Socket'), ':</td><td>', esc_html($memUnix===''?$memHost:$memUnix), '</td><td></td></tr>
 			<tr><td>', esc_attr__('Port','atec-cache-info'), ':</td><td>', esc_html($memPort), '</td><td></td></tr>';
 			atec_empty_tr();
 			if (isset($mem['limit_maxbytes'])) 	echo '<tr><td>', esc_attr__('Memory','atec-cache-info'), ':</td><td>', esc_attr(size_format($mem['limit_maxbytes'])), '</td><td></td></tr>';
