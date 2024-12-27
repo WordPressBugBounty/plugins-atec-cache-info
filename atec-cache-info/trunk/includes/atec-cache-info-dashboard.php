@@ -2,7 +2,6 @@
 if (!defined( 'ABSPATH' )) { exit; }
 class ATEC_wpci_results { function __construct() {
 
-atec_check_admin_bar();
 if (!class_exists('ATEC_wpc_tools')) @require_once('atec-wpc-tools.php');
 if (!class_exists('ATEC_wp_memory')) @require_once('atec-wp-memory.php');
 	
@@ -17,20 +16,37 @@ echo '
 	echo '
 	<div class="atec-main">';
 		atec_progress();
+		
+		$action		= atec_clean_request('action');
 
 		global $wp_object_cache;
-		$redis_enabled=class_exists('redis');			
-		if ($redis_enabled)
-		{
-			$redisSettings=array();
-			$redisSettings['unix'] = atec_clean_request('redis_unix');
-			$redisSettings['host'] = atec_clean_request('redis_host');
-			$redisSettings['port'] = atec_clean_request('redis_port');
-			$options=get_option('atec_WPCI_settings',[]);
-			if ($redisSettings['unix'].$redisSettings['host'].$redisSettings['port']!=='') { $options['redis']=$redisSettings; update_option('atec_WPCI_settings', $options, false); }
-			else $redisSettings=$options['redis']??[];
-		}
+		$options=get_option('atec_WPCI_settings',[]);
+		if (!isset($options['redis'])) { $options['redis']=['host'=>'localhost', 'port'=>6379, 'unix'=>'']; update_option('atec_WPCI_settings', $options, false); }
+		if (!isset($options['memcached'])) { $options['memcached']=['host'=>'localhost', 'port'=>11211, 'unix'=>'']; update_option('atec_WPCI_settings', $options, false); }
+		
+		$redSettings 		= $options['redis']??[];
+		$memSettings 		= $options['memcached']??[];
+		$red_enabled 		= class_exists('redis');
+		$mem_enabled 	= class_exists('Memcached');
 
+		$arr = 
+		[
+			['action'=>'saveRed', 'type'=>'redis', 'fields'=>['unix','host','port','pwd']],
+			['action'=>'saveMem', 'type'=>'memcached', 'fields'=>['unix','host','port']]
+		];
+
+		foreach($arr as $a)
+		{
+			if ($action===$a['action'])
+			{
+				$option=$options[$a['type']]??[];
+				foreach($a['fields'] as $o)	$option[$o]=atec_clean_request($a['type'].'_'.$o);
+				$options[$a['type']]=$option; update_option('atec_WPCI_settings', $options, false); 
+				if ($a['type']==='redis') $redSettings=$option;
+				else $memSettings=$option;
+			}
+		}		
+		
 		$flush=atec_clean_request('flush');
 		if ($flush!='')
 		{
@@ -44,17 +60,33 @@ echo '
 				case 'OPcache': $result=opcache_reset(); break;
 				case 'WP_Ocache': $result=$wp_object_cache->flush(); break;
 				case 'APCu': if (function_exists('apcu_clear_cache')) $result=apcu_clear_cache(); break;
-				case 'Memcached': $m = new Memcached(); $m->addServer('localhost', 11211); $result=$m->flush(); break;
+				case 'Memcached': 
+					{
+						$memUnix = $memSettings['unix']??'';
+						if ($memUnix!=='') { $memHost=$memUnix; $memPort=0; }
+						else { $memHost=$memSettings['host']??''; $memPort=$memSettings['port']??0; }
+						if ($memHost!=='' && $memPort!=='') { $m = new Memcached(); $m->addServer($memHost,$memPort); $result=$m->flush(); }
+						else echo '<font color="red">The memcached host/port or unix path are not set.</font>'; 
+						break;
+					}
 				case 'Redis': 
 					{
 						$redis = new Redis();
 						try 
 						{ 
-							if (($redisSettings['unix']??'')!=='') $redis->connect(esc_url($redisSettings['unix']));
-							else $redis->connect(($redisSettings['host']??'')!==''?$redisSettings['host']:'127.0.0.1', ($redisSettings['port']??'')!==''?absint($redisSettings['port']):6379); 
+							if (($redSettings['unix']??'')!=='') $redis->connect(esc_url($redSettings['unix']));
+							else 
+							{
+								if ($redHost!=='' && $redPort!=='')
+								{
+									$redis->connect(($redSettings['host']??'')!==''?$redSettings['host']:'127.0.0.1', ($redSettings['port']??'')!==''?absint($redSettings['port']):6379); 
+									if ($redSettings['pwd']!=='') $redisSuccess=$redis->auth($redSettings['pwd']);
+								}
+								else echo '<font color="red">The redis host/port is not set.</font>'; 
+							}
                         	$result=$redis->flushAll();
                     	}
-						catch (Exception $e) 	{  echo '<font color="red">', esc_html(strtolower($e->getMessage())), '.', '</font>'; }
+						catch (RedisException $e) { echo '<font color="red">', esc_html(strtolower($e->getMessage())), '.', '</font>'; }
 						break;
 					}
 				case 'SQLite': $result=$wp_object_cache->flush(); break;
@@ -63,10 +95,9 @@ echo '
 			echo '</p></div>';
 		}
 	
-		$url	= atec_get_url();
+		$url			= atec_get_url();
 		$nonce 	= wp_create_nonce(atec_nonce());
-		$action	= atec_clean_request('action');
-		$nav 	= atec_clean_request('nav');
+		$nav 		= atec_clean_request('nav');
 		if ($nav=='') $nav='Cache';
 				
 		$licenseOk=atec_check_license()===true;
@@ -92,29 +123,28 @@ echo '
 				atec_reg_style('atec_cache_info',__DIR__,'atec-cache-info-style.min.css','1.0.001');
 
 				$apcu_enabled=extension_loaded('apcu')  && apcu_enabled();
-				$memcached_enabled=class_exists('Memcached');
 			
 				$wp_enabled=is_object($wp_object_cache);				
 				$sql_enabled=function_exists('sqlite_object_cache');
 	
-				$opcache_enabled=false; $op_status=false; $op_conf=false; $opcache_file_only=false;
+				$opc_enabled=false; $opc_status=false; $opc_conf=false; $opcache_file_only=false;
 				if (function_exists('opcache_get_configuration'))
 				{ 
-					$op_conf=opcache_get_configuration(); 
-					$opcache_enabled=$op_conf['directives']['opcache.enable']; 
-					if (function_exists('opcache_get_status')) $op_status=opcache_get_status();
-					$opcache_file_only=$op_conf['directives']['opcache.file_cache_only'];
+					$opc_conf=opcache_get_configuration(); 
+					$opc_enabled=$opc_conf['directives']['opcache.enable']; 
+					if (function_exists('opcache_get_status')) $opc_status=opcache_get_status();
+					$opcache_file_only=$opc_conf['directives']['opcache.file_cache_only'];
 				}
-				else { $opcache_enabled=true; }
+				else { $opc_enabled=true; }
 
 				echo '
 				<div class="atec-g atec-g-25">
 					<div class="atec-border-white">
-						<h4>OPcache '; $wpc_tools->enabled($opcache_enabled);
-						if ($opcache_enabled && !$opcache_file_only) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" href="', esc_url($url), '&flush=OPcache&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span>', esc_attr__('Flush','atec-cache-info'),  '</a>';
+						<h4>OPcache '; $wpc_tools->enabled($opc_enabled);
+						if ($opc_enabled && !$opcache_file_only) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" href="', esc_url($url), '&flush=OPcache&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span>', esc_attr__('Flush','atec-cache-info'),  '</a>';
 						echo '
 						</h4><hr>';
-						if ($opcache_enabled) {@require_once(__DIR__.'/atec-OPC-info.php'); new ATEC_OPcache_info($op_conf,$op_status,$opcache_file_only,$wpc_tools); }
+						if ($opc_enabled) {@require_once(__DIR__.'/atec-OPC-info.php'); new ATEC_OPcache_info($opc_conf,$opc_status,$opcache_file_only,$wpc_tools); }
 						else $wpc_tools->p('OPcache '.esc_attr(__('extension is NOT installed/enabled','atec-cache-info')));
 						require_once('atec-OPC-help.php');
 					echo '
@@ -125,15 +155,15 @@ echo '
 						if ($wp_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" id="WP_Ocache_flush" href="', esc_url($url), '&flush=WP_Ocache&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span>', esc_attr__('Flush','atec-cache-info'),  '</a>';
 						echo '
 						</h4><hr>';
-						if ($wp_enabled) {@require_once(__DIR__.'/atec-WPC-info.php'); new ATEC_WPcache_info($op_conf,$op_status,$opcache_file_only,$wpc_tools); }			
+						if ($wp_enabled) {@require_once(__DIR__.'/atec-WPC-info.php'); new ATEC_WPcache_info($opc_conf,$opc_status,$opcache_file_only,$wpc_tools); }			
 						else $wpc_tools->error('WP '.__('object cache','atec-cache-info'),__('not available','atec-cache-info'));
 					echo '
 					</div>';
 					
 					$jit=false; $jitStatus=false;
-					if (!$op_status) 
+					if (!$opc_status) 
 					{
-						$jit=isset($op_status['jit']) && $op_status['jit']['enabled'] && $op_status['jit']['on']; 
+						$jit=isset($opc_status['jit']) && $opc_status['jit']['enabled'] && $opc_status['jit']['on']; 
 					}
 					else { $jit=ini_get('opcache.jit')!=0; }
 					echo '
@@ -141,7 +171,7 @@ echo '
 						<h4>JIT '; $wpc_tools->enabled($jit);
 						echo '
 						</h4><hr>';
-						if ($jit) {@require_once(__DIR__.'/atec-JIT-info.php'); new ATEC_JIT_info($wpc_tools,$op_status); }
+						if ($jit) {@require_once(__DIR__.'/atec-JIT-info.php'); new ATEC_JIT_info($wpc_tools,$opc_status); }
 						else 
 						{ 
 							if (extension_loaded('xdebug') && strtolower(ini_get('xdebug.mode'))!=='off') $wpc_tools->error('Xdebug',esc_attr(__('is enabled, so JIT will not work','atec-cache-info'))); 
@@ -180,21 +210,21 @@ echo '
 					</div>
 					
 					<div class="atec-border-white">
-						<h4>Memcached '; $wpc_tools->enabled($memcached_enabled);
-						if ($memcached_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" id="Memcached_flush" href="', esc_url($url), '&flush=Memcached&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span>', esc_attr__('Flush','atec-cache-info'),  '</a>';
+						<h4>Memcached '; $wpc_tools->enabled($mem_enabled);
+						if ($mem_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" id="Memcached_flush" href="', esc_url($url), '&flush=Memcached&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span>', esc_attr__('Flush','atec-cache-info'),  '</a>';
 						echo '
 						</h4><hr>';
-						if ($memcached_enabled) { @require_once(__DIR__.'/atec-memcached-info.php'); new ATEC_memcached_info($wpc_tools); }
+						if ($mem_enabled) { @require_once(__DIR__.'/atec-memcached-info.php'); new ATEC_memcached_info($url,$nonce,$wpc_tools,$memSettings); }
 						else $wpc_tools->p('Memcached '.esc_attr(__('extension is NOT installed/enabled','atec-cache-info')));	
 					echo '
 					</div>
 					
 					<div class="atec-border-white">
-						<h4>Redis '; $wpc_tools->enabled($redis_enabled);
-						if ($redis_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" id="Redis_flush" href="', esc_url($url), '&flush=Redis&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span>', esc_attr__('Flush','atec-cache-info'),  '</a>';
+						<h4>Redis '; $wpc_tools->enabled($red_enabled);
+						if ($red_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" id="Redis_flush" href="', esc_url($url), '&flush=Redis&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span>', esc_attr__('Flush','atec-cache-info'),  '</a>';
 						echo '
 						</h4><hr>';
-						if ($redis_enabled) { @require_once(__DIR__.'/atec-Redis-info.php'); new ATEC_Redis_info($url,$nonce,$wpc_tools,$redisSettings); }
+						if ($red_enabled) { @require_once(__DIR__.'/atec-Redis-info.php'); new ATEC_Redis_info($url,$nonce,$wpc_tools,$redSettings); }
 						else $wpc_tools->p('Redis '.__('extension is NOT installed/enabled','atec-cache-info'));
 					echo '
 					</div>
