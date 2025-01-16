@@ -38,17 +38,17 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 					$percent		= $used_memory/$totalMem*100;
 
 					echo '
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Used','atec-cache-info'),':</td><td>',esc_attr(size_format($used_memory)), '</td>
+					<tr><td>&nbsp;&nbsp;',esc_attr__('Used','atec-cache-info'),':</td><td>',esc_attr(size_format($used_memory)), '</td>
 						<td><small>', esc_attr(sprintf("%.1f%%",$percent)), '</small></td></tr>
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Free','atec-cache-info'),':</td><td>',esc_attr(size_format($free_memory)),'</td><td></td></tr>
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Total','atec-cache-info'),':</td><td style="border-top: solid 1px #666; font-weight: 500;">',esc_attr(size_format($totalMem)), '</small></td><td></td></tr>
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Wasted','atec-cache-info'),':</td><td>',esc_attr(size_format($wasted_memory)),'</td>
+					<tr><td>&nbsp;&nbsp;',esc_attr__('Free','atec-cache-info'),':</td><td>',esc_attr(size_format($free_memory)),'</td><td></td></tr>
+					<tr><td>&nbsp;&nbsp;',esc_attr__('Total','atec-cache-info'),':</td><td style="border-top: solid 1px #666; font-weight: 500;">',esc_attr(size_format($totalMem)), '</small></td><td></td></tr>
+					<tr><td>&nbsp;&nbsp;',esc_attr__('Wasted','atec-cache-info'),':</td><td>',esc_attr(size_format($wasted_memory)),'</td>
 						<td><small>', esc_attr(sprintf("%.1f%%",$op_status['memory_usage']['current_wasted_percentage'])), '</small></td></tr>';
 					atec_empty_TR();
 					echo '
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Hits','atec-cache-info'),':</td><td>',esc_attr(number_format($hits)), '</td>
+					<tr><td>&nbsp;&nbsp;',esc_attr__('Hits','atec-cache-info'),':</td><td>',esc_attr(number_format($hits)), '</td>
 						<td><small>', esc_attr(sprintf("%.1f%%",$hitsPercent)), '</small></td></tr>
-					<tr><td>',esc_attr__('&nbsp;&nbsp;Misses','atec-cache-info'),':</td><td>',esc_attr(number_format($misses)), '</td>
+					<tr><td>&nbsp;&nbsp;',esc_attr__('Misses','atec-cache-info'),':</td><td>',esc_attr(number_format($misses)), '</td>
 						<td><small>', esc_attr(sprintf("%.1f%%",$missesPercent)), '</small></td></tr>';
 				}
 				echo '
@@ -59,7 +59,7 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 			{
 				$wpc_tools->usage($percent);	
 				$wpc_tools->hitrate($hitsPercent,$missesPercent);
-				if ($percent>90) $wpc_tools->error('', esc_attr__('OPcache usage is beyond 90%. Please consider increasing the „memory_consumption“ option','atec-cache-info'));
+				if ($percent<90) atec_error_msg(__('OPcache usage is beyond 90%','atec-cache-info').'.<br>'.__('Please increase the „memory_consumption“ option','atec-cache-info'));
 			}
 			else
 			{ 
@@ -80,7 +80,7 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 					{
 						$percentStrings = $op_status['interned_strings_usage']['used_memory']*100/$op_status['interned_strings_usage']['buffer_size'];
 						echo '
-						<tr><td>',esc_attr__('&nbsp;&nbsp;Used','atec-cache-info'),':</td>
+						<tr><td>&nbsp;&nbsp;',esc_attr__('Used','atec-cache-info'),':</td>
 							<td>',esc_attr(size_format($op_status['interned_strings_usage']['used_memory'])), '</td>
 							<td><small>', esc_attr(sprintf("%.1f%%",$percentStrings)), '</small></td></tr>';
 					}
@@ -88,8 +88,8 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 				</tbody>
 			</table>';
 			
-			atec_help('OPcache','OPcache explained');
-			echo '<div id="OPcache_help" class="atec-help atec-dn">OPcache improves PHP performance by storing precompiled script bytecode in shared memory, thereby removing the need for PHP to load and parse scripts on each request.</div>';
+			atec_help('OPcache','OPcache '.__('explained','atec-cache-info'));
+			echo '<div id="OPcache_help" class="atec-help atec-dn">'.__('OPcache improves PHP performance by storing precompiled script bytecode in shared memory, thereby removing the need for PHP to load and parse scripts on each request','atec-cache-info').'.</div>';
 			
 			echo '
 			</div>
@@ -120,12 +120,11 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 					if ($opStats)
 					{
 						echo '
-						<tr><td>',esc_attr__('&nbsp;&nbsp;Max real','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['max_cached_keys'])),'</td></tr>';
+						<tr><td>&nbsp;&nbsp;',esc_attr__('Max real','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['max_cached_keys'])),'</td></tr>';
 						atec_empty_tr();
 						echo '
-						<tr><td>',esc_attr__('&nbsp;&nbsp;Scripts cached','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['num_cached_scripts'])),'</td></tr>
-						<tr><td>',esc_attr__('&nbsp;&nbsp;Keys cached','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['num_cached_keys'])),'</td></tr>';
-					//						<tr><td>',esc_attr__('&nbsp;&nbsp;Total cached','atec-cache-info'),':</td><td style="border-top: solid 1.5px #666; font-weight: 500;">',esc_attr(number_format($op_status['opcache_statistics']['num_cached_scripts']+$op_status['opcache_statistics']['num_cached_keys'])),'</td></tr>
+						<tr><td>&nbsp;&nbsp;',esc_attr__('Scripts cached','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['num_cached_scripts'])),'</td></tr>
+						<tr><td>&nbsp;&nbsp;',esc_attr__('Keys cached','atec-cache-info'),':</td><td>',esc_attr(number_format($op_status['opcache_statistics']['num_cached_keys'])),'</td></tr>';
 					}
 				echo '
 				</tbody>

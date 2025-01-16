@@ -5,15 +5,15 @@ Requires at least: 5.2
 Tested up to: 6.7.1
 Requires PHP: 7.4
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.19
+Stable tag: 1.7.23
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
- Show all system caches, status and statistics (OPcache, WP-object-cache, JIT, APCu, Memcached, Redis, SQLite-object-cache).
+ Show all system caches, status and statistics (OPcache, WP-Object-Cache, JIT, APCu, Memcached, Redis, SQLite-Object-Cache).
 
 == Description ==
 
-This plugin provides detailed status information and statistics for PHP cache features, namely OPcache, WP-object-cache, JIT, APCu, Memcached, Redis and SQLite-object-cache.
+This plugin provides detailed status information and statistics for PHP cache features, namely OPcache, WP-Object-Cache, JIT, APCu, Memcached, Redis and SQLite-Object-Cache.
 Use this plugin to check important server and cache settings to improve the performance of your WordPress installation.
 
 Lightweight (52KB) and resource-efficient.
@@ -40,6 +40,18 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.23 [2025.01.16] =
+* German translation
+
+= 1.7.22 [2025.01.16] =
+* German translation
+
+= 1.7.21 [2025.01.06] =
+* New redis connect
+
+= 1.7.20 [2025.01.05] =
+* New Redis Info and Settings
 
 = 1.7.19 [2024.12.24] =
 * Fixed style sheet

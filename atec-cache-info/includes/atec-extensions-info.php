@@ -24,7 +24,8 @@ function __construct() {
 atec_little_block('PHP '.__('Extensions','atec-cache-info'));
 
 echo '
-<h4>'.esc_attr__('Installed extensions','atec-cache-info').' (<span style="font-weight:500;" class="atec-green">'.esc_attr__('cache','atec-cache-info').'</span>):</h4>
+<h4 class="atec-mb-0">', esc_attr__('Installed extensions','atec-cache-info'), '</h4>
+<small class="atec-mb-10 atec-db atec-green">Caching ', esc_attr__('extensions are marked green','atec-cache-info'), '.</small>
 <div class="atec-border atec-bg-w atec-fit">';
 	$arr=get_loaded_extensions();
 	$array = array('Zend OPcache','apcu','memcached','redis','sqlite3');
@@ -32,16 +33,16 @@ echo '
 	foreach ($arr as $a) 
 	{ 
 		$c++; 
-		if (in_array($a,$array)) echo '<font style="font-weight:500;" color="green">';
-		else echo '<font>';
+		echo in_array($a,$array)?'<font style="font-weight:500;" color="green">':'<font>';
 		echo esc_attr($a);
 		if ($c<$count) echo ' | ';
 		echo '</font>';
 	}
 echo '
 </div>
-
-<h4>'.esc_attr__('Recommended extensions for WordPress','atec-cache-info').' (<span style="font-weight:500;" class="atec-green">'.esc_attr__('installed','atec-cache-info').'</span>):</h4>
+<br>
+<h4 class="atec-mb-0">', esc_attr__('Recommended extensions','atec-cache-info'), '</h4>
+<small class="atec-mb-10 atec-db atec-green">', esc_attr__('Installed','atec-cache-info'), ' ', esc_attr__('extensions are marked green','atec-cache-info'), '.</small>
 <div class="atec-border atec-bg-w atec-fit">';
 	$this->blueArray('Core', $arr, array('curl', 'dom', 'exif', 'fileinfo', 'hash', 'igbinary', 'imagick', 'intl', 'mbstring', 'openssl', 'pcre', 'xml', 'zip'));
 	$this->blueArray('Cache', $arr, array('apcu', 'memcached', 'redis', 'Zend OPcache'));

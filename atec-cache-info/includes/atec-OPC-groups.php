@@ -31,7 +31,7 @@ if (function_exists('opcache_get_status')) $op_status=opcache_get_status();
 
 if ($action=='scan')
 {
-	atec_little_block('OPC Scripts');
+	atec_little_block('OPcache '.esc_attr__('Scripts','atec-cache-info'));
 	echo '<p><strong>Number of script files in root folder:</strong> ', esc_attr($this->scan_for_scripts(ABSPATH)), '
 	<br>You should set `opcache.max_accelerated_files‘ option accordingly.</p>';
 }
@@ -39,17 +39,17 @@ else
 {
 	echo '
 	<div class="atec-db">
-		<div class="atec-dilb atec-mr-10">'; atec_little_block('OPC Scripts'); echo '</div>';
-		if ($action!=='scan') echo '<div class="atec-dilb atec-vat">'; atec_nav_button($url,$nonce,'scan','OPC_Scripts','Scan root folder for PHP scripts',false); echo '</div>';
+		<div class="atec-dilb atec-mr-10">'; atec_little_block('OPcache '.esc_attr__('Scripts','atec-cache-info')); echo '</div>';
+		if ($action!=='scan') echo '<div class="atec-dilb atec-vat">'; atec_nav_button($url,$nonce,'scan','OPC_Scripts',esc_attr__('Scan root folder for PHP scripts','atec-cache-info'),false); echo '</div>';
 		echo '
 	</div>';
 }
 
-if (!$op_status) atec_error_msg('The function `opcache_get_status´ does not exist');
+if (!$op_status) atec_error_msg('The function „opcache_get_status“ does not exist');
 else
 {
 	$c=0; $total=0; $keys=[];
-	atec_table_header_tiny(['#',__('Key','atec-cache-info'),__('Hits','atec-cache-info'),__('Size','atec-cache-info'),'Last used',__('Revalidate','atec-cache-info').' (s)']);
+	atec_table_header_tiny(['#',__('Key','atec-cache-info'),__('Hits','atec-cache-info'),__('Size','atec-cache-info'),__('Last used','atec-cache-info'),__('Revalidate','atec-cache-info').' (s)']);
 		$scripts=[];
 		foreach ($op_status['scripts'] as $key => $value) { $scripts[]=array_merge(array('key'=>$key),$value); }
 

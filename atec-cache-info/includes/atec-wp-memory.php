@@ -51,7 +51,7 @@ class ATEC_wp_memory
 					echo '<img alt="Memory usage" src="', esc_url(plugins_url( '/assets/img/icons/memory.svg', __DIR__ )), '" class="atec-vam" style="height:14px; padding-right: 4px;">', 
 						esc_attr($match[1]).'<span class="atec-fs-8"> '.esc_attr($match[2]).' / </span>',
 							esc_attr($match2[1]).'<span class="atec-fs-8"> '.esc_attr($match2[2]).' </span>',
-						' ≈ <span class="atec-bold atec-', ($percent<75?'green':'red'),'">', esc_attr($percent), ' <span class="atec-fs-8">%</span></span> ', esc_attr__('used','atec-cache-info');
+						' ≈ <span class="atec-bold atec-', ($percent<25?'green':($percent<75?'orange':'red')),'">', esc_attr($percent), ' <span class="atec-fs-8">%</span></span> ', esc_attr__('used','atec-cache-info');
 					// @codingStandardsIgnoreEnd
 				echo '
 				</div>';
