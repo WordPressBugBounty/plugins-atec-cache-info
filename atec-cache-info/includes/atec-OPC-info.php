@@ -59,7 +59,7 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 			{
 				$wpc_tools->usage($percent);	
 				$wpc_tools->hitrate($hitsPercent,$missesPercent);
-				if ($percent<90) atec_error_msg(__('OPcache usage is beyond 90%','atec-cache-info').'.<br>'.__('Please increase the „memory_consumption“ option','atec-cache-info'));
+				if ($percent>90) atec_error_msg(__('OPcache usage is beyond 90%','atec-cache-info').'.<br>'.__('Please increase the „memory_consumption“ option','atec-cache-info'));
 			}
 			else
 			{ 

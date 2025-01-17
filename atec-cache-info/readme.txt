@@ -5,7 +5,7 @@ Requires at least: 5.2
 Tested up to: 6.7.1
 Requires PHP: 7.4
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.24
+Stable tag: 1.7.25
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,9 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.25 [2025.01.17] =
+* Check button replaced
 
 = 1.7.24 [2025.01.16] =
 * SVN cleanup
