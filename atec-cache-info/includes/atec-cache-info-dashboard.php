@@ -178,7 +178,7 @@ echo '
 					</div>
 				</div>';
 			
-				atec_little_block('Persistent '.__('Object Cache','atec-cache-info'));
+				atec_little_block(__('Persistent','atec-cache-info').' '.__('Object Cache','atec-cache-info'));
 			
 				echo'
 				<div class="atec-g atec-g-25">
