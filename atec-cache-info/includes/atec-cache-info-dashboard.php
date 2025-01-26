@@ -32,8 +32,8 @@ echo '
 		$optName = 'atec_WPCI_settings';
 		$options=get_option($optName,[]); 
 
-		$redSettings = $options['redis'];
-		$memSettings = $options['memcached'];
+		$redSettings = $options['redis']??[];
+		$memSettings = $options['memcached']??[];
 		$red_enabled = class_exists('redis');
 		$mem_enabled = class_exists('Memcached');
 
