@@ -89,7 +89,7 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 			</table>';
 			
 			atec_help('OPcache','OPcache '.__('explained','atec-cache-info'));
-			echo '<div id="OPcache_help" class="atec-help atec-dn">'.__('OPcache improves PHP performance by storing precompiled script bytecode in shared memory, thereby removing the need for PHP to load and parse scripts on each request','atec-cache-info').'.</div>';
+			echo '<div id="OPcache_help" class="atec-help atec-dn">', esc_attr__('OPcache improves PHP performance by storing precompiled script bytecode in shared memory, thereby removing the need for PHP to load and parse scripts on each request','atec-cache-info'), '.</div>';
 			
 			echo '
 			</div>

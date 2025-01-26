@@ -9,8 +9,8 @@ $atec_group_arr =
 	['slug'=>'wpca', 'name'=>'cache-apcu','desc'=>__('APCu object and page cache','atec-cache-info'),'pro'=>'Advanced page cache','wp'=>true, 'multi'=>true],
 	['slug'=>'wpci', 'name'=>'cache-info','desc'=>__('Cache Info & Statistics (OPcache, all types of Object-Caches & JIT)','atec-cache-info'),'pro'=>'PHP extensions','wp'=>true, 'multi'=>true],
 	
-	['slug'=>'wpcr', 'name'=>'cache-redis','desc'=>__('Super fast and persistent Redis WP Object Cache.','atec-cache-info'),'pro'=>'-/-','wp'=>false, 'multi'=>true],
-	['slug'=>'wpcm', 'name'=>'cache-memcached','desc'=>__('Fast and persistent Memcached WP Object Cache.','atec-cache-info'),'pro'=>'-/-','wp'=>false, 'multi'=>true],
+	['slug'=>'wpcr', 'name'=>'cache-redis','desc'=>__('Super fast and persistent Redis WP Object Cache.','atec-cache-info'),'pro'=>'PRO only','wp'=>false, 'multi'=>true],
+	['slug'=>'wpcm', 'name'=>'cache-memcached','desc'=>__('Fast and persistent Memcached WP Object Cache.','atec-cache-info'),'pro'=>'PRO only','wp'=>false, 'multi'=>true],
 		['slug'=>'wpc', 'name'=>'code','desc'=>__('Custom code snippets for WP','atec-cache-info'),'pro'=>'PHP-snippets','wp'=>false, 'multi'=>true],
 	['slug'=>'wpdb', 'name'=>'database','desc'=>__('Optimize WP database tables','atec-cache-info'),'pro'=>'Cleanup comments, posts, revisions, transients and options','wp'=>true, 'multi'=>true],
 	['slug'=>'wpd', 'name'=>'debug','desc'=>__('Show debug log in admin bar','atec-cache-info'),'pro'=>'Show queries, includes and wp-config.php; manage cron jobs','wp'=>true, 'multi'=>true],
@@ -42,7 +42,7 @@ $atec_group_arr =
 	['slug'=>'wms', 'name'=>'web-map-service','desc'=>__('Web map, conform with privacy regulations','atec-cache-info'),'pro'=>'Discount on atecmap.com API key','wp'=>true, 'multi'=>true],
 	['slug'=>'wpwp', 'name'=>'webp','desc'=>__('Auto convert all images to WebP format','atec-cache-info'),'pro'=>'PNG, GIF and BMP support','wp'=>true, 'multi'=>true],
 	
-	['slug'=>'wpmc', 'name'=>'mega-cache','desc'=>__('Ultra fast page cache to improve site speed.','atec-cache-info'),'pro'=>'Multiple storage options: APCu, Redis, Memcached, SQLite, MongoDB, MariaDB, MySQL','wp'=>true, 'multi'=>true],
+	['slug'=>'wpmc', 'name'=>'mega-cache','desc'=>__('Ultra fast page cache to improve site speed.','atec-cache-info'),'pro'=>'8 storage options: APCu, Redis, Memcached etc.; Custom post types; WooCommerce caching','wp'=>true, 'multi'=>true],
 ];
 	
 ?>

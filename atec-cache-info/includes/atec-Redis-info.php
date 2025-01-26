@@ -36,8 +36,8 @@ if (class_exists('Redis'))
 				<tr>
 					<td colspan="3"><label for="redis_conn">', esc_attr__('Connection','atec-cache-info'), '</label><br>
 						<select name="redis_conn">
-							<option value="TCP/IP"', $redConn==='TCP/IP'?' selected="selected"':'', '>TCP/IP</option>
-							<option value="SOCKET"', $redConn==='SOCKET'?' selected="selected"':'', '>SOCKET</option>
+							<option value="TCP/IP"', ($redConn==='TCP/IP'?' selected="selected"':''), '>TCP/IP</option>
+							<option value="SOCKET"', ($redConn==='SOCKET'?' selected="selected"':''), '>SOCKET</option>
 						</select>
 					</td>
 				</tr>

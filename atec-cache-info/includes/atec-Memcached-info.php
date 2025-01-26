@@ -66,8 +66,8 @@ else
 		<tr>
 			<td colspan="3"><label for="memcached_conn">', esc_attr__('Connection','atec-cache-info'), '</label><br>
 			<select name="memcached_conn">
-				<option value="TCP/IP"', $memConn==='TCP/IP'?' selected="selected"':'', '>TCP/IP</option>
-				<option value="SOCKET"', $memConn==='SOCKET'?' selected="selected"':'', '>SOCKET</option>
+				<option value="TCP/IP"', ($memConn==='TCP/IP'?' selected="selected"':''), '>TCP/IP</option>
+				<option value="SOCKET"', ($memConn==='SOCKET'?' selected="selected"':''), '>SOCKET</option>
 			</select>
 			</td>
 		</tr>

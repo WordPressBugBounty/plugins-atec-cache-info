@@ -192,7 +192,9 @@ echo '
 <div class="atec-g atec-g-50">
 	<div class="atec-border-white">';
 
-		$this->tblHeader('wordpress','Wordpress',['WP '.__('root','atec-cache-info'),'WP&nbsp;'.__('size','atec-cache-info')]);
+		$isWP = !function_exists('classicpress_version');
+		$short = ($isWP?'WP':'CP');
+		$this->tblHeader($isWP?'wordpress':'classicpress',$isWP?'WordPress':'ClassicPress',[$short.' '.__('root','atec-cache-info'),$short.'&nbsp;'.__('size','atec-cache-info')]);
 		echo '<td>', esc_url(defined('ABSPATH')?ABSPATH:$empty),'</td>
 			<td class="atec-nowrap">', esc_attr(size_format(get_dirsize(get_home_path()))),'</td>';
 		$this->tblFooter();
@@ -200,7 +202,7 @@ echo '
 		echo '<br>';
 	
 		$this->tblHeader('calender',__('Versions','atec-cache-info'),['WP','PHP','mySQL']);
-		echo '<td>Ver.&nbsp;', esc_html(get_bloginfo('version')),'</td>
+		echo '<td>Ver.&nbsp;', esc_html($isWP?get_bloginfo('version'):classicpress_version()),'</td>
 			<td>Ver.&nbsp;', esc_attr(phpversion().(function_exists( 'php_sapi_name')?' | '.php_sapi_name():'')),'</td>
 			<td>Ver.&nbsp;', esc_attr($mysql_version ?? 'n/a'),'</td>';
 		$this->tblFooter();
@@ -209,11 +211,11 @@ echo '
 	<div class="atec-border-white">';
 
 		// @codingStandardsIgnoreStart
-		$db_soft 					= $wpdb->get_results('SHOW VARIABLES LIKE "version_comment"');
-		$db_ver 					= $wpdb->get_var('SELECT VERSION() AS version from DUAL');
-		$db_max_conn			= $wpdb->get_results('SHOW VARIABLES LIKE "max_connections"');
+		$db_soft 			= $wpdb->get_results('SHOW VARIABLES LIKE "version_comment"');
+		$db_ver 			= $wpdb->get_var('SELECT VERSION() AS version from DUAL');
+		$db_max_conn		= $wpdb->get_results('SHOW VARIABLES LIKE "max_connections"');
 		$db_max_package 	= $wpdb->get_results('SHOW VARIABLES LIKE "max_allowed_packet"');
-		$tablesstatus = $wpdb->get_results('SHOW TABLE STATUS');
+		$tablesstatus 		= $wpdb->get_results('SHOW TABLE STATUS');
 		// @codingStandardsIgnoreEnd
 		
 		$db_disk		= 0;
