@@ -5,7 +5,7 @@ Requires at least: 5.2
 Tested up to: 6.7.1
 Requires PHP: 7.4
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.29
+Stable tag: 1.7.30
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,9 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.30 [2025.01.26] =
+* switched require_once -> require
 
 = 1.7.29 [2025.01.26] =
 * Fixed $options[\'redis\']
