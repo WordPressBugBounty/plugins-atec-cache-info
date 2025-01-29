@@ -23,7 +23,7 @@ if (class_exists('Redis'))
 	$redPort = $redSettings['port']??'';
 	$redPwd  = $redSettings['pwd']??'';
 
-	if (!function_exists('atec_redis_connect')) @require_once('atec-cache-redis-connect.php');
+	if (!function_exists('atec_redis_connect')) @require('atec-cache-redis-connect.php');
 	$result = atec_redis_connect($redSettings);
 	$redis = $result['redis'];
 

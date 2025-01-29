@@ -3,7 +3,7 @@ if (!defined( 'ABSPATH' )) { exit; }
 
 class ATEC_memcached_info { function __construct($url,$nonce,$wpc_tools,$memSettings) {	
 
-if (!function_exists('atec_memcached_connect')) @require_once('atec-cache-memcached-connect.php');
+if (!function_exists('atec_memcached_connect')) @require('atec-cache-memcached-connect.php');
 $result = atec_memcached_connect($memSettings);
 
 $m 				= $result['m'];
