@@ -15,7 +15,8 @@ if (!defined( 'ABSPATH' )) { exit; }
 			<li>opcache.consistency_checks=0</li>
 			<li>opcache.save_comments=0</li>
 			<li>opcache.enable_file_override=1</li>
-		</ul>
-		A revalidate_freq of 0 will result in OPcache checking for updates on every request.
+		</ul>',
+		esc_attr__('A revalidate_freq of 0 will result in OPcache checking for updates on every request','atec-cache-info'),
+		'.
 	</div>';	
 ?>

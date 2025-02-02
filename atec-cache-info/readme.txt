@@ -5,7 +5,7 @@ Requires at least: 5.2
 Tested up to: 6.7.1
 Requires PHP: 7.4
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.32
+Stable tag: 1.7.34
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,12 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.34 [2025.02.02] =
+* French translation by Stephane
+
+= 1.7.33 [2025.02.02] =
+* russian translation
 
 = 1.7.32 [2025.02.02] =
 * Framework changes (atec-check)

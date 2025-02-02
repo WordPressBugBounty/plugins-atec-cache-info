@@ -30,7 +30,7 @@ private function tblFooter(): void { echo '</tr>'; atec_table_footer(); echo '</
 
 function __construct() {	
 
-$empty = './.';
+$empty = '-/-';
 $php_uname = ['n'=>$empty,'s'=>$empty,'r'=>$empty,'m'=>$empty];
 if (function_exists('php_uname'))
 {
@@ -162,8 +162,9 @@ echo '
 		}
 		$memArr=[];
 		if ($ram!=='') $memArr[] = 'System RAM';
-		$memArr=array_merge($memArr,['PHP mem. limit','WP mem. limit','WP max. mem. limit','mem. '.__('usage (peak)','atec-cache-info')]);
-
+		$limitStr = __('limit','atec-cache-info');
+		$memStr = __('mem.','atec-cache-info');
+		$memArr=array_merge($memArr,['PHP '.$memStr.' '.$limitStr,'WP '.$memStr.' '.$limitStr,'WP max. '.$memStr.' '.$limitStr,$memStr.' '.__('usage','atec-cache-info')]);
 		$this->tblHeader('memory','Memory',$memArr);
 		if ($ram!=='') echo '<td>', esc_attr(size_format($ram)), '</td>';
 		echo '<td>', esc_attr(ini_get('memory_limit')), '</td>
@@ -174,7 +175,7 @@ echo '
 		
 		echo '<br>';
 	
-		$this->tblHeader('php','PHP '.__('Settings','atec-cache-info'),['max. exec. time','max. input vars','post max. size','upload max. filesize']);
+		$this->tblHeader('php','PHP '.__('Settings','atec-cache-info'),['„max. exec. time“','„max. input vars“','„post max. size“','„upload max. filesize“']);
 		echo '<td>', esc_attr(gmdate('H:i:s', ini_get('max_execution_time'))),'</td>
 			<td>', esc_attr(number_format(ini_get('max_input_vars'))),'</td>
 			<td>', esc_attr(ini_get('post_max_size')),'</td>
@@ -191,7 +192,9 @@ echo '
 <div class="atec-g atec-g-50">
 	<div class="atec-border-white">';
 
-		$this->tblHeader('wordpress','Wordpress',['WP '.__('root','atec-cache-info'),'WP&nbsp;'.__('size','atec-cache-info')]);
+		$isWP = !function_exists('classicpress_version');
+		$short = ($isWP?'WP':'CP');
+		$this->tblHeader($isWP?'wordpress':'classicpress',$isWP?'WordPress':'ClassicPress',[$short.' '.__('root','atec-cache-info'),$short.'&nbsp;'.__('size','atec-cache-info')]);
 		echo '<td>', esc_url(defined('ABSPATH')?ABSPATH:$empty),'</td>
 			<td class="atec-nowrap">', esc_attr(size_format(get_dirsize(get_home_path()))),'</td>';
 		$this->tblFooter();
@@ -199,7 +202,7 @@ echo '
 		echo '<br>';
 	
 		$this->tblHeader('calender',__('Versions','atec-cache-info'),['WP','PHP','mySQL']);
-		echo '<td>Ver.&nbsp;', esc_html(get_bloginfo('version')),'</td>
+		echo '<td>Ver.&nbsp;', esc_html($isWP?get_bloginfo('version'):classicpress_version()),'</td>
 			<td>Ver.&nbsp;', esc_attr(phpversion().(function_exists( 'php_sapi_name')?' | '.php_sapi_name():'')),'</td>
 			<td>Ver.&nbsp;', esc_attr($mysql_version ?? 'n/a'),'</td>';
 		$this->tblFooter();
@@ -208,11 +211,11 @@ echo '
 	<div class="atec-border-white">';
 
 		// @codingStandardsIgnoreStart
-		$db_soft 					= $wpdb->get_results('SHOW VARIABLES LIKE "version_comment"');
-		$db_ver 					= $wpdb->get_var('SELECT VERSION() AS version from DUAL');
-		$db_max_conn			= $wpdb->get_results('SHOW VARIABLES LIKE "max_connections"');
+		$db_soft 			= $wpdb->get_results('SHOW VARIABLES LIKE "version_comment"');
+		$db_ver 			= $wpdb->get_var('SELECT VERSION() AS version from DUAL');
+		$db_max_conn		= $wpdb->get_results('SHOW VARIABLES LIKE "max_connections"');
 		$db_max_package 	= $wpdb->get_results('SHOW VARIABLES LIKE "max_allowed_packet"');
-		$tablesstatus = $wpdb->get_results('SHOW TABLE STATUS');
+		$tablesstatus 		= $wpdb->get_results('SHOW TABLE STATUS');
 		// @codingStandardsIgnoreEnd
 		
 		$db_disk		= 0;

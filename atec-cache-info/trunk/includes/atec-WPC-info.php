@@ -1,7 +1,7 @@
 <?php
 if (!defined( 'ABSPATH' )) { exit; }
 
-class ATEC_WPcache_info { function __construct($op_conf,$op_status,$opcache_file_only,$wpc_tools) {	
+class ATEC_WPcache_info { function __construct($wpc_tools) {	
 
 global $wp_object_cache;
 if (isset($wp_object_cache->cache_hits))
@@ -46,23 +46,22 @@ if (defined('LSCWP_OBJECT_CACHE') && LSCWP_OBJECT_CACHE=='true' && (method_exist
 
 	if (defined('LSCWP_V')) 
 	{
-		echo '<p>'; atec_sys_icon(__DIR__,'litespeed'); echo ' LiteSpeed '.esc_attr__('cache','atec-cache-info').' v.',esc_html(LSCWP_V),' '.esc_attr__('is active','atec-cache-info').'.</p>';
+		echo '<p>'; atec_server_sys_icon(__DIR__,'litespeed'); echo ' LiteSpeed ', esc_attr__('cache','atec-cache-info'), ' v.', esc_html(LSCWP_V), ' ', esc_attr__('is active','atec-cache-info'), '.</p>';
 	}
 }
 
 global $_wp_using_ext_object_cache;
-if ($_wp_using_ext_object_cache) atec_success_msg('WP '.__('object cache','atec-cache-info').' '.__('is persistent','atec-cache-info'));
+if ($_wp_using_ext_object_cache) atec_success_msg('WP '.__('object cache','atec-cache-info').' '.__('is persistent','atec-cache-info'),false,true);
 
 $testKey='atec_wp_test_key';
 wp_cache_set($testKey,'hello');
 $success=wp_cache_get($testKey)=='hello';
 atec_badge('WP '.__('object cache','atec-cache-info').' '.__('is writeable','atec-cache-info'),'Writing to WP '.__('object cache','atec-cache-info').' failed',$success);
-if ($success) 	wp_cache_delete($testKey);
+if ($success) wp_cache_delete($testKey);
 
-atec_help('WPcache','WP object cache explained');
-echo '<div id="WPcache_help" class="atec-help atec-dn">
-The WP object cache boosts performance by storing keys that might be used by multiple scripts while handling a page request.
-Nonetheless, this cache is solely valid for the current request, unless a persistent object cache, such as APCu, is installed.</div>';
+echo '<br>';
+atec_help('WPcache','WP '.__('object cache','atec-cache-info').' '.__('explained','atec-cache-info'));
+echo '<div id="WPcache_help" class="atec-help atec-dn">', esc_html__('The WP object cache boosts performance by storing keys that might be used by multiple scripts while handling a page request.','atec-cache-info').' '.esc_html__('Nonetheless, this cache is solely valid for the current request, unless a persistent object cache, such as APCu, is installed','atec-cache-info'), '.</div>';
 
 }}
 ?>

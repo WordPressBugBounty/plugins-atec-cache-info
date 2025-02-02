@@ -5,15 +5,15 @@ Requires at least: 5.2
 Tested up to: 6.7.1
 Requires PHP: 7.4
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.19
+Stable tag: 1.7.34
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
- Show all system caches, status and statistics (OPcache, WP-object-cache, JIT, APCu, Memcached, Redis, SQLite-object-cache).
+ Show all system caches, status and statistics (OPcache, WP-Object-Cache, JIT, APCu, Memcached, Redis, SQLite-Object-Cache).
 
 == Description ==
 
-This plugin provides detailed status information and statistics for PHP cache features, namely OPcache, WP-object-cache, JIT, APCu, Memcached, Redis and SQLite-object-cache.
+This plugin provides detailed status information and statistics for PHP cache features, namely OPcache, WP-Object-Cache, JIT, APCu, Memcached, Redis and SQLite-Object-Cache.
 Use this plugin to check important server and cache settings to improve the performance of your WordPress installation.
 
 Lightweight (52KB) and resource-efficient.
@@ -40,6 +40,51 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.34 [2025.02.02] =
+* French translation by Stephane
+
+= 1.7.33 [2025.02.02] =
+* russian translation
+
+= 1.7.32 [2025.02.02] =
+* Framework changes (atec-check)
+
+= 1.7.31 [2025.01.29] =
+* define(\'ATEC_TOOLS_INC\',true); // just for backwards compatibility
+
+= 1.7.30 [2025.01.26] =
+* switched require_once -> require
+
+= 1.7.29 [2025.01.26] =
+* Fixed $options[\'redis\']
+
+= 1.7.28 [2025.01.26] =
+* removed exit() afer redirect
+
+= 1.7.27 [2025.01.26] =
+* ATEC_WPcache_info
+
+= 1.7.26 [2025.01.26] =
+* Improved admin bar toggle
+
+= 1.7.25 [2025.01.17] =
+* Check button replaced
+
+= 1.7.24 [2025.01.16] =
+* SVN cleanup
+
+= 1.7.23 [2025.01.16] =
+* German translation
+
+= 1.7.22 [2025.01.16] =
+* German translation
+
+= 1.7.21 [2025.01.06] =
+* New redis connect
+
+= 1.7.20 [2025.01.05] =
+* New Redis Info and Settings
 
 = 1.7.19 [2024.12.24] =
 * Fixed style sheet
