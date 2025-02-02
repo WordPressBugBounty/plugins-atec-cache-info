@@ -1,5 +1,5 @@
 <?php
-if (!defined( 'ABSPATH' )) { exit; }
+if (!defined('ABSPATH')) { exit(); }
 
 class ATEC_server_info { 
 	
@@ -85,7 +85,7 @@ echo '
 <div class="atec-g atec-g-50">
 	<div class="atec-border-white">';
 	
-		$this->tblHeader('computer',__('Operating system','atec-cache-info'),['OS','Version',__('Architecture','atec-cache-info'),__('Date/Time','atec-cache-info'),'Disk&nbsp;total','Disk&nbsp;'.__('free','atec-cache-info')]);
+		$this->tblHeader('computer',__('Operating system','atec-cache-info'),['OS','Version',__('Architecture','atec-cache-info'),__('Date/Time','atec-cache-info'),'Disk&nbsp;'.__('total','atec-cache-info'),'Disk&nbsp;'.__('free','atec-cache-info')]);
 			echo '
 			<td class="atec-nowrap">';
 				$icon='';
@@ -112,7 +112,7 @@ echo '
 		if ($geo!='') $headArray[] = __('Location','atec-cache-info');
 		$headArray[] = 'Server'; 	
 		$headArray[] = 'CURL';
-		$this->tblHeader('server','Server',$headArray);
+		$this->tblHeader('server',__('Server','atec-cache-info'),$headArray);
 		$serverSoftware	= $this->envExists('SERVER_SOFTWARE');
 		$serverName		= $this->envExists('SERVER_NAME');
 	
@@ -165,7 +165,7 @@ echo '
 		$limitStr = __('limit','atec-cache-info');
 		$memStr = __('mem.','atec-cache-info');
 		$memArr=array_merge($memArr,['PHP '.$memStr.' '.$limitStr,'WP '.$memStr.' '.$limitStr,'WP max. '.$memStr.' '.$limitStr,$memStr.' '.__('usage','atec-cache-info')]);
-		$this->tblHeader('memory','Memory',$memArr);
+		$this->tblHeader('memory',__('Memory','atec-cache-info'),$memArr);
 		if ($ram!=='') echo '<td>', esc_attr(size_format($ram)), '</td>';
 		echo '<td>', esc_attr(ini_get('memory_limit')), '</td>
 			<td>', esc_attr(WP_MEMORY_LIMIT), '</td>
@@ -175,7 +175,7 @@ echo '
 		
 		echo '<br>';
 	
-		$this->tblHeader('php','PHP '.__('Settings','atec-cache-info'),['„max. exec. time“','„max. input vars“','„post max. size“','„upload max. filesize“']);
+		$this->tblHeader('php',__('PHP Settings','atec-cache-info'),['„max. exec. time“','„max. input vars“','„post max. size“','„upload max. filesize“']);
 		echo '<td>', esc_attr(gmdate('H:i:s', ini_get('max_execution_time'))),'</td>
 			<td>', esc_attr(number_format(ini_get('max_input_vars'))),'</td>
 			<td>', esc_attr(ini_get('post_max_size')),'</td>

@@ -1,5 +1,5 @@
 <?php
-if (!defined( 'ABSPATH' )) { exit; }
+if (!defined('ABSPATH')) { exit(); }
 
 	atec_help('opcache',__('Recommended settings','atec-cache-info'));
 	echo '

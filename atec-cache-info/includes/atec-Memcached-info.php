@@ -1,5 +1,5 @@
 	<?php
-if (!defined( 'ABSPATH' )) { exit; }
+if (!defined('ABSPATH')) { exit(); }
 
 class ATEC_memcached_info { function __construct($url,$nonce,$wpc_tools,$memSettings) {	
 
@@ -26,9 +26,9 @@ if ($m)
 	<table class="atec-table atec-table-tiny atec-table-td-first">
 		<tbody>
 			<tr><td>Version:</td><td>', esc_attr($mem['version']), '</td><td></td></tr>
-			<tr><td>Connection:</td><td>', esc_html($memConn), '</td><td></td></tr>
-			<tr><td>Host:</td><td>', esc_html($memHost), '</td><td></td></tr>
-			<tr><td>Port:</td><td>', esc_html($memPort), '</td><td></td></tr>';
+			<tr><td>', esc_attr__('Connection','atec-cache-info'), ':</td><td>', esc_html($memConn), '</td><td></td></tr>
+			<tr><td>', esc_attr__('Host','atec-cache-info'), ':</td><td>', esc_html($memHost), '</td><td></td></tr>
+			<tr><td>', esc_attr__('Port','atec-cache-info'), ':</td><td>', esc_html($memPort), '</td><td></td></tr>';
 			atec_empty_tr();
 			if (isset($mem['limit_maxbytes'])) 	echo '<tr><td>', esc_attr__('Memory','atec-cache-info'), ':</td><td>', esc_attr(size_format($mem['limit_maxbytes'])), '</td><td></td></tr>';
 			if (isset($mem['bytes'])) echo '<tr><td>', esc_attr__('Used','atec-cache-info'), ':</td>
@@ -58,7 +58,7 @@ else
 	
 	echo 
 	'<p>
-		<span class="atec-red">', esc_attr__('Connection failed','atec-cache-info'), '</span>.<br>', 
+		<span class="atec-red">', esc_attr__('Connection','atec-cache-info'), ' ', esc_attr__('failed','atec-cache-info'), '</span>.<br>', 
 		esc_attr__('Please define host:port OR unix path.','atec-cache-info'), '
 	</p>
 	<form class="atec-border-tiny" method="post" action="'.esc_url($url).'&action=saveMem&nav=Cache&_wpnonce='.esc_attr($nonce).'">
@@ -72,7 +72,7 @@ else
 			</td>
 		</tr>
 		<tr>
-			<td class="atec-left"><label for="memcached_host">', esc_attr__('Host ','atec-cache-info'), '</label><br>
+			<td class="atec-left"><label for="memcached_host">', esc_attr__('Host','atec-cache-info'), '</label><br>
 				<input size="15" type="text" placeholder="localhost" name="memcached_host" value="', esc_attr($memHost), '"><br><br>
 			</td>
 			<td class="atec-left"><label for="memcached_port">', esc_attr__('Port','atec-cache-info'), '</label><br>

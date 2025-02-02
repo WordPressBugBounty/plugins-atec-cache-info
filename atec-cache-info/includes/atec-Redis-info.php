@@ -2,7 +2,7 @@
 // 1: redis-cli: 		
 // 2: auth pwd		
 // 3: CONFIG SET requirepass pwd
-if (!defined( 'ABSPATH' )) { exit; }
+if (!defined('ABSPATH')) { exit(); }
 
 class ATEC_Redis_info { function __construct($url,$nonce,$wpc_tools,$redSettings) {	
 	
@@ -76,8 +76,8 @@ if (class_exists('Redis'))
 			<tbody>
 				<tr><td>Version:</td><td>', esc_attr($server['redis_version']), '</td><td></td></tr>
 				<tr><td>', esc_attr__('Connection','atec-cache-info'), ':</td><td>', esc_textarea($redConn), '</td><td></td></tr>
-				<tr><td>Host:</td><td>', esc_textarea($redHost), '</td><td></td></tr>';
-				if ($redConn==='TCP/IP') echo '<tr><td>Port:</td><td>', esc_attr($redPort), '</td><td></td></tr>';
+				<tr><td>', esc_attr__('Host','atec-cache-info'), ':</td><td>', esc_textarea($redHost), '</td><td></td></tr>';
+				if ($redConn==='TCP/IP') echo '<tr><td>', esc_attr__('Port','atec-cache-info'), ':</td><td>', esc_attr($redPort), '</td><td></td></tr>';
 				if ($redPwd!=='') echo '<tr><td>', esc_attr__('Password','atec-cache-info'), ':</td><td>', esc_textarea($redPwd), '</td><td></td></tr>';
 				atec_empty_tr();
 				echo '

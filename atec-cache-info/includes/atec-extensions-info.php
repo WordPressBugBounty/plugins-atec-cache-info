@@ -1,5 +1,5 @@
 <?php
-if (!defined( 'ABSPATH' )) { exit; }
+if (!defined('ABSPATH')) { exit(); }
 
 class ATEC_extensions_info { 
 	
@@ -44,9 +44,9 @@ echo '
 <h4 class="atec-mb-0">', esc_attr__('Recommended extensions','atec-cache-info'), '</h4>
 <small class="atec-mb-10 atec-db atec-green">', esc_attr__('Installed','atec-cache-info'), ' ', esc_attr__('extensions are marked green','atec-cache-info'), '.</small>
 <div class="atec-border atec-bg-w atec-fit">';
-	$this->blueArray('Core', $arr, array('curl', 'dom', 'exif', 'fileinfo', 'hash', 'igbinary', 'imagick', 'intl', 'mbstring', 'openssl', 'pcre', 'xml', 'zip'));
-	$this->blueArray('Cache', $arr, array('apcu', 'memcached', 'redis', 'Zend OPcache'));
-	$this->blueArray('Optional', $arr, array('bc', 'filter', 'image', 'iconv', 'shmop', 'SimpleXML', 'sodium', 'xmlreader', 'zlib'));
+	$this->blueArray(__('Core','atec-cache-info'), $arr, array('curl', 'dom', 'exif', 'fileinfo', 'hash', 'igbinary', 'imagick', 'intl', 'mbstring', 'openssl', 'pcre', 'xml', 'zip'));
+	$this->blueArray(__('Cache','atec-cache-info'), $arr, array('apcu', 'memcached', 'redis', 'Zend OPcache'));
+	$this->blueArray(__('Optional','atec-cache-info'), $arr, array('bc', 'filter', 'image', 'iconv', 'shmop', 'SimpleXML', 'sodium', 'xmlreader', 'zlib'));
 echo '
 </div>';
 

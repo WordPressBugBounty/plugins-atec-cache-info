@@ -1,5 +1,5 @@
 <?php
-if (!defined( 'ABSPATH' )) { exit; }
+if (!defined('ABSPATH')) { exit(); }
 class ATEC_wpci_results { function __construct() {
 
 atec_fixit(dirname(__DIR__),'cache-info','wpci'); // backwards compatible unix path
