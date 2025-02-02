@@ -5,7 +5,7 @@ function atec_memcached_flush_mwpoc($mem)
 {
 	$allKeys	= $m->getAllKeys();
 	$reg	 	= '/'.WP_MEMCACHED_KEY_SALT.'.*/';
-	if (!empty($allKeys)) foreach($allKeys as $key) if(preg_match($reg, $$key)) $redis->delete($key);
+	if (!empty($allKeys)) foreach($allKeys as $key) if(preg_match($reg, $key)) $redis->delete($key);
 }
 
 function atec_memcached_connect($memSettings)

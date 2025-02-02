@@ -91,10 +91,10 @@ class ATEC_OPcache_info { function __construct($op_conf,$op_status,$opcache_file
 			atec_help('OPcache','OPcache '.__('explained','atec-cache-info'));
 			echo '<div id="OPcache_help" class="atec-help atec-dn">', esc_attr__('OPcache improves PHP performance by storing precompiled script bytecode in shared memory, thereby removing the need for PHP to load and parse scripts on each request','atec-cache-info'), '.</div>';
 			
-			$save_comments = $op_conf['directives']['opcache.save_comments']??false;
-			$validate_timestamps = $op_conf['directives']['opcache.validate_timestamps']??false;
-			$enable_file_override = $op_conf['directives']['opcache.enable_file_override']??false;
-			$consistency_checks = $op_conf['directives']['opcache.consistency_checks']??false;
+			$save_comments = filter_var($op_conf['directives']['opcache.save_comments']??0,258);
+			$validate_timestamps = filter_var($op_conf['directives']['opcache.validate_timestamps']??0,258);
+			$enable_file_override = filter_var($op_conf['directives']['opcache.enable_file_override']??0,258);
+			$consistency_checks = filter_var($op_conf['directives']['opcache.consistency_checks']??0,258);
 			
 			echo '
 			</div>
