@@ -5,7 +5,7 @@ Requires at least: 5.2
 Tested up to: 6.7.1
 Requires PHP: 7.4
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.37
+Stable tag: 1.7.39
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,12 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.39 [2025.02.03] =
+* Spanish translation
+
+= 1.7.38 [2025.02.03] =
+* Spanish translation
 
 = 1.7.37 [2025.02.03] =
 * Fixed require on Dashboard line 86
