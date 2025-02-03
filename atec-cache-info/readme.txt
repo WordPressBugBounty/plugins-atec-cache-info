@@ -5,7 +5,7 @@ Requires at least: 5.2
 Tested up to: 6.7.1
 Requires PHP: 7.4
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.35
+Stable tag: 1.7.37
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,12 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.37 [2025.02.03] =
+* Fixed require on Dashboard line 86
+
+= 1.7.36 [2025.02.03] =
+* Updated atec-check.js
 
 = 1.7.35 [2025.02.02] =
 * Russian translation updated

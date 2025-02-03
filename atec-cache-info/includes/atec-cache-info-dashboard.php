@@ -83,7 +83,7 @@ echo '
 						case 'APCu': if (function_exists('apcu_clear_cache')) $result=apcu_clear_cache(); break;
 						case 'Memcached': 
 							{
-								if (!function_exists('atec_memcached_connect')) @requir('atec-cache-memcached-connect.php');
+								if (!function_exists('atec_memcached_connect')) @require('atec-cache-memcached-connect.php');
 								$result = atec_memcached_connect($memSettings);
 								$m = $result['m'];
 								$result=$m?$m->flush():false;
