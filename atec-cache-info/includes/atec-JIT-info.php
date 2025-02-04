@@ -12,7 +12,8 @@ if ($op_status)
 }
 else
 {
-	$jit_size=(int) wp_convert_hr_to_bytes(ini_get('opcache.jit_buffer_size'));
+	$iniSize = ini_get('opcache.jit_buffer_size');
+	$jit_size = (int) function_exists('atec_KMG_2_Int')?atec_KMG_2_Int($iniSize):wp_convert_hr_to_bytes($iniSize);
 }
 
 echo '
