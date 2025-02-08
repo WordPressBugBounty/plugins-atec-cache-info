@@ -63,7 +63,7 @@ else
 					<td class="atec-anywrap', str_contains($s['key'],'atec-')?' atec-violet':'', esc_attr($color), '" title="', esc_url($s['full_path']) ,'">', esc_attr($s['key']), '</td>
 					<td class="atec-nowrap atec-table-right">', esc_attr($s['hits']), '</td>
 					<td class="atec-nowrap atec-table-right">', esc_attr(size_format($s['memory_consumption'])), '</td>				
-					<td class="atec-nowrap atec-table-right">', esc_attr(gmdate('m/d H:m',$s['last_used_timestamp'])), '</td>				
+					<td class="atec-nowrap atec-table-right">', esc_attr(gmdate('m/d H:i',$s['last_used_timestamp'])), '</td>				
 					<td class="atec-nowrap atec-table-right">', esc_attr($s['revalidate']-time()), '</td>
 				</tr>';
 			$total+=$s['memory_consumption'];
