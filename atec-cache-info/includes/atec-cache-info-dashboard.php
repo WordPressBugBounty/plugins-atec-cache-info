@@ -1,8 +1,9 @@
 <?php
 if (!defined('ABSPATH')) { exit(); }
-class ATEC_wpci_results { function __construct() {
+class ATEC_wpci_dashboard { function __construct() {
 
-atec_fixit(dirname(__DIR__),'cache-info','wpci'); // backwards compatible unix path
+if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
+(new ATEC_fixit)->atec_fixit(dirname(__DIR__),'cache-info','wpci'); // backwards compatible unix path
 
 $url			= atec_get_url();
 $nonce 	= wp_create_nonce(atec_nonce());
@@ -15,17 +16,17 @@ if ($action==='adminBar') atec_check_admin_bar('wpci',$url,$nonce,$nav);
 if (!class_exists('ATEC_wp_memory')) @require('atec-wp-memory.php');
 $mem_tools=new ATEC_wp_memory();
 
-echo '
-<div class="atec-page">';
+echo 
+'<div class="atec-page">';
 	$mem_tools->memory_usage();
 	atec_header(__DIR__,'wpci','Cache Info');	
 	
-	echo '
-	<div class="atec-main">';
+	echo 
+	'<div class="atec-main">';
 		atec_progress();
 
 		$licenseOk=atec_check_license()===true;
-		atec_nav_tab($url, $nonce, $nav, ['#memory Cache','#server Server','#scroll OPC '.esc_attr__('Scripts','atec-cache-info'),'#php PHP '.__('Extensions','atec-cache-info')], 2, !$licenseOk);
+		atec_nav_tab($url, $nonce, $nav, ['#memory Cache','#server Server','#scroll OPC '.esc_attr__('Scripts','atec-cache-info'),'#php PHP '.__('Extensions','atec-cache-info')], 2, $licenseOk);
 	
 		echo '
 		<div class="atec-border">';
@@ -269,5 +270,5 @@ echo '
 
 }}
 
-new ATEC_wpci_results;
+new ATEC_wpci_dashboard;
 ?>

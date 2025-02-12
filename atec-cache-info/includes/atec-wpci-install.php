@@ -16,7 +16,11 @@ add_action( 'admin_enqueue_scripts', function()
 if ($atec_active_slug!=='atec_group')
 {
 	function atec_wpci() { @require(__DIR__.'/atec-cache-info-dashboard.php'); }
-	if (!function_exists('atec_load_pll')) @require('atec-translation.php');
-	atec_load_pll(__DIR__,'cache-info');
+	
+	add_action('admin_init', function() 
+	{
+		if (!function_exists('atec_load_pll')) @require('atec-translation.php');
+		atec_load_pll(__DIR__,'cache-info');
+	});
 }
 ?>

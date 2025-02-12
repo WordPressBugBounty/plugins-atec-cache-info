@@ -1,12 +1,12 @@
 === atec Cache Info ===
 Contributors: DocJoJo
 Tags: OPcache, Object-Cache, APCu, Memcached, Redis
-Requires at least: 5.2
-Tested up to: 6.7.1
+Requires at least:4.9
+Tested up to: 6.7
 Requires PHP: 7.4
 Requires CP: 1.7
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.42
+Stable tag: 1.7.43
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,9 +17,10 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 This plugin provides detailed status information and statistics for PHP cache features, namely OPcache, WP-Object-Cache, JIT, APCu, Memcached, Redis and SQLite-Object-Cache.
 Use this plugin to check important server and cache settings to improve the performance of your WordPress installation.
 
-Lightweight (143KB) and resource-efficient.
-Backend CPU footprint: <1 ms.
-Frontend CPU footprint: <1 ms.
+=== Specifications ===
+
+Size: only 143 KB
+CPU footprint (idle): <5 ms.
 
 == 3rd party as a service ==
 
@@ -41,6 +42,9 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.43 [2025.02.10] =
+* New atec-fs filesystem
 
 = 1.7.42 [2025.02.06] =
 * CP release
