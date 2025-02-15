@@ -31,5 +31,6 @@ echo '
 </table>';
 
 if ($percent) $wpc_tools->usage($percent);	
+
 }}
 ?>

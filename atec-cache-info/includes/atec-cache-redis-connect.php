@@ -29,6 +29,5 @@ function atec_redis_connect($redSettings)
 	}
 	catch (RedisException $e) { return array('redis'=>null, 'error'=>rtrim($e->getMessage(),'.')); }
 	return array('redis'=>$redSuccess?$redis:null, 'error'=>$redSuccess?'':'Connection failed', 	'host'=>$redHost, 'port'=>$redPort, 'conn'=>$redConn); 
-
 }
 ?>

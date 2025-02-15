@@ -6,7 +6,7 @@ Tested up to: 6.7
 Requires PHP: 7.4
 Requires CP: 1.7
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.43
+Stable tag: 1.7.44
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,9 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.44 [2025.02.15] =
+* (function() {
 
 = 1.7.43 [2025.02.10] =
 * New atec-fs filesystem
