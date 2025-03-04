@@ -63,9 +63,15 @@ if (class_exists('Redis'))
 	{
 		try
 		{
-			$server		= $redis->info('server');
-			$stats 		= $redis->info('stats');
-			$memory 	= $redis->info('memory');
+			$server			= $redis->info('server');
+			$stats 			= $redis->info('stats');
+			$memory 		= $redis->info('memory');
+			
+			$available_serializers = [];
+			if (defined('Redis::SERIALIZER_PHP') && function_exists('igbinary_serialize')) $available_serializers[]='PHP';
+			if (defined('Redis::SERIALIZER_JSON') && function_exists('igbinary_serialize')) $available_serializers[]='JSON';
+			if (defined('Redis::SERIALIZER_IGBINARY') && function_exists('igbinary_serialize')) $available_serializers[]='IGBINARY';
+			if (defined('Redis::SERIALIZER_MSGPACK') && function_exists('msgpack_serialize')) $available_serializers[]='MSGPACK';
 
 			$total=$stats['keyspace_hits']+$stats['keyspace_misses']+0.001;
 			$hits=$stats['keyspace_hits']*100/$total;
@@ -79,6 +85,7 @@ if (class_exists('Redis'))
 				<tr><td>', esc_attr__('Host','atec-cache-info'), ':</td><td>', esc_textarea($redHost), '</td><td></td></tr>';
 				if ($redConn==='TCP/IP') echo '<tr><td>', esc_attr__('Port','atec-cache-info'), ':</td><td>', esc_attr($redPort), '</td><td></td></tr>';
 				if ($redPwd!=='') echo '<tr><td>', esc_attr__('Password','atec-cache-info'), ':</td><td>', esc_textarea($redPwd), '</td><td></td></tr>';
+				if (!empty($available_serializers)) echo '<tr><td>', esc_attr__('Serializers','atec-cache-info'), ':</td><td class="atec-small">', esc_attr(implode(', ',$available_serializers)), '</td><td></td></tr>';
 				atec_empty_tr();
 				echo '
 				<tr><td>', esc_attr__('Used','atec-cache-info').':</td><td>', esc_attr(size_format($memory['used_memory'])), '</td><td></td></tr>

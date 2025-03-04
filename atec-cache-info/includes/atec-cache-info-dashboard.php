@@ -10,7 +10,7 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 	$nonce 	= wp_create_nonce(atec_nonce());
 	$action 	= atec_clean_request('action');
 	$nav 		= atec_clean_request('nav');
-	if ($nav=='') $nav='Cache';
+	if ($nav==='') $nav='Cache';
 	
 	if ($action==='adminBar') atec_check_admin_bar('wpci',$url,$nonce,$nav);
 	
@@ -20,25 +20,20 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 	echo 
 	'<div class="atec-page">';
 		$mem_tools->memory_usage();
-		atec_header(__DIR__,'wpci','Cache Info');	
+		$licenseOk = atec_header(__DIR__,'wpci','Cache Info');	
 		
 		echo 
 		'<div class="atec-main">';
 			atec_progress();
 	
-			$licenseOk=atec_check_license()===true;
-			atec_nav_tab($url, $nonce, $nav, ['#memory Cache','#server Server','#scroll OPC '.esc_attr__('Scripts','atec-cache-info'),'#php PHP '.__('Extensions','atec-cache-info')], 2, $licenseOk);
-		
+			atec_nav_tab($url, $nonce, $nav, ['#memory Cache','#server Server','#scroll OPC '.esc_attr__('Scripts','atec-cache-info'),'#php PHP '.__('Extensions','atec-cache-info')], 2, $licenseOk);	
 			echo '
 			<div class="atec-g atec-border">';
 			atec_flush();
 	
-				if ($nav=='Info') { @require('atec-info.php'); new ATEC_info(__DIR__); }
+				if ($nav==='Info') { @require('atec-info.php'); new ATEC_info(__DIR__); }
 				else
 				{
-					if (function_exists('atec_loader_dots')) atec_loader_dots();
-					atec_flush();
-
 					global $wp_object_cache;
 					$optName = 'atec_WPCI_settings';
 					$options=get_option($optName,[]); 
@@ -68,13 +63,13 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 						}
 					}
 					
+					if (!class_exists('ATEC_wpc_tools')) @require('atec-wpc-tools.php');
+					$wpc_tools=new ATEC_wpc_tools();
+					
 					if ($action==='flush')
 					{
 						$type = atec_clean_request('type');
-						echo '
-						<div class="notice is-dismissible">
-							<p>', esc_attr__('Flushing','atec-cache-info'), ' ', esc_html(str_replace('_',' ',$type)),' ... ';
-					
+						$wpc_tools->flushing_start($type);
 							$result=false;
 							switch ($type) 
 							{
@@ -105,19 +100,16 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 									}
 								case 'SQLite': $result=$wp_object_cache->flush(); break;
 							}
-							if (!$result) echo '<span class="atec-green">', esc_attr__('failed','atec-cache-apcu'), '</span>.';
-							echo 
-							'</p>
-						</div>';
+						$wpc_tools->flushing_end($result);
+
 						if ($result) atec_reg_inline_script('wpci_redirect','window.location.assign("'.esc_url($url).'&nav=Cache&action=flushed&type='.$type.'&_wpnonce='.$nonce.'")'); 
 					}
-	
-					if (!class_exists('ATEC_wpc_tools')) @require('atec-wpc-tools.php');
-					$wpc_tools=new ATEC_wpc_tools();
-	
-					if ($nav=='Server') {@require(__DIR__.'/atec-server-info.php'); }
-					else if ($nav=='Cache')
-					{				
+		
+					if ($nav==='Server') @require(__DIR__.'/atec-server-info.php');
+					else if ($nav==='Cache')
+					{
+						if ($action!=='flush') { atec_loader_dots(); echo '<br>'; atec_flush(); }
+
 						atec_reg_inline_style('wpci_cache', '
 						table td:nth-of-type(2), table td:nth-of-type(3) { text-align: right; } 
 						table td:nth-of-type(3) { padding-left: 0; } 
@@ -128,9 +120,7 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 						atec_little_block_with_info('Zend Opcode & WP '.__('Object Cache','atec-cache-info'), $arr);
 						
 						if (str_contains($action,'flushed')) 	atec_success_msg(esc_attr__('Flushing','atec-cache-apcu').' '.esc_html(str_replace('_',' ',atec_clean_request('type'))).' '.esc_attr__('successful','atec-cache-apcu'));
-						
-						atec_reg_style('atec_cache_info',__DIR__,'atec-cache-info-style.min.css','1.0.002');
-		
+							
 						$apcu_enabled=extension_loaded('apcu')  && apcu_enabled();
 					
 						$wp_enabled=is_object($wp_object_cache);				
@@ -256,7 +246,7 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 							else atec_missing_class_check();
 						}
 					}
-					elseif ($nav=='PHP_'.__('Extensions','atec-cache-info')) 
+					elseif ($nav==='PHP_'.__('Extensions','atec-cache-info')) 
 					{ 
 						if (atec_pro_feature('„Extension“ lists all active PHP extensions and checks whether recommended extensions are installed')) 
 						{ 

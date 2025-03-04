@@ -21,6 +21,12 @@ if ($m)
 	$hits			= $mem['get_hits']*100/$total;
 	$misses	= $mem['get_misses']*100/$total;
 	
+	$available_serializers = [];
+	if (defined('Memcached::SERIALIZER_PHP') && function_exists('igbinary_serialize')) $available_serializers[]='PHP';
+	if (defined('Memcached::SERIALIZER_JSON') && function_exists('igbinary_serialize')) $available_serializers[]='JSON';
+	if (defined('Memcached::SERIALIZER_IGBINARY') && function_exists('igbinary_serialize')) $available_serializers[]='IGBINARY';
+	if (defined('Memcached::SERIALIZER_MSGPACK') && function_exists('msgpack_serialize')) $available_serializers[]='MSGPACK';
+
 	if (isset($mem['bytes'])) $percent=$mem['bytes']*100/($mem['limit_maxbytes']);
 	echo'
 	<table class="atec-table atec-table-tiny atec-table-td-first">
@@ -29,6 +35,7 @@ if ($m)
 			<tr><td>', esc_attr__('Connection','atec-cache-info'), ':</td><td>', esc_html($memConn), '</td><td></td></tr>
 			<tr><td>', esc_attr__('Host','atec-cache-info'), ':</td><td>', esc_html($memHost), '</td><td></td></tr>
 			<tr><td>', esc_attr__('Port','atec-cache-info'), ':</td><td>', esc_html($memPort), '</td><td></td></tr>';
+			if (!empty($available_serializers)) echo '<tr><td>', esc_attr__('Serializers','atec-cache-info'), ':</td><td class="atec-small">', esc_attr(implode(', ',$available_serializers)), '</td><td></td></tr>';
 			atec_empty_tr();
 			if (isset($mem['limit_maxbytes'])) 	echo '<tr><td>', esc_attr__('Memory','atec-cache-info'), ':</td><td>', esc_attr(size_format($mem['limit_maxbytes'])), '</td><td></td></tr>';
 			if (isset($mem['bytes'])) echo '<tr><td>', esc_attr__('Used','atec-cache-info'), ':</td>
