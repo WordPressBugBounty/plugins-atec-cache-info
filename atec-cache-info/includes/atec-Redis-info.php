@@ -106,7 +106,7 @@ if (class_exists('Redis'))
 		}
 		catch (RedisException $e) { atec_error_msg('Redis: '.rtrim($e->getMessage(),'.')); }
 	}
-	else atec_reg_inline_script('redis_flush', 'jQuery("#Redis_flush").hide();', true);
+	else atec_reg_inline_script('wpx_redis_flush', 'jQuery("#Redis_flush").hide();', true);
 }
 else atec_error_msg('Redis: '.esc_attr__('class is NOT available','atec-cache-info'));
 	

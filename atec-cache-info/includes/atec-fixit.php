@@ -12,7 +12,10 @@ public function atec_fixit($dir,$p,$slug,$option=null)
 	$ver = wp_cache_get('atec_'.$slug.'_version');
 	if ($this->atec_version_compare($option[$p]??0,$ver)===-1)
 	{ 
-		@require($dir.'/fixit.php'); 
+		$include = $dir.'/fixit.php';
+		// @codingStandardsIgnoreStart
+		if (@file_exists($include)) @require($include); 
+		// @codingStandardsIgnoreEnd
 		$option[$p]=$ver; 
 		update_option($optName,$option); 	
 	}

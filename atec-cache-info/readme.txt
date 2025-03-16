@@ -6,7 +6,7 @@ Tested up to: 6.7
 Requires PHP: 7.4
 Requires CP: 1.7
 Tested up to PHP: 8.4.1
-Stable tag: 1.7.45
+Stable tag: 1.7.46
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,9 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.7.46 [2025.03.16] =
+* New style.css and check.css
 
 = 1.7.45 [2025.03.04] =
 * Framework changes

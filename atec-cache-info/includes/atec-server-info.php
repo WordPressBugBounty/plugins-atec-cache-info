@@ -81,11 +81,11 @@ if ($ip!='' && $ip!='127.0.0.1' && $ip!='::1')
 	}
 }
 
-echo '
-<div class="atec-g atec-g-50">
-	<div class="atec-border-white">';
+echo 
+'<div class="atec-g atec-g-auto-2 atec-pt-10">
+	<div>';
 	
-		$this->tblHeader('computer',__('Operating system','atec-cache-info'),['OS','Version',__('Architecture','atec-cache-info'),__('Date/Time','atec-cache-info'),'Disk&nbsp;'.__('total','atec-cache-info'),'Disk&nbsp;'.__('free','atec-cache-info')]);
+		$this->tblHeader('computer',__('Operating system','atec-cache-info'),['OS','Version',__('Architecture','atec-cache-info'),__('Date/Time','atec-cache-info'),'Disk '.__('total','atec-cache-info'),'Disk '.__('free','atec-cache-info')]);
 			echo '
 			<td class="atec-nowrap">';
 				$icon='';
@@ -103,7 +103,7 @@ echo '
 			<td>', esc_attr($php_uname['m']), '</td>
 			<td>', esc_attr(date_format($now,"Y-m-d H:i")), ' ', esc_attr($tz.' '.$this->offset2Str($tzOffset)), '</td>	
 			<td class="atec-nowrap">', ($dt?esc_attr(size_format($dt)):esc_attr($empty)), '</td>
-			<td class="atec-nowrap">', ($df?esc_attr(size_format($df)):esc_attr($empty)), '&nbsp;', esc_attr($dp), '</td>';		
+			<td class="atec-nowrap">', ($df?esc_attr(size_format($df)):esc_attr($empty)), ' ', esc_attr($dp), '</td>';		
 		$this->tblFooter();
 		
 		echo '<br>';
@@ -131,13 +131,13 @@ echo '
 				echo esc_html($serverSoftware),'
 			</td>
 			<td>';
-				atec_server_sys_icon(__DIR__,'curl'); echo 'ver.&nbsp;', esc_attr(function_exists( 'curl_version')?$curl['version'].' | '.str_replace('(SecureTransport)','',$curl['ssl_version']):'n/a');
+				atec_server_sys_icon(__DIR__,'curl'); echo 'ver. ', esc_attr(function_exists( 'curl_version')?$curl['version'].' | '.str_replace('(SecureTransport)','',$curl['ssl_version']):'n/a');
 			echo 
 			'</td>';
 		$this->tblFooter();
 		
 	echo '</div>
-	<div class="atec-border-white">';
+	<div>';
 	
 		$ram='';
 		if (function_exists('exec'))
@@ -194,7 +194,7 @@ echo '
 
 		$isWP = !function_exists('classicpress_version');
 		$short = ($isWP?'WP':'CP');
-		$this->tblHeader($isWP?'wordpress':'classicpress',$isWP?'WordPress':'ClassicPress',[$short.' '.__('root','atec-cache-info'),$short.'&nbsp;'.__('size','atec-cache-info')]);
+		$this->tblHeader($isWP?'wordpress':'classicpress',$isWP?'WordPress':'ClassicPress',[$short.' '.__('root','atec-cache-info'),$short.' '.__('size','atec-cache-info')]);
 		echo '<td>', esc_url(defined('ABSPATH')?ABSPATH:$empty),'</td>
 			<td class="atec-nowrap">', esc_attr(size_format(get_dirsize(get_home_path()))),'</td>';
 		$this->tblFooter();
@@ -202,9 +202,9 @@ echo '
 		echo '<br>';
 	
 		$this->tblHeader('calender',__('Versions','atec-cache-info'),['WP','PHP','mySQL']);
-		echo '<td>Ver.&nbsp;', esc_html($isWP?get_bloginfo('version'):classicpress_version()),'</td>
-			<td>Ver.&nbsp;', esc_attr(phpversion().(function_exists( 'php_sapi_name')?' | '.php_sapi_name():'')),'</td>
-			<td>Ver.&nbsp;', esc_attr($mysql_version ?? 'n/a'),'</td>';
+		echo '<td>Ver. ', esc_html($isWP?get_bloginfo('version'):classicpress_version()),'</td>
+			<td>Ver. ', esc_attr(phpversion().(function_exists( 'php_sapi_name')?' | '.php_sapi_name():'')),'</td>
+			<td>Ver. ', esc_attr($mysql_version ?? 'n/a'),'</td>';
 		$this->tblFooter();
 	
 	echo '</div>
@@ -223,16 +223,16 @@ echo '
 		foreach ($tablesstatus as $tablestatus) 
 		{ $db_disk += $tablestatus->Data_length; $db_index += $tablestatus->Index_length; }
 		
-		$this->tblHeader('database',__('Database','atec-cache-info'),['DB '.__('driver','atec-cache-info'),'DB&nbsp;ver.','DB&nbsp;'.__('user','atec-cache-info'),'DB&nbsp;'.__('user','atec-cache-info')]);
+		$this->tblHeader('database',__('Database','atec-cache-info'),['DB '.__('driver','atec-cache-info'),'DB ver.','DB '.__('user','atec-cache-info'),'DB '.__('user','atec-cache-info')]);
 		echo '<td>', ($db_soft?esc_html($db_soft[0]->Value):esc_attr($empty)), '</td>
-				<td>Ver.&nbsp;', ($db_ver?esc_attr($db_ver):esc_attr($empty)), '</td>
+				<td>Ver. ', ($db_ver?esc_attr($db_ver):esc_attr($empty)), '</td>
 				<td>', esc_attr(defined('DB_NAME')?DB_NAME:esc_attr($empty)), '</td>
 				<td>', esc_attr(defined('DB_USER')?DB_USER:esc_attr($empty)), '</td>';
 		$this->tblFooter();
 		
 		echo '<br>';
 	
-		$this->tblHeader('database',__('Database settings','atec-cache-info'),['DB&nbsp;max.&nbsp;'.__('conn.','atec-cache-info'),'DB&nbsp;max.&nbsp;'.__('packages','atec-cache-info'),'DB&nbsp;size','DB&nbsp;Index&nbsp;'.__('size','atec-cache-info')]);
+		$this->tblHeader('database',__('Database settings','atec-cache-info'),['DB max. '.__('conn.','atec-cache-info'),'DB max. '.__('packages','atec-cache-info'),'DB size','DB Index '.__('size','atec-cache-info')]);
 		echo '<td>', ($db_max_conn?esc_attr($db_max_conn[0]->Value):esc_attr($empty)), '</td>
 				<td class="atec-nowrap">', ($db_max_package?esc_attr(size_format($db_max_package[0]->Value)):esc_attr($empty)), '</td>
 				<td class="atec-nowrap">', ($db_disk?esc_attr(size_format($db_disk)):esc_attr($empty)), '</td>

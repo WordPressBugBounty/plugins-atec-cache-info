@@ -94,7 +94,7 @@ echo
 		atec_nav_tab($url, $nonce, $nav, ['#admin-home Dashboard','#admin-plugins All Plugins','#awards License']);
 		
 		echo 
-		'<div class="atec-g atec-border" style="margin-top: 31px;">';
+		'<div class="atec-g atec-border">';
 			atec_flush();
 			
 			if ($nav==='Dashboard')
@@ -118,14 +118,13 @@ echo
 							'<div class="atec-dilb atec-fit atec-vat">';
 								// @codingStandardsIgnoreStart | Image is not an attachement
 								echo 
-								'<p class="atec-bold atec-mb-0 atec-ml-10">
+								'<p class="atec-bold atec-mb-0 atec-mr-10 atec-border-bottom">
 									<img class="atec-plugin-icon" src="', esc_url($goupAssetPath.'atec_'.$p['slug'].'_icon.svg'), '" style="height: 16px;">&nbsp;', 
 									'<a href="', esc_url(admin_url().'admin.php?page=atec_'.$p['slug']) ,'" class="atec-nodeco">', $this->atec_fix_name($p['name']), '</a>',
 								'</p>';
 								// @codingStandardsIgnoreEnd								
 								echo
-								'<div class="atec-border atec-bg-w6" style="padding:0 0 0 10px; margin: 0 10px 0 0; order:0;">
-								<hr style="border-color:white;">';
+								'<div style="margin: 0 10px 0 0; padding-top: 5px; order:0;">';
 								
 								switch ($p['name'])
 								{
@@ -207,7 +206,7 @@ echo
 										break;
 									case 'mega-cache':
 										global $atec_wpmc_settings; 
-										$this->atec_group_badge('Page-Cache',filter_var($atec_wpca_settings['cache']??0,258));
+										$this->atec_group_badge('Page-Cache',filter_var($atec_wpmc_settings['cache']??0,258));
 										break;
 								}
 								echo 
@@ -218,9 +217,10 @@ echo
 					}
 				}
 				echo 
-				'</div>
-				<br class="atec-clear"><br><small class="atec-mt-0">The status of plugins performing background tasks.</small>
-				<div class="tablenav">'; atec_nav_button($url,$nonce,'_','All_Plugins','All atec-Plugins and features'); echo '</div>';
+				'</div><br class="atec-mb-10">';
+				atec_nav_button($url,$nonce,'_','All_Plugins','All atec-Plugins and features'); 
+				echo 
+				'<br class="atec-clear">';
 			}
 			elseif ($nav=='All_Plugins')
 			{
@@ -262,7 +262,7 @@ echo
 							<td><a title="Download from atecplugins.com" class="atec-nodeco atec-vam button button-secondary" style="padding: 0px 4px;" target="_blank" href="', esc_url($atecplugins), 'WP-Plugins/atec-', esc_attr($a['name']), '.zip" download><span style="padding-top: 4px;" class="', esc_attr(atec_dash_class('download','')), '"></span></a></td>';
 							echo '
 							<td>', esc_attr($a['desc']), '</td>
-							<td><small ', ($a['pro']==='„PRO“ only'?' class="atec-bold"':''), '>', esc_attr($a['pro']), '</small></td>
+							<td><small ', ($a['pro']==='„PRO“ only'?' class="atec-bold" style="color:#fd5201;"':''), '>', esc_attr($a['pro']), '</small></td>
 							</tr>';
 						$c++;
 					} 
@@ -313,7 +313,7 @@ echo
 							{
 								$c++;
 								if ($a['slug']==='wpmc') continue;
-								if ($c % 18===0) echo '<br>';
+								if ($c % 19===0) echo '<br>';
 								// @codingStandardsIgnoreStart | Image is not an attachement
 								echo '<img class="atec-plugin-icon" src="', esc_url($goupAssetPath.'atec_'.$a['slug'].'_icon.svg'), '" style="height: 22px; margin: 0 5px 10px 5px;">';
 								// @codingStandardsIgnoreEnd

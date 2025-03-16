@@ -49,7 +49,7 @@ if (!$op_status) atec_error_msg('The function „opcache_get_status“ does not 
 else
 {
 	$c=0; $total=0; $keys=[];
-	atec_table_header_tiny(['#',__('Key','atec-cache-info'),__('Hits','atec-cache-info'),__('Size','atec-cache-info'),__('Last used','atec-cache-info'),__('Revalidate','atec-cache-info').' (s)']);
+	atec_table_header_tiny(['#',__('Key','atec-cache-info'),__('Hits','atec-cache-info'),__('Size','atec-cache-info'),__('Last used','atec-cache-info'),__('Revalidate','atec-cache-info').'&nbsp;(s)']);
 		$scripts=[];
 		foreach ($op_status['scripts'] as $key => $value) { $scripts[]=array_merge(array('key'=>$key),$value); }
 
@@ -59,7 +59,7 @@ else
 			$c++; 
 			$color=in_array($s['key'],$keys)?' atec-red':'';
 			echo '<tr>
-					<td>', esc_attr($c), '</td>
+					<td class="atec-TDBR">', esc_attr($c), '</td>
 					<td class="atec-anywrap', str_contains($s['key'],'atec-')?' atec-violet':'', esc_attr($color), '" title="', esc_url($s['full_path']) ,'">', esc_attr($s['key']), '</td>
 					<td class="atec-nowrap atec-table-right">', esc_attr($s['hits']), '</td>
 					<td class="atec-nowrap atec-table-right">', esc_attr(size_format($s['memory_consumption'])), '</td>				

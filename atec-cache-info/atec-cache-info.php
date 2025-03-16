@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) { exit(); }
   * Plugin Name:  atec Cache Info
   * Plugin URI: https://atecplugins.com/
   * Description: Show all system caches, status and statistics (OPcache, WP-Object-Cache, JIT, APCu, Memcached, Redis, SQLite-Object-Cache).
-  * Version: 1.7.45
+  * Version: 1.7.46
   * Requires at least:4.9
   * Tested up to: 6.7
   * Tested up to PHP: 8.4.2
@@ -37,6 +37,6 @@ if (is_admin())
 			}			
 		}
 	});
-	if (in_array($atec_active_slug=atec_get_slug(), ['atec_group','atec_wpci'])) { wp_cache_set('atec_wpci_version','1.7.45'); @require('includes/atec-wpci-install.php'); }
+	if (in_array($atec_active_slug=atec_get_slug(), ['atec_group','atec_wpci'])) { wp_cache_set('atec_wpci_version','1.7.46'); @require('includes/atec-wpci-install.php'); }
 }
 ?>

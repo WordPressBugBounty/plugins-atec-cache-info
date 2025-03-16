@@ -141,18 +141,22 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 							<div class="atec-border-white">
 								<h4>OPcache '; atec_enabled($opc_enabled);
 								if ($opc_enabled && !$opcache_file_only) 
-								echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" href="', esc_url($url), '&action=flush&type=OPcache&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('All','atec-cache-info'), '</span></a>';
+								echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class=" atec-float-right button" style="margin-top: -5px;" href="', esc_url($url), '&action=flush&type=OPcache&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('All','atec-cache-info'), '</span></a>';
 								echo '
 								</h4><hr>';
 								if ($opc_enabled) {@require(__DIR__.'/atec-OPC-info.php'); new ATEC_OPcache_info($opc_conf,$opc_status,$opcache_file_only,$wpc_tools); }
-								else atec_p('OPcache '.esc_attr__('extension is NOT installed/enabled','atec-cache-info'));
-								@require('atec-OPC-help.php');
+								else 
+								{
+									atec_p('OPcache '.esc_attr__('extension is NOT installed/enabled','atec-cache-info'));
+									@require('atec-OPC-help.php');
+								}
+
 							echo '
 							</div>
 							
 							<div class="atec-border-white">
 								<h4>WP ', esc_attr__('Object Cache','atec-cache-info'), ' '; atec_enabled($wp_enabled);
-								if ($wp_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" id="WP_Ocache_flush" href="', esc_url($url), '&action=flush&type=WP_Ocache&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('Site','atec-cache-info'), '</span></a>';
+								if ($wp_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class=" atec-float-right button" style="margin-top: -5px;" id="WP_Ocache_flush" href="', esc_url($url), '&action=flush&type=WP_Ocache&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('Site','atec-cache-info'), '</span></a>';
 								echo '
 								</h4><hr>';
 								if ($wp_enabled) { @require(__DIR__.'/atec-WPC-info.php'); new ATEC_WPcache_info($wpc_tools); }			
@@ -193,7 +197,7 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 						<div class="atec-g atec-g-25">
 							<div class="atec-border-white">
 								<h4>APCu '; atec_enabled($apcu_enabled);
-								if ($apcu_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" id="APCu_flush" href="', esc_url($url), '&action=flush&type=APCu&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('All','atec-cache-info'), '</span></a>';
+								if ($apcu_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class=" atec-float-right button" style="margin-top: -5px;" id="APCu_flush" href="', esc_url($url), '&action=flush&type=APCu&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('All','atec-cache-info'), '</span></a>';
 								echo '
 								</h4><hr>';
 								if ($apcu_enabled) {@require(__DIR__.'/atec-APCu-info.php'); new ATEC_APCu_info($wpc_tools); }
@@ -208,7 +212,7 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 							
 							<div class="atec-border-white">
 								<h4>Memcached '; atec_enabled($mem_enabled);
-								if ($mem_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" id="Memcached_flush" href="', esc_url($url), '&action=flush&type=Memcached&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('All','atec-cache-info'), '</span></a>';
+								if ($mem_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class=" atec-float-right button" style="margin-top: -5px;" id="Memcached_flush" href="', esc_url($url), '&action=flush&type=Memcached&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('All','atec-cache-info'), '</span></a>';
 								echo '
 								</h4><hr>';
 								if ($mem_enabled) { @require(__DIR__.'/atec-Memcached-info.php'); new ATEC_memcached_info($url,$nonce,$wpc_tools,$memSettings); }
@@ -218,7 +222,7 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 							
 							<div class="atec-border-white">
 								<h4>Redis '; atec_enabled($red_enabled);
-								if ($red_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" id="Redis_flush" href="', esc_url($url), '&action=flush&type=Redis&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('All','atec-cache-info'), '</span></a>';
+								if ($red_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class=" atec-float-right button" style="margin-top: -5px;" id="Redis_flush" href="', esc_url($url), '&action=flush&type=Redis&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('All','atec-cache-info'), '</span></a>';
 								echo '
 								</h4><hr>';
 								if ($red_enabled) { @require(__DIR__.'/atec-Redis-info.php'); new ATEC_Redis_info($url,$nonce,$wpc_tools,$redSettings); }
@@ -228,7 +232,7 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 							
 							<div class="atec-border-white">
 								<h4>SQLite '; atec_enabled($sql_enabled);
-								if ($sql_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class="atec-right button" id="SQLite_flush" href="', esc_url($url), '&action=flush&type=SQLite&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('Site','atec-cache-info'), '</span></a>';
+								if ($sql_enabled) echo '<a title="', esc_attr__('Empty cache','atec-cache-info'), '" class=" atec-float-right button" style="margin-top: -5px;" id="SQLite_flush" href="', esc_url($url), '&action=flush&type=SQLite&_wpnonce=', esc_attr($nonce), '"><span class="', esc_attr(atec_dash_class('trash')), '"></span><span>', esc_attr__('Site','atec-cache-info'), '</span></a>';
 								echo '
 								</h4><hr>';						
 								if ($sql_enabled) { @require(__DIR__.'/atec-SQLite-info.php'); new ATEC_SQLite_info($wpc_tools, $wp_object_cache); }
@@ -239,7 +243,7 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 					}
 					elseif (str_starts_with($nav,'OPC_'))
 					{ 
-						if (atec_pro_feature('„OPC Scripts“ lists all scripts files and statistics of in the OPcache memory')) 
+						if (atec_pro_feature('„OPC Scripts“ lists all scripts files and statistics of in the OPcache memory',false,$licenseOk))
 						{ 
 							atec_include_if_exists(__DIR__,'atec-OPC-groups.php');
 							if (class_exists('ATEC_oc_groups')) new ATEC_oc_groups($url,$nonce,$action);
@@ -248,7 +252,7 @@ if (!class_exists('ATEC_fixit')) @require('atec-fixit.php');
 					}
 					elseif ($nav==='PHP_'.__('Extensions','atec-cache-info')) 
 					{ 
-						if (atec_pro_feature('„Extension“ lists all active PHP extensions and checks whether recommended extensions are installed')) 
+						if (atec_pro_feature('„Extension“ lists all active PHP extensions and checks whether recommended extensions are installed',false,$licenseOk))
 						{ 
 							atec_include_if_exists(__DIR__,'atec-extensions-info.php');
 							if (class_exists('ATEC_extensions_info')) new ATEC_extensions_info();

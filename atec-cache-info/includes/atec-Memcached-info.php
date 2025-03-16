@@ -61,7 +61,7 @@ if ($m)
 }
 else 
 {
-	atec_reg_inline_script('memcached_flush', 'jQuery("#Memcached_flush").hide();', true);
+	atec_reg_inline_script('wpx_memcached_flush', 'jQuery("#Memcached_flush").hide();', true);
 	
 	echo 
 	'<p>
