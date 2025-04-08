@@ -1,5 +1,5 @@
 <?php
-if (!defined('ABSPATH')) { exit(); }
+if (!defined('ABSPATH')) { exit; }
 	
 $atec_group_arr = 
 [
@@ -31,7 +31,7 @@ $atec_group_arr =
 	['slug'=>'wppp', 'name'=>'page-performance','desc'=>__('Measure the PageScore and SpeedIndex of your WordPress site','atec-cache-info'),'pro'=>'„PRO“ only','wp'=>false, 'multi'=>true],
 		['slug'=>'wppo', 'name'=>'poly-addon','desc'=>__('Custom translation strings for polylang plugin','atec-cache-info'),'pro'=>'-/-','wp'=>false, 'multi'=>false],
 	['slug'=>'wppv', 'name'=>'preview','desc'=>__('Shows a live preview of your site, requested from a remote location','atec-cache-info'),'pro'=>'„PRO“ only','wp'=>false, 'multi'=>true],
-	['slug'=>'wppr', 'name'=>'profiler','desc'=>__('Measure plugins & theme plus pages execution time','atec-cache-info'),'pro'=>'Monitor page performance and queries','wp'=>false, 'multi'=>true],
+	['slug'=>'wppr', 'name'=>'profiler','desc'=>__('Measure plugins & theme plus pages execution time','atec-cache-info'),'pro'=>'Monitor page performance and queries','wp'=>true, 'multi'=>true],
 	
 	['slug'=>'wpsr', 'name'=>'search-replace','desc'=>__('Search & Replace strings in all tables','atec-cache-info'),'pro'=>'„PRO“ only','wp'=>false, 'multi'=>true],
 	['slug'=>'wpsh', 'name'=>'shell','desc'=>__('Connect to a remote server via SSH','atec-cache-info'),'pro'=>'„PRO“ only','wp'=>false, 'multi'=>true],

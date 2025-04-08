@@ -1,5 +1,5 @@
 <?php
-if (!defined('ABSPATH')) { exit(); }
+if (!defined('ABSPATH')) { exit; }
 /**
 * Fixit: 1.7.21 | NOT critical
 * Backwards compatible unix path

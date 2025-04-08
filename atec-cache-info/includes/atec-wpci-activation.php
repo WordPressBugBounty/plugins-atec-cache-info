@@ -1,8 +1,8 @@
 <?php
-if (!defined('ABSPATH')) { exit(); }
+if (!defined('ABSPATH')) { exit; }
 
 (function() {
-	if (!function_exists('atec_header')) @require(__DIR__.'/atec-tools.php');
+	if (!function_exists('atec_header')) require(__DIR__.'/atec-tools.php');
 	atec_integrity_check(__DIR__);
 	
 	$optName = 'atec_WPCI_settings';

@@ -1,11 +1,11 @@
 <?php
-if (!defined('ABSPATH')) { exit(); }
+if (!defined('ABSPATH')) { exit; }
 
 class ATEC_OPcache_info { 
 	
-private function increaseInSteps($value, $factor, $step = 128) { return ceil(($value * $factor) / $step) * $step; }
+private static function increaseInSteps($value, $factor, $step = 128) { return ceil(($value * $factor) / $step) * $step; }
 
-function __construct($op_conf,$op_status,$opcache_file_only,$wpc_tools) {	
+function __construct($op_conf,$op_status,$opcache_file_only) {	
 	
 	if ($opcache_file_only)
 	{
@@ -45,8 +45,8 @@ function __construct($op_conf,$op_status,$opcache_file_only,$wpc_tools) {
 					$megaByte 	= 1048576;
 					$memConsumptionroundInMB = $memConsumption/$megaByte;
 					$recMemory = $memConsumptionroundInMB;
-					if ($percent>75) $recMemory=$this->increaseInSteps($recMemory,1.50);
-					elseif ($percent>50) $recMemory=$this->increaseInSteps($recMemory,1.25);
+					if ($percent>75) $recMemory = self::increaseInSteps($recMemory,1.50);
+					elseif ($percent>50) $recMemory = self::increaseInSteps($recMemory,1.25);
 					$OPC_recommended = ['memory'=>$recMemory, 'strings'=>8, 'files'=>10000];
 
 					echo '
@@ -58,9 +58,9 @@ function __construct($op_conf,$op_status,$opcache_file_only,$wpc_tools) {
 						<td><small>', esc_attr(sprintf("%.1f%%",$op_status['memory_usage']['current_wasted_percentage'])), '</small></td></tr>';
 					atec_empty_TR();
 					echo '
-					<tr><td>&nbsp;&nbsp;',esc_attr__('Hits','atec-cache-info'),':</td><td>',esc_attr(number_format($hits)), '</td>
+					<tr><td>&nbsp;&nbsp;',esc_attr__('Hits','atec-cache-info'),':</td><td>',esc_html(number_format($hits)), '</td>
 						<td><small>', esc_attr(sprintf("%.1f%%",$hitsPercent)), '</small></td></tr>
-					<tr><td>&nbsp;&nbsp;',esc_attr__('Misses','atec-cache-info'),':</td><td>',esc_attr(number_format($misses)), '</td>
+					<tr><td>&nbsp;&nbsp;',esc_attr__('Misses','atec-cache-info'),':</td><td>',esc_html(number_format($misses)), '</td>
 						<td><small>', esc_attr(sprintf("%.1f%%",$missesPercent)), '</small></td></tr>';
 				}
 				echo '
@@ -70,9 +70,8 @@ function __construct($op_conf,$op_status,$opcache_file_only,$wpc_tools) {
 			if ($opStats)
 			{
 				if ($recMemory!==$memConsumptionroundInMB) atec_warning_msg('Try raising the limit to '.$recMemory.' MB');
-				$wpc_tools->usage($percent);	
-				$wpc_tools->hitrate($hitsPercent,$missesPercent);
-				//if ($percent>90) atec_error_msg(__('OPcache usage is beyond 90%','atec-cache-info').' '.__('Please increase the „memory_consumption“ option','atec-cache-info'));
+				ATEC_wpc_tools::usage($percent);	
+				ATEC_wpc_tools::hitrate($hitsPercent,$missesPercent);
 			}
 			else
 			{ 
@@ -111,7 +110,7 @@ function __construct($op_conf,$op_status,$opcache_file_only,$wpc_tools) {
 			if (isset($percentStrings)) 
 			{
 				if ($recStrings!==$stringBuffer) atec_warning_msg('Try raising the limit to '.$recStrings.' MB');
-				$wpc_tools->usage($percentStrings);
+				ATEC_wpc_tools::usage($percentStrings);
 			}
 			
 			atec_help('OPcache','OPcache '.__('explained','atec-cache-info'));
@@ -165,11 +164,11 @@ function __construct($op_conf,$op_status,$opcache_file_only,$wpc_tools) {
 						$OPC_recommended['files']=$recFiles;
 
 						echo '
-						<tr><td>&nbsp;&nbsp;',esc_attr__('Max real','atec-cache-info'),':</td><td>',esc_attr(number_format($maxReal)),'</td></tr>';
+						<tr><td>&nbsp;&nbsp;',esc_attr__('Max real','atec-cache-info'),':</td><td>',esc_html(number_format($maxReal)),'</td></tr>';
 						atec_empty_tr();
 						echo '
-						<tr><td>&nbsp;&nbsp;',esc_attr__('Scripts cached','atec-cache-info'),':</td><td>',esc_attr(number_format($numScripts)),'</td></tr>
-						<tr><td>&nbsp;&nbsp;',esc_attr__('Keys cached','atec-cache-info'),':</td><td>',esc_attr(number_format($numKeys)),'</td></tr>';
+						<tr><td>&nbsp;&nbsp;',esc_attr__('Scripts cached','atec-cache-info'),':</td><td>',esc_html(number_format($numScripts)),'</td></tr>
+						<tr><td>&nbsp;&nbsp;',esc_attr__('Keys cached','atec-cache-info'),':</td><td>',esc_html(number_format($numKeys)),'</td></tr>';
 					}
 				echo '
 				</tbody>
@@ -178,11 +177,11 @@ function __construct($op_conf,$op_status,$opcache_file_only,$wpc_tools) {
 			if (isset($percentFiles)) 
 			{
 				if ($recFiles!==$max_accelerated_files) atec_warning_msg('Try raising the limit to '.$recFiles);
-				$wpc_tools->usage($percentFiles);	
+				ATEC_wpc_tools::usage($percentFiles);	
 			}
 		}
 	}
 	
-	@require('atec-OPC-help.php');
+	require('atec-OPC-help.php');
 }}
 ?>

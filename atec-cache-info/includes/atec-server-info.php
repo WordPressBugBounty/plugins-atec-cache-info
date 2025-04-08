@@ -1,13 +1,13 @@
 <?php
-if (!defined('ABSPATH')) { exit(); }
+if (!defined('ABSPATH')) { exit; }
 
 class ATEC_server_info { 
 	
-private function envExists($str): string { return isset($_SERVER[$str])?sanitize_text_field(wp_unslash
+private static function envExists($str): string { return isset($_SERVER[$str])?sanitize_text_field(wp_unslash
 ($_SERVER[$str])):''; }
-private function offset2Str($tzOffset): string { return ($tzOffset>0?'+':'').$tzOffset; }
+private static function offset2Str($tzOffset): string { return ($tzOffset>0?'+':'').$tzOffset; }
 
-private function getGeo($ip): string
+private static function getGeo($ip): string
 {
 	$url			= 'https://ipinfo.io/'.$ip.'/json?token=274eb3cf12e5f5';
 	$request	= wp_remote_get( $url );
@@ -16,7 +16,7 @@ private function getGeo($ip): string
 	return (isset($geo->city) && isset($geo->country))?($geo->city.' / '.$geo->country):'';
 }
 
-private function tblHeader($icon,$title,$arr): void
+private static function tblHeader($icon,$title,$arr): void
 {
 	echo '
 	<div class="atec-mb-5">
@@ -26,7 +26,7 @@ private function tblHeader($icon,$title,$arr): void
 		'<tr>';
 }
 
-private function tblFooter(): void { echo '</tr>'; atec_table_footer(); echo '</div>'; }
+private static function tblFooter(): void { echo '</tr>'; atec_table_footer(); echo '</div>'; }
 
 function __construct() {	
 
@@ -45,7 +45,7 @@ if ($php_uname['m']===$empty)
 }
 
 $host = $php_uname['n'];
-$ip		= $this->envExists('SERVER_ADDR');
+$ip		= self::envExists('SERVER_ADDR');
 if ($ip!='') { $host .= ($host!==''?' | ':'').$ip; }
 if (function_exists('curl_version')) { $curl = @curl_version(); }
 else { $curl=array('version'=>'n/a', 'ssl_version'=>'n/a'); }
@@ -66,7 +66,7 @@ $unlimited	= atec_get_slug()==='atec_wpsi';
 $tz				= date_default_timezone_get()?date_default_timezone_get():(ini_get('date.timezone')?ini_get('date.timezone'):'');
 $tzOffset		= intval(get_option('gmt_offset',0));
 $now			= new DateTime('', new DateTimeZone('UTC'));
-$now			= $now->modify($this->offset2Str($tzOffset).' hour');
+$now			= $now->modify(self::offset2Str($tzOffset).' hour');
 $geo				= '';
 
 if ($ip!='' && $ip!='127.0.0.1' && $ip!='::1')
@@ -75,7 +75,7 @@ if ($ip!='' && $ip!='127.0.0.1' && $ip!='::1')
 	$geo=get_option('atec_WPSI_geo','');
 	if ($ip!=$lastIP || $geo=='')
 	{
-		$geo=$this->getGeo($ip);
+		$geo=self::getGeo($ip);
 		update_option('atec_WPSI_ip',esc_attr($ip),false);
 		update_option('atec_WPSI_geo',esc_attr($geo),false);
 	}
@@ -85,7 +85,7 @@ echo
 '<div class="atec-g atec-g-auto-2 atec-pt-10">
 	<div>';
 	
-		$this->tblHeader('computer',__('Operating system','atec-cache-info'),['OS','Version',__('Architecture','atec-cache-info'),__('Date/Time','atec-cache-info'),'Disk '.__('total','atec-cache-info'),'Disk '.__('free','atec-cache-info')]);
+		self::tblHeader('computer',__('Operating system','atec-cache-info'),['OS','Version',__('Architecture','atec-cache-info'),__('Date/Time','atec-cache-info'),'Disk '.__('total','atec-cache-info'),'Disk '.__('free','atec-cache-info')]);
 			echo '
 			<td class="atec-nowrap">';
 				$icon='';
@@ -101,10 +101,10 @@ echo
 			'</td>
 			<td>', esc_attr($php_uname['r']), '</td>
 			<td>', esc_attr($php_uname['m']), '</td>
-			<td>', esc_attr(date_format($now,"Y-m-d H:i")), ' ', esc_attr($tz.' '.$this->offset2Str($tzOffset)), '</td>	
+			<td>', esc_attr(date_format($now,"Y-m-d H:i")), ' ', esc_attr($tz.' '.self::offset2Str($tzOffset)), '</td>	
 			<td class="atec-nowrap">', ($dt?esc_attr(size_format($dt)):esc_attr($empty)), '</td>
 			<td class="atec-nowrap">', ($df?esc_attr(size_format($df)):esc_attr($empty)), ' ', esc_attr($dp), '</td>';		
-		$this->tblFooter();
+		self::tblFooter();
 		
 		echo '<br>';
 	
@@ -112,9 +112,9 @@ echo
 		if ($geo!='') $headArray[] = __('Location','atec-cache-info');
 		$headArray[] = 'Server'; 	
 		$headArray[] = 'CURL';
-		$this->tblHeader('server',__('Server','atec-cache-info'),$headArray);
-		$serverSoftware	= $this->envExists('SERVER_SOFTWARE');
-		$serverName		= $this->envExists('SERVER_NAME');
+		self::tblHeader('server',__('Server','atec-cache-info'),$headArray);
+		$serverSoftware	= self::envExists('SERVER_SOFTWARE');
+		$serverName		= self::envExists('SERVER_NAME');
 	
 		echo 
 			'<td>', esc_html($serverName),'</td>
@@ -134,7 +134,7 @@ echo
 				atec_server_sys_icon(__DIR__,'curl'); echo 'ver. ', esc_attr(function_exists( 'curl_version')?$curl['version'].' | '.str_replace('(SecureTransport)','',$curl['ssl_version']):'n/a');
 			echo 
 			'</td>';
-		$this->tblFooter();
+		self::tblFooter();
 		
 	echo '</div>
 	<div>';
@@ -165,22 +165,22 @@ echo
 		$limitStr = __('limit','atec-cache-info');
 		$memStr = __('mem.','atec-cache-info');
 		$memArr=array_merge($memArr,['PHP '.$memStr.' '.$limitStr,'WP '.$memStr.' '.$limitStr,'WP max. '.$memStr.' '.$limitStr,$memStr.' '.__('usage','atec-cache-info')]);
-		$this->tblHeader('memory',__('Memory','atec-cache-info'),$memArr);
+		self::tblHeader('memory',__('Memory','atec-cache-info'),$memArr);
 		if ($ram!=='') echo '<td>', esc_attr(size_format($ram)), '</td>';
 		echo '<td>', esc_attr(ini_get('memory_limit')), '</td>
 			<td>', esc_attr(WP_MEMORY_LIMIT), '</td>
 			<td>', esc_attr(WP_MAX_MEMORY_LIMIT), '</td>
 			<td>', esc_attr($peak), '</td>';
-		$this->tblFooter();
+		self::tblFooter();
 		
 		echo '<br>';
 	
-		$this->tblHeader('php',__('PHP Settings','atec-cache-info'),['„max. exec. time“','„max. input vars“','„post max. size“','„upload max. filesize“']);
+		self::tblHeader('php',__('PHP Settings','atec-cache-info'),['„max. exec. time“','„max. input vars“','„post max. size“','„upload max. filesize“']);
 		echo '<td>', esc_attr(gmdate('H:i:s', ini_get('max_execution_time'))),'</td>
-			<td>', esc_attr(number_format(ini_get('max_input_vars'))),'</td>
+			<td>', esc_html(number_format(ini_get('max_input_vars'))),'</td>
 			<td>', esc_attr(ini_get('post_max_size')),'</td>
 			<td>', esc_attr(ini_get('upload_max_filesize')),'</td>';
-		$this->tblFooter();
+		self::tblFooter();
 	
 echo '
 	</div>
@@ -194,18 +194,18 @@ echo '
 
 		$isWP = !function_exists('classicpress_version');
 		$short = ($isWP?'WP':'CP');
-		$this->tblHeader($isWP?'wordpress':'classicpress',$isWP?'WordPress':'ClassicPress',[$short.' '.__('root','atec-cache-info'),$short.' '.__('size','atec-cache-info')]);
+		self::tblHeader($isWP?'wordpress':'classicpress',$isWP?'WordPress':'ClassicPress',[$short.' '.__('root','atec-cache-info'),$short.' '.__('size','atec-cache-info')]);
 		echo '<td>', esc_url(defined('ABSPATH')?ABSPATH:$empty),'</td>
 			<td class="atec-nowrap">', esc_attr(size_format(get_dirsize(get_home_path()))),'</td>';
-		$this->tblFooter();
+		self::tblFooter();
 		
 		echo '<br>';
 	
-		$this->tblHeader('calender',__('Versions','atec-cache-info'),['WP','PHP','mySQL']);
+		self::tblHeader('calender',__('Versions','atec-cache-info'),['WP','PHP','mySQL']);
 		echo '<td>Ver. ', esc_html($isWP?get_bloginfo('version'):classicpress_version()),'</td>
 			<td>Ver. ', esc_attr(phpversion().(function_exists( 'php_sapi_name')?' | '.php_sapi_name():'')),'</td>
 			<td>Ver. ', esc_attr($mysql_version ?? 'n/a'),'</td>';
-		$this->tblFooter();
+		self::tblFooter();
 	
 	echo '</div>
 	<div class="atec-border-white">';
@@ -223,21 +223,21 @@ echo '
 		foreach ($tablesstatus as $tablestatus) 
 		{ $db_disk += $tablestatus->Data_length; $db_index += $tablestatus->Index_length; }
 		
-		$this->tblHeader('database',__('Database','atec-cache-info'),['DB '.__('driver','atec-cache-info'),'DB ver.','DB '.__('user','atec-cache-info'),'DB '.__('user','atec-cache-info')]);
+		self::tblHeader('database',__('Database','atec-cache-info'),['DB '.__('driver','atec-cache-info'),'DB ver.','DB '.__('user','atec-cache-info'),'DB '.__('user','atec-cache-info')]);
 		echo '<td>', ($db_soft?esc_html($db_soft[0]->Value):esc_attr($empty)), '</td>
 				<td>Ver. ', ($db_ver?esc_attr($db_ver):esc_attr($empty)), '</td>
 				<td>', esc_attr(defined('DB_NAME')?DB_NAME:esc_attr($empty)), '</td>
 				<td>', esc_attr(defined('DB_USER')?DB_USER:esc_attr($empty)), '</td>';
-		$this->tblFooter();
+		self::tblFooter();
 		
 		echo '<br>';
 	
-		$this->tblHeader('database',__('Database settings','atec-cache-info'),['DB max. '.__('conn.','atec-cache-info'),'DB max. '.__('packages','atec-cache-info'),'DB size','DB Index '.__('size','atec-cache-info')]);
+		self::tblHeader('database',__('Database settings','atec-cache-info'),['DB max. '.__('conn.','atec-cache-info'),'DB max. '.__('packages','atec-cache-info'),'DB size','DB Index '.__('size','atec-cache-info')]);
 		echo '<td>', ($db_max_conn?esc_attr($db_max_conn[0]->Value):esc_attr($empty)), '</td>
 				<td class="atec-nowrap">', ($db_max_package?esc_attr(size_format($db_max_package[0]->Value)):esc_attr($empty)), '</td>
 				<td class="atec-nowrap">', ($db_disk?esc_attr(size_format($db_disk)):esc_attr($empty)), '</td>
 				<td class="atec-nowrap">', ($db_index?esc_attr(size_format($db_index)):esc_attr($empty)), '</td>';
-		$this->tblFooter();
+		self::tblFooter();
 	
 	echo '
 	</div>

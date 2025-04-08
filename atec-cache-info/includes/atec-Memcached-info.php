@@ -1,9 +1,20 @@
 	<?php
-if (!defined('ABSPATH')) { exit(); }
+if (!defined('ABSPATH')) { exit; }
 
-class ATEC_memcached_info { function __construct($url,$nonce,$wpc_tools,$memSettings) {	
+class ATEC_memcached_info {
+	
+private static function atec_test_memcache_writable($m)
+{
+	$atec_wpci_key='atec_wpci_key';
+	$m->set($atec_wpci_key,'hello');
+	$success=$m->get($atec_wpci_key)=='hello';
+	atec_badge('Memcached '.__('is writeable','atec-cache-info'),'Writing to cache failed',$success);
+	if ($success) $m->delete($atec_wpci_key);
+}
+	
+function __construct($url,$nonce,$memSettings) {	
 
-if (!function_exists('atec_memcached_connect')) @require('atec-cache-memcached-connect.php');
+if (!function_exists('atec_memcached_connect')) require('atec-cache-memcached-connect.php');
 $result = atec_memcached_connect($memSettings);
 
 $m 				= $result['m'];
@@ -17,7 +28,7 @@ if ($m)
 {
 	$mem		= $m?$m->getStats():false;
 	$mem		= $mem[$memHost.':'.$memPort];
-	$total		= $mem['get_hits']+$mem['get_misses']+0.001;
+	$total		= $mem['get_hits']+$mem['get_misses']+0.0000001;
 	$hits			= $mem['get_hits']*100/$total;
 	$misses	= $mem['get_misses']*100/$total;
 	
@@ -41,23 +52,18 @@ if ($m)
 			if (isset($mem['bytes'])) echo '<tr><td>', esc_attr__('Used','atec-cache-info'), ':</td>
 				<td>', esc_attr(size_format($mem['bytes'])), '</td>
 				<td><small>', esc_attr(sprintf("%.1f%%",$percent)), '</small></td></tr>';
-			if (isset($mem['total_items'])) echo '<tr><td>', esc_attr__('Items','atec-cache-info'), ':</td><td>', esc_attr(number_format($mem['total_items'])), '</td><td></td></tr>';
+			if (isset($mem['total_items'])) echo '<tr><td>', esc_attr__('Items','atec-cache-info'), ':</td><td>', esc_html(number_format($mem['total_items'])), '</td><td></td></tr>';
 			echo '
 			<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td>
-				<td>', esc_attr(number_format($mem['get_hits'])), '</td><td><small>', esc_attr(sprintf("%.1f%%",$hits)), '</small></td></tr>
+				<td>', esc_html(number_format($mem['get_hits'])), '</td><td><small>', esc_attr(sprintf("%.1f%%",$hits)), '</small></td></tr>
 			<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td>
-				<td>', esc_attr(number_format($mem['get_misses'])), '</td><td><small>', esc_attr(sprintf("%.1f%%",$misses)), '</small></td></tr>
+				<td>', esc_html(number_format($mem['get_misses'])), '</td><td><small>', esc_attr(sprintf("%.1f%%",$misses)), '</small></td></tr>
 		</tbody>
 	</table>';
 	
-	$wpc_tools->usage($percent);	
-	$wpc_tools->hitrate($hits,$misses);
-
-	$atec_wpci_key='atec_wpci_key';
-	$m->set($atec_wpci_key,'hello');
-	$success=$m->get($atec_wpci_key)=='hello';
-	atec_badge('Memcached '.__('is writeable','atec-cache-info'),'Writing to cache failed',$success);
-	if ($success) $m->delete($atec_wpci_key);
+	ATEC_wpc_tools::usage($percent);	
+	ATEC_wpc_tools::hitrate($hits,$misses);
+	self::atec_test_memcache_writable($m);
 }
 else 
 {

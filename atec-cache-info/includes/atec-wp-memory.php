@@ -1,16 +1,17 @@
 <?php
-if (!defined('ABSPATH')) { exit(); }
+if (!defined('ABSPATH')) { exit; }
 
 class ATEC_wp_memory {
 
-public function atec_KMG_2_Int($string): int
+public static function atec_KMG_2_Int($string): int
 {
 	sscanf(strtoupper($string), '%u%c', $number, $suffix);
+	$number = (int) $number ?: 0;
 	if (isset ($suffix)) { $number = $number * pow (1024, strpos(' KMG', strtoupper($suffix))); }
 	return (int) $number;
 }
 
-public function atec_wp_memory_limit(): int { return defined('WP_MEMORY_LIMIT')?$this->atec_KMG_2_Int(WP_MEMORY_LIMIT):41943040; }
+public static function atec_wp_memory_limit(): int { return defined('WP_MEMORY_LIMIT')?self::atec_KMG_2_Int(WP_MEMORY_LIMIT):41943040; }
 
 public function atec_wp_memory_admin_bar($wp_admin_bar): void
 {
@@ -39,12 +40,8 @@ public function memory_usage(): void
 		preg_match('/([\d]+)\s?([\w]+)/', size_format($peak), $match);
 		preg_match('/([\d]+)\s?([\w]+)/', size_format($this->atec_wp_memory_limit), $match2);
 		
-		switch (strtolower(PHP_OS_FAMILY))
-		{
-			case 'Darwin': $icon='apple'; break;
-			case 'Windows': $icon='windows'; break;
-			case 'Linux': $icon='linux'; break;
-		}
+		$icons = ['darwin' => 'apple', 'windows' => 'windows', 'linux' => 'linux'];
+		$icon = $icons[strtolower(PHP_OS_FAMILY)] ?? null;
 		
 		if (isset($match[2]) && isset($match2[2]))
 		{
@@ -68,7 +65,7 @@ public $atec_wp_memory_limit;
 function __construct() 
 {	
 
-$this->atec_wp_memory_limit = $this->atec_wp_memory_limit();
+$this->atec_wp_memory_limit = self::atec_wp_memory_limit();
 
 }}
 ?>

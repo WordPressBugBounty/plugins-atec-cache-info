@@ -1,9 +1,9 @@
 <?php
-if (!defined('ABSPATH')) { exit(); }
+if (!defined('ABSPATH')) { exit; }
 
 class ATEC_oc_groups { 
 
-private function scan_for_scripts($dir): int
+private static function scan_for_scripts($dir): int
 {
 	$count=0; 
 	// @codingStandardsIgnoreStart
@@ -15,7 +15,7 @@ private function scan_for_scripts($dir): int
 		{
 			if ($f==='.' || $f==='..') continue;
 			$fullpath=$dir.$f;
-			if (is_dir($fullpath)) $count+=$this->scan_for_scripts($fullpath.DIRECTORY_SEPARATOR);
+			if (is_dir($fullpath)) $count+=self::scan_for_scripts($fullpath.DIRECTORY_SEPARATOR);
 			elseif (str_ends_with($fullpath,'.php')) $count++;
 		} 
 		closedir($dir_handle);
@@ -32,7 +32,7 @@ if (function_exists('opcache_get_status')) $op_status=opcache_get_status();
 if ($action=='scan')
 {
 	atec_little_block('OPcache '.esc_attr__('Scripts','atec-cache-info'));
-	echo '<p><strong>Number of script files in root folder:</strong> ', esc_attr($this->scan_for_scripts(ABSPATH)), '
+	echo '<p><strong>Number of script files in root folder:</strong> ', esc_attr(self::scan_for_scripts(ABSPATH)), '
 	<br>You should set `opcache.max_accelerated_files‘ option accordingly.</p>';
 }
 else

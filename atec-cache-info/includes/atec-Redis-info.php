@@ -2,9 +2,20 @@
 // 1: redis-cli: 		
 // 2: auth pwd		
 // 3: CONFIG SET requirepass pwd
-if (!defined('ABSPATH')) { exit(); }
+if (!defined('ABSPATH')) { exit; }
 
-class ATEC_Redis_info { function __construct($url,$nonce,$wpc_tools,$redSettings) {	
+class ATEC_Redis_info { 
+	
+private static function atec_test_redis_writable($redis)
+{
+	$testKey='atec_redis_test_key';
+	$redis->set($testKey,'hello');
+	$success=$redis->get($testKey)=='hello';
+	atec_badge('Redis '.__('is writeable','atec-cache-info'),'Writing to cache failed',$success);
+	if ($success) $redis->del($testKey);
+}
+
+function __construct($url,$nonce,$redSettings) {	
 	
 if (class_exists('Redis'))
 {
@@ -23,7 +34,7 @@ if (class_exists('Redis'))
 	$redPort = $redSettings['port']??'';
 	$redPwd  = $redSettings['pwd']??'';
 
-	if (!function_exists('atec_redis_connect')) @require('atec-cache-redis-connect.php');
+	if (!function_exists('atec_redis_connect')) require('atec-cache-redis-connect.php');
 	$result = atec_redis_connect($redSettings);
 	$redis = $result['redis'];
 
@@ -73,7 +84,7 @@ if (class_exists('Redis'))
 			if (defined('Redis::SERIALIZER_IGBINARY') && function_exists('igbinary_serialize')) $available_serializers[]='IGBINARY';
 			if (defined('Redis::SERIALIZER_MSGPACK') && function_exists('msgpack_serialize')) $available_serializers[]='MSGPACK';
 
-			$total=$stats['keyspace_hits']+$stats['keyspace_misses']+0.001;
+			$total=$stats['keyspace_hits']+$stats['keyspace_misses']+0.0000001;
 			$hits=$stats['keyspace_hits']*100/$total;
 			$misses=$stats['keyspace_misses']*100/$total;
 
@@ -90,19 +101,15 @@ if (class_exists('Redis'))
 				echo '
 				<tr><td>', esc_attr__('Used','atec-cache-info').':</td><td>', esc_attr(size_format($memory['used_memory'])), '</td><td></td></tr>
 				<tr><td>', esc_attr__('Hits','atec-cache-info').':</td>
-					<td>', esc_attr(number_format($stats['keyspace_hits'])), '</td><td><small>', esc_attr(sprintf(" (%.1f%%)",$hits)), '</small></td></tr>
+					<td>', esc_html(number_format($stats['keyspace_hits'])), '</td><td><small>', esc_attr(sprintf(" (%.1f%%)",$hits)), '</small></td></tr>
 				<tr><td>', esc_attr__('Misses','atec-cache-info').':</td>
-					<td>', esc_attr(number_format($stats['keyspace_misses'])), '</td><td><small>', esc_attr(sprintf(" (%.1f%%)",$misses)), '</small></td></tr>
+					<td>', esc_html(number_format($stats['keyspace_misses'])), '</td><td><small>', esc_attr(sprintf(" (%.1f%%)",$misses)), '</small></td></tr>
 			</tbody>
 			</table>';
 				
-			$wpc_tools->hitrate($hits,$misses);
-			
-			$testKey='atec_redis_test_key';
-			$redis->set($testKey,'hello');
-			$success=$redis->get($testKey)=='hello';
-			atec_badge('Redis '.__('is writeable','atec-cache-info'),'Writing to cache failed',$success);
-			if ($success) $redis->del($testKey);
+			ATEC_wpc_tools::hitrate($hits,$misses);
+			self::atec_test_redis_writable($redis);
+
 		}
 		catch (RedisException $e) { atec_error_msg('Redis: '.rtrim($e->getMessage(),'.')); }
 	}

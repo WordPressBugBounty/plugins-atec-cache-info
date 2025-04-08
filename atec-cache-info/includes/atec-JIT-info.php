@@ -1,14 +1,16 @@
 <?php
-if (!defined('ABSPATH')) { exit(); }
+if (!defined('ABSPATH')) { exit; }
 
-class ATEC_JIT_info { function __construct($wpc_tools,$op_status) {	
+class ATEC_JIT_info { 
+	
+function __construct($op_status) {	
 
 $percent=false;
 if ($op_status)
 {
-	$jit_size=$op_status['jit']['buffer_size'];
-	$jit_free=$op_status['jit']['buffer_free'];
-	$percent=$jit_free/($jit_size+0.0001);
+	$jit_size 	= $op_status['jit']['buffer_size'];
+	$jit_free	= $op_status['jit']['buffer_free'];
+	$percent	= $jit_free/($jit_size+0.0001);
 }
 else
 {
@@ -30,7 +32,7 @@ echo '
 </tbody>
 </table>';
 
-if ($percent) $wpc_tools->usage($percent);	
+if ($percent) ATEC_wpc_tools::usage($percent);	
 
 }}
 ?>
