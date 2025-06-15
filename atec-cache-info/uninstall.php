@@ -1,5 +1,9 @@
 <?php
-if (!defined('ABSPATH')) { exit; }
-wp_cache_delete('atec_wpci_version');
-delete_option('atec_WPCI_settings');
+defined('ABSPATH') || exit;
+if (!defined('ATEC_LOADER')) require __DIR__ . '/includes/ATEC/LOADER.php';
+
+use ATEC\INIT;
+
+INIT::delete_settings('wpci');
+INIT::set_admin_bar_option('wpci');	// this will delete the setting
 ?>

@@ -1,121 +1,135 @@
 <?php
-// 1: redis-cli: 		
-// 2: auth pwd		
-// 3: CONFIG SET requirepass pwd
-if (!defined('ABSPATH')) { exit; }
+// 1: redis-cli: | 2: auth pwd | 3: CONFIG SET requirepass pwd
+defined('ABSPATH') || exit;
 
-class ATEC_Redis_info { 
-	
-private static function atec_test_redis_writable($redis)
+use ATEC\TOOLS;
+use ATEC\WPC;
+
+final class ATEC_Redis_Info {
+
+private static function test_redis_writable($redis)
 {
-	$testKey='atec_redis_test_key';
-	$redis->set($testKey,'hello');
-	$success=$redis->get($testKey)=='hello';
-	atec_badge('Redis '.__('is writeable','atec-cache-info'),'Writing to cache failed',$success);
+	$testKey= 'atec_redis_test_key';
+	$redis->set($testKey, 'hello');
+	$success= $redis->get($testKey)== 'hello';
+	TOOLS::badge($success, 'Redis '.__('is writeable', 'atec-cache-info'), 'Writing to cache failed');
 	if ($success) $redis->del($testKey);
 }
 
-function __construct($url,$nonce,$redSettings) {	
-	
-if (class_exists('Redis'))
+public static function init($una, $settings)
 {
+	$allow_settings = $una->slug === 'wpci';
 
-	if (isset($redSettings['unix']) && $redSettings['unix']!=='')
+	if (class_exists('Redis'))
 	{
-		$redHost = $redSettings['unix']; // backwards compatible
-		$redConn = 'SOCKET';
-	}
-	else
-	{
-		$redHost = $redSettings['host']??'';
-		$redConn = $redSettings['conn']??'';
-		if ($redConn==='') $redConn='TCP/IP';
-	}
-	$redPort = $redSettings['port']??'';
-	$redPwd  = $redSettings['pwd']??'';
-
-	if (!function_exists('atec_redis_connect')) require('atec-cache-redis-connect.php');
-	$result = atec_redis_connect($redSettings);
-	$redis = $result['redis'];
-
-	if (!$redis)
-	{
-		echo 
-		'<p>', esc_attr__('Please define Host:Port OR UNIX path.','atec-cache-info'), '</p>
-		<form class="atec-border-tiny" method="post" action="'.esc_url($url).'&action=saveRed&nav=Cache&_wpnonce='.esc_attr($nonce).'">
-			<table>
-				<tr>
-					<td colspan="3"><label for="redis_conn">', esc_attr__('Connection','atec-cache-info'), '</label><br>
-						<select name="redis_conn">
-							<option value="TCP/IP"', ($redConn==='TCP/IP'?' selected="selected"':''), '>TCP/IP</option>
-							<option value="SOCKET"', ($redConn==='SOCKET'?' selected="selected"':''), '>SOCKET</option>
-						</select>
-					</td>
-				</tr>
-				<td class="atec-left"><label for="redis_host">', esc_attr__('Host or UNIX path','atec-cache-info'), '</label><br>
-					<input size="15" type="text" placeholder="localhost" name="redis_host" value="', esc_attr($redHost), '"><br><br>
-				</td>
-				<td class="atec-left"><label for="redis_port">', esc_attr__('Port','atec-cache-info'), '</label><br>
-					<input size="3" type="text" placeholder="6379" name="redis_port" value="', esc_attr($redPort), '"><br>
-					<span class="atec-fs-8">(TCP/IP only)</small>
-				</td>
-				<td class="atec-left"><label for="redis_pwd">', esc_attr__('Password','atec-cache-info'), '</label><br>
-					<input size="6" type="text" placeholder="Password" name="redis_pwd" value="', esc_attr($redPwd), '"><br><br>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3"><input class="button button-primary"  type="submit" value="', esc_attr__('Save','atec-cache-info'), '"></td>
-			</tr>
-			</table>
-		</form>';
-	}
-
-	if (is_object($redis) && !empty($redis))
-	{
-		try
+		if (isset($settings['unix']) && $settings['unix']!== '')
 		{
-			$server			= $redis->info('server');
-			$stats 			= $redis->info('stats');
-			$memory 		= $redis->info('memory');
-			
-			$available_serializers = [];
-			if (defined('Redis::SERIALIZER_PHP') && function_exists('igbinary_serialize')) $available_serializers[]='PHP';
-			if (defined('Redis::SERIALIZER_JSON') && function_exists('igbinary_serialize')) $available_serializers[]='JSON';
-			if (defined('Redis::SERIALIZER_IGBINARY') && function_exists('igbinary_serialize')) $available_serializers[]='IGBINARY';
-			if (defined('Redis::SERIALIZER_MSGPACK') && function_exists('msgpack_serialize')) $available_serializers[]='MSGPACK';
-
-			$total=$stats['keyspace_hits']+$stats['keyspace_misses']+0.0000001;
-			$hits=$stats['keyspace_hits']*100/$total;
-			$misses=$stats['keyspace_misses']*100/$total;
-
-			echo'
-			<table class="atec-table atec-table-tiny atec-table-td-first">
-			<tbody>
-				<tr><td>Version:</td><td>', esc_attr($server['redis_version']), '</td><td></td></tr>
-				<tr><td>', esc_attr__('Connection','atec-cache-info'), ':</td><td>', esc_textarea($redConn), '</td><td></td></tr>
-				<tr><td>', esc_attr__('Host','atec-cache-info'), ':</td><td>', esc_textarea($redHost), '</td><td></td></tr>';
-				if ($redConn==='TCP/IP') echo '<tr><td>', esc_attr__('Port','atec-cache-info'), ':</td><td>', esc_attr($redPort), '</td><td></td></tr>';
-				if ($redPwd!=='') echo '<tr><td>', esc_attr__('Password','atec-cache-info'), ':</td><td>', esc_textarea($redPwd), '</td><td></td></tr>';
-				if (!empty($available_serializers)) echo '<tr><td>', esc_attr__('Serializers','atec-cache-info'), ':</td><td class="atec-small">', esc_attr(implode(', ',$available_serializers)), '</td><td></td></tr>';
-				atec_empty_tr();
-				echo '
-				<tr><td>', esc_attr__('Used','atec-cache-info').':</td><td>', esc_attr(size_format($memory['used_memory'])), '</td><td></td></tr>
-				<tr><td>', esc_attr__('Hits','atec-cache-info').':</td>
-					<td>', esc_html(number_format($stats['keyspace_hits'])), '</td><td><small>', esc_attr(sprintf(" (%.1f%%)",$hits)), '</small></td></tr>
-				<tr><td>', esc_attr__('Misses','atec-cache-info').':</td>
-					<td>', esc_html(number_format($stats['keyspace_misses'])), '</td><td><small>', esc_attr(sprintf(" (%.1f%%)",$misses)), '</small></td></tr>
-			</tbody>
-			</table>';
-				
-			ATEC_wpc_tools::hitrate($hits,$misses);
-			self::atec_test_redis_writable($redis);
-
+			$redHost = $settings['unix']; // backwards compatible
+			$redConn = 'SOCKET';
 		}
-		catch (RedisException $e) { atec_error_msg('Redis: '.rtrim($e->getMessage(),'.')); }
+		else
+		{
+			$redHost = $settings['host']??'';
+			$redConn = $settings['conn']??'';
+			if ($redConn=== '') $redConn= 'TCP/IP';
+		}
+		$redPort = $settings['port']??'';
+		$redPwd  = $settings['pwd']??'';
+
+		$result = WPC::redis_connect($settings);
+		$redis = $result['redis'];
+
+		if (is_object($redis) && !empty($redis))
+		{
+			try
+			{
+				$server			= $redis->info('server');
+				$stats 			= $redis->info('stats');
+				$memory 		= $redis->info('memory');
+				$keyCount 		= $redis->dbSize();
+
+				$available_serializers = [];
+				if (defined('Redis::SERIALIZER_PHP') && function_exists('igbinary_serialize')) $available_serializers[]= 'PHP';
+				if (defined('Redis::SERIALIZER_JSON') && function_exists('igbinary_serialize')) $available_serializers[]= 'JSON';
+				if (defined('Redis::SERIALIZER_IGBINARY') && function_exists('igbinary_serialize')) $available_serializers[]= 'IGBINARY';
+				if (defined('Redis::SERIALIZER_MSGPACK') && function_exists('msgpack_serialize')) $available_serializers[]= 'MSGPACK';
+
+				$total= $stats['keyspace_hits']+$stats['keyspace_misses']+0.0000001;
+				$hits= $stats['keyspace_hits']*100/$total;
+				$misses= $stats['keyspace_misses']*100/$total;
+
+				TOOLS::table_header([], '', 'bold');
+					TOOLS::table_tr(['Version', '2@'.$server['redis_version']]);
+					TOOLS::table_tr([__('Connection', 'atec-cache-info'), '2@'.$redConn]);
+					TOOLS::table_tr([__('Host', 'atec-cache-info'), '2@'.$redHost]);
+					if ($redConn=== 'TCP/IP') TOOLS::table_tr([__('Port', 'atec-cache-info'), '2@'.$redPort]);
+					if ($redPwd!== '') TOOLS::table_tr([__('Password', 'atec-cache-info'), '2@'.$redPwd]);
+					if (!empty($available_serializers)) TOOLS::table_tr([__('Serializers', 'atec-cache-info'), '2@<small>'.implode(', ', $available_serializers).'</small>']);
+				TOOLS::table_footer();
+
+				TOOLS::table_header([], '', 'bold');
+					TOOLS::table_tr([__('Used', 'atec-cache-info'), TOOLS::size_format($memory['used_memory']), '']);
+					if ($keyCount) TOOLS::table_tr([__('Items', 'atec-cache-info'), number_format($keyCount), '']);
+					TOOLS::table_tr([__('Hits', 'atec-cache-info'), number_format($stats['keyspace_hits']), '<small>'.sprintf(" (%.1f%%)", $hits).'</small>']);
+					TOOLS::table_tr([__('Misses', 'atec-cache-info'), number_format($stats['keyspace_misses']), '<small>'.sprintf(" (%.1f%%)", $misses).'</small>']);
+				TOOLS::table_footer();
+
+				WPC::hitrate($hits, $misses);
+				self::test_redis_writable($redis);
+				
+			}
+			catch (RedisException $e) { TOOLS::msg(false, 'Redis: '.rtrim($e->getMessage(), '.')); }
+		}
+		
+		if ($allow_settings)
+		{
+			echo	
+			'<button class="', ($redis ? '' : 'atec-dn '),'button button-secondary atec-btn-small atec-mt-10" onclick="jQuery(\'#redis_settings\').removeClass(\'atec-dn\'); jQuery(this).remove();">Settings</button>';
+		
+			echo
+			'<div id="redis_settings" ', ($redis ? 'class="atec-dn"' : ''), '>';
+				TOOLS::form_header($una, 'saveRed', 'Cache', '', 'atec-border-tiny');
+					echo
+					'<table>
+					
+						<tr>
+							<td colspan="3"><label for="redis_conn">', esc_attr__('Connection', 'atec-cache-info'), '</label><br>
+								<select name="redis_conn">
+									<option value="TCP/IP"', ($redConn=== 'TCP/IP'?' selected="selected"' : ''), '>TCP/IP</option>
+									<option value="SOCKET"', ($redConn=== 'SOCKET'?' selected="selected"' : ''), '>SOCKET</option>
+								</select>
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="atec-left"><label for="redis_host">', esc_attr__('Host or UNIX path', 'atec-cache-info'), '</label><br>
+								<input size="15" type="text" placeholder="localhost" name="redis_host" value="', esc_attr($redHost), '"><br><br>
+							</td>
+							<td class="atec-left"><label for="redis_port">', esc_attr__('Port', 'atec-cache-info'), '</label><br>
+								<input size="3" type="text" placeholder="6379" name="redis_port" value="', esc_attr($redPort), '"><br>
+								<span class="atec-fs-8">(TCP/IP only)</small>
+							</td>
+							<td class="atec-left"><label for="redis_pwd">', esc_attr__('Password', 'atec-cache-info'), '</label><br>
+								<input size="6" type="text" placeholder="Password" name="redis_pwd" value="', esc_attr($redPwd), '"><br><br>
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="3">'; TOOLS::submit_button('#editor-break '.esc_attr__('Save', 'atec-cache-info'), true); echo '</td>
+						</tr>
+						
+					</table>';
+				TOOLS::form_footer();
+			echo 
+			'</div>';
+		}
 	}
-	else atec_reg_inline_script('wpx_redis_flush', 'jQuery("#Redis_flush").hide();', true);
+	else 
+	{
+		TOOLS::reg_inline_script('wpx_redis_flush', 'jQuery("#Redis_flush").hide();', true);
+	}
+
 }
-else atec_error_msg('Redis: '.esc_attr__('class is NOT available','atec-cache-info'));
-	
-}}
+
+}
 ?>

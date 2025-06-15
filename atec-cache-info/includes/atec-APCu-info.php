@@ -1,77 +1,74 @@
 <?php
-if (!defined('ABSPATH')) { exit; }
+defined('ABSPATH') || exit;
 
-class ATEC_APCu_info { 
+use ATEC\TOOLS;
+use ATEC\WPC;
 
-private static function atec_test_apcu_writable()
+final class ATEC_APCu_Info {
+
+private static function test_apcu_writable()
 {
-	$testKey='atec_apcu_test_key';
-	apcu_add($testKey,'hello');	
-	$success=apcu_fetch($testKey)==='hello';
-	atec_badge('APCu '.__('is writeable','atec-cache-info'),'Writing to cache failed',$success);
+	$testKey= 'atec_apcu_test_key';
+	apcu_add($testKey, 'hello');
+	$success= apcu_fetch($testKey)=== 'hello';
+	TOOLS::badge($success, 'APCu '.__('is writeable', 'atec-cache-info'), 'Writing to cache failed');
 	if ($success) apcu_delete($testKey);
 }
-	
-function __construct() {	
-	
-$apcu_cache=function_exists('apcu_cache_info')?apcu_cache_info(true):false;
-if ($apcu_cache)
+
+public static function init()
 {
-	$notNull		= 0.0000001;
-	$total			= $apcu_cache['num_hits']+$apcu_cache['num_misses']+$notNull;
-	$relHits			=	$apcu_cache['num_hits']*100/$total;
-	$relMisses	= $apcu_cache['num_misses']*100/$total;
 
-	if ($apcu_mem	= apcu_sma_info(true))
+	$apcu_cache = function_exists('apcu_cache_info') ? apcu_cache_info(true) : false;
+	if ($apcu_cache)
 	{
-		$mem_size 	= $apcu_mem['num_seg']*$apcu_mem['seg_size']+$notNull;
-		$mem_avail	= $apcu_mem['avail_mem'];
-		$mem_used 	= $mem_size-$mem_avail;
-	}
+		$notNull		= 0.0000001;
+		$total			= $apcu_cache['num_hits']+$apcu_cache['num_misses']+$notNull;
+		$relHits			=	$apcu_cache['num_hits']*100/$total;
+		$relMisses	= $apcu_cache['num_misses']*100/$total;
 
-	$percent = $apcu_mem?$mem_used*100/$mem_size:-1;
-
-	echo'
-	<table class="atec-table atec-table-tiny atec-table-td-first">
-	<tbody>
-		<tr><td>',esc_attr__('Version','atec-cache-info'),':</td><td>',esc_attr(phpversion('apcu')),'</td><td></td></tr>
-		<tr><td>',esc_attr__('Type','atec-cache-info'),':</td><td>',esc_html($apcu_cache['memory_type']),'</td><td></td></tr>';
-		atec_empty_TR();
-		if ($percent>0)
+		if ($apcu_mem	= apcu_sma_info(true))
 		{
-			echo 
-			'<tr><td>',esc_attr__('Memory','atec-cache-info'),':</td><td>',esc_attr(size_format($mem_size)),'</td><td></td></tr>
-			<tr><td>',esc_attr__('Used','atec-cache-info'),':</td>
-				<td>',esc_attr(size_format($mem_used)),'</td><td><small>', esc_attr(sprintf("%.1f%%",$percent)), '</small></td></tr>
-			<tr><td>',esc_attr__('Items','atec-cache-info'),':</td><td>',esc_html(number_format($apcu_cache['num_entries'])),'</td><td></td></tr>';
-			atec_empty_TR();
-			echo 
-			'<tr><td>',esc_attr__('Hits','atec-cache-info'),':</td>
-				<td>',esc_html(number_format($apcu_cache['num_hits'])), '</td><td><small>', esc_attr(sprintf("%.1f%%",$relHits)),'</small></td></tr>
-			<tr><td>',esc_attr__('Misses','atec-cache-info'),':</td>
-				<td>',esc_html(number_format($apcu_cache['num_misses'])), '</td><td><small>', esc_attr(sprintf("%.1f%%",$relMisses)),'</small></td></tr>';
+			$mem_size 	= $apcu_mem['num_seg']*$apcu_mem['seg_size']+$notNull;
+			$mem_avail	= $apcu_mem['avail_mem'];
+			$mem_used 	= $mem_size-$mem_avail;
 		}
-	echo '
-	</tbody>
-	</table>';	
 
-	if ($percent>-1) ATEC_wpc_tools::usage($percent);
-	if ($apcu_cache['mem_size']!=0) ATEC_wpc_tools::hitrate($relHits,$relMisses);
+		$percent = $apcu_mem?$mem_used*100/$mem_size:-1;
 
-	if ($percent>90) atec_error_msg(__('APCu usage is beyond 90%. Please consider increasing „apc.shm_size“ option','atec-cache-info'));
-	elseif ($percent===-1) { atec_p(__('Shared memory info is not available','atec-cache-info')); echo '<br>'; }
-	elseif ($percent===0) 
-	{
-		atec_p(__('Not in use','atec-cache-info'));
-		atec_reg_inline_script('wpx_APCu_flush', 'jQuery("#APCu_flush").hide();',true);
+		TOOLS::table_header([], '', 'bold');
+			TOOLS::table_tr([__('Version', 'atec-cache-info').':', phpversion('apcu'), '']);
+			TOOLS::table_tr([__('Type', 'atec-cache-info').':', $apcu_cache['memory_type'], '']);
+			TOOLS::table_tr();
+			if ($percent>0)
+			{
+				TOOLS::table_tr([__('Memory', 'atec-cache-info').':', TOOLS::size_format($mem_size), '']);
+				TOOLS::table_tr([__('Used', 'atec-cache-info').':', TOOLS::size_format($mem_used), TOOLS::percent_format($percent)]);
+				TOOLS::table_tr([__('Items', 'atec-cache-info').':', number_format($apcu_cache['num_entries']), '']);
+				TOOLS::table_tr();
+				TOOLS::table_tr([__('Hits', 'atec-cache-info').':', number_format($apcu_cache['num_hits']), TOOLS::percent_format($relHits)]);
+				TOOLS::table_tr([__('Misses', 'atec-cache-info').':', number_format($apcu_cache['num_misses']), TOOLS::percent_format($relMisses)]);
+			}			
+		TOOLS::table_footer();
+
+		if ($percent>-1) WPC::usage($percent);
+		if ($apcu_cache['mem_size']!=0) WPC::hitrate($relHits, $relMisses);
+
+		if ($percent>90) TOOLS::msg(false, __('APCu usage is beyond 90%. Please consider increasing „apc.shm_size“ option', 'atec-cache-info'));
+		elseif ($percent===-1) { TOOLS::p(__('Shared memory info is not available', 'atec-cache-info')); echo '<br>'; }
+		elseif ($percent===0)
+		{
+			TOOLS::p(__('Not in use', 'atec-cache-info'));
+			TOOLS::reg_inline_script('wpx_APCu_flush', 'jQuery("#APCu_flush").hide();', true);
+		}
+
+		self::test_apcu_writable();
 	}
-	
-	self::atec_test_apcu_writable();
-}
-else 
-{ 
-	atec_error_msg('APCu '.__('cache data could NOT be retrieved','atec-cache-info')); 
+	else
+	{
+		TOOLS::msg(false, 'APCu '.__('cache data could NOT be retrieved', 'atec-cache-info'));
+	}
+
 }
 
-}}
+}
 ?>
