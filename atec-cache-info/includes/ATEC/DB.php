@@ -15,8 +15,7 @@ final class DB
 		$data_size = 0;
 		$index_size = 0;
 		$wpdb->suppress_errors(true);
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$tablesstatus = $wpdb->get_results('SHOW TABLE STATUS');
+		$tablesstatus = $wpdb->get_results('SHOW TABLE STATUS');	// phpcs:ignore
 		$wpdb->suppress_errors(false);
 	
 		if (empty($tablesstatus)) { return ['data'    => 0, 'index' => 0]; }
@@ -37,8 +36,8 @@ final class DB
 		global $wpdb;
 		$unkown = '-/-';
 		$wpdb->suppress_errors(true);
-			$raw = $wpdb->get_var('SELECT VERSION()');
-			$comment = $wpdb->get_var("SHOW VARIABLES LIKE 'version_comment'", 1);
+			$raw = $wpdb->get_var('SELECT VERSION()');														// phpcs:ignore
+			$comment = $wpdb->get_var("SHOW VARIABLES LIKE 'version_comment'", 1);		// phpcs:ignore
 		$wpdb->suppress_errors(false);
 	
 		if (!$raw) { return [ 'name' => $unkown, 'version' => $unkown, 'software' => $unkown]; }
@@ -105,10 +104,10 @@ final class DB
 		$success = false;
 
 		$wpdb->suppress_errors(true);
-			// phpcs:disable WordPress.DB.*
+			// phpcs:ignore
 			$result = $wpdb->query("CREATE TABLE `$table` (id INT) ENGINE=InnoDB ROW_FORMAT=COMPRESSED COMMENT='ATEC TMP CHECK'");
+			// phpcs:ignore
 			if ($result !== false) { $success = true; $wpdb->query("DROP TABLE IF EXISTS `$table`"); }
-			// phpcs:enable
 		$wpdb->suppress_errors(false);
 
 		$cached = $success ? ' ROW_FORMAT=COMPRESSED' : '';
@@ -124,7 +123,7 @@ final class DB
 		$pattern = esc_sql($wpdb->esc_like($table) . $wildcard);
 	
 		$wpdb->suppress_errors(true);
-		$result = $wpdb->get_var("SHOW TABLES LIKE '{$pattern}'");
+		$result = $wpdb->get_var("SHOW TABLES LIKE '{$pattern}'");	// phpcs:ignore
 		$wpdb->suppress_errors(false);
 	
 		if ($wildcard !== '') {
@@ -147,8 +146,7 @@ final class DB
 		$escaped_table  = esc_sql($table);
 		$escaped_column = esc_sql($wpdb->esc_like($column));
 	
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$result = $wpdb->get_var("SHOW COLUMNS FROM `$escaped_table` LIKE '{$escaped_column}'");
+		$result = $wpdb->get_var("SHOW COLUMNS FROM `$escaped_table` LIKE '{$escaped_column}'");	// phpcs:ignore
 		$wpdb->suppress_errors(false);
 	
 		return strtolower($result) === strtolower($column);
@@ -159,7 +157,7 @@ final class DB
 		global $wpdb;
 		$wpdb->suppress_errors(true);
 			$table_safe = esc_sql($table);
-			$prim = $wpdb->get_results("SHOW COLUMNS FROM `$table_safe` WHERE `Key` = 'PRI'");
+			$prim = $wpdb->get_results("SHOW COLUMNS FROM `$table_safe` WHERE `Key` = 'PRI'");	// phpcs:ignore
 		$wpdb->suppress_errors(false);
 	
 		return isset($prim[0]->Field) ? $prim[0]->Field : null;
@@ -173,7 +171,7 @@ final class DB
 	
 		$safe_table = esc_sql($table);
 		$wpdb->suppress_errors(true);
-			$result = $wpdb->query("DROP TABLE IF EXISTS `$safe_table`");
+			$result = $wpdb->query("DROP TABLE IF EXISTS `$safe_table`");		// phpcs:ignore
 		$wpdb->suppress_errors(false);
 	
 		return $result !== false;
@@ -185,7 +183,7 @@ final class DB
 	
 		$safe_table = esc_sql($table);
 		$wpdb->suppress_errors(true);
-			$result = $wpdb->query("TRUNCATE TABLE `$safe_table`");
+			$result = $wpdb->query("TRUNCATE TABLE `$safe_table`");	// phpcs:ignore
 		$wpdb->suppress_errors(false);
 	
 		return $result !== false;
@@ -203,7 +201,7 @@ final class DB
 		if ($compress) $engine .= self::get_row_format();
 		$query  = "CREATE TABLE `$safe_table` ($sql) $engine";
 		$wpdb->suppress_errors(true);
-			$result = $wpdb->query($query);
+			$result = $wpdb->query($query);	// phpcs:ignore
 		$wpdb->suppress_errors(false);
 	
 		return $result !== false;
@@ -235,7 +233,7 @@ final class DB
 	public static function all_tables(): array
 	{
 		global $wpdb;
-		return $wpdb->get_results('SHOW TABLES');
+		return $wpdb->get_results('SHOW TABLES');		// phpcs:ignore
 	}
 
 }

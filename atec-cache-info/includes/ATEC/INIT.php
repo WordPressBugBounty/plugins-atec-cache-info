@@ -132,17 +132,14 @@ final class INIT {
 	
 	public static function is_settings_updated(): bool
 	{
-		return isset($_GET['settings-updated']) && $_GET['settings-updated']==true;
+		return isset($_GET['settings-updated']) && $_GET['settings-updated']==true;	// phpcs:ignore
 	}
 
 	/* TOOLS */
 	
 	public static function error_log($args)
 	{
-		// @codingStandardsIgnoreStart
-		if (is_scalar($args)) error_log($args);
-		else error_log(print_r($args));
-		// @codingStandardsIgnoreEnd
+		is_scalar($args) ? error_log($args) : error_log(print_r($args));	// phpcs:ignore
 	}
 	
 	public static function bool($value): bool { return filter_var($value, FILTER_VALIDATE_BOOLEAN); }
@@ -173,12 +170,7 @@ final class INIT {
 	public static function query(): string
 	{
 		static $cached = null;
-		if ($cached === null)
-		{
-			// @codingStandardsIgnoreStart
-			$cached = $_SERVER['REQUEST_URI'] ?? '';
-			// @codingStandardsIgnoreEnd
-		}
+		if ($cached === null) $cached = $_SERVER['REQUEST_URI'] ?? '';	// phpcs:ignore
 		return $cached;
 	}
 
@@ -250,10 +242,8 @@ final class INIT {
 
 	public static function maybe_register_settings($dir, $slug, $noNav = false, $custom = '')
 	{
-		// @codingStandardsIgnoreStart
-		$option_page = $_POST['option_page'] ?? '';
+		$option_page = $_POST['option_page'] ?? '';	// phpcs:ignore
 		$is_option_page = strpos($option_page, 'atec_' . strtoupper($slug)) !== false;
-		// @codingStandardsIgnoreEnd
 	
 		$require = $is_option_page;
 		

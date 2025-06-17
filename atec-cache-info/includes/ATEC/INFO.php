@@ -61,9 +61,7 @@ final class INFO {
 					'<div class="atec-dilb atec-vat atec-bold atec-mb-0" style="font-size: 1.3em;">', esc_html($plugin_name), '</div>',
 				'</div><br>';
 				echo
-				'<div class="readme-content"><p class="atec-m-0">', wp_kses_post($readme), '</p>', (empty($faq)?'':wp_kses_post($faq)), '</div>',
-				'<div class="readme-content"><p class="atec-m-0">', wp_kses_post($readme), '</p>', (!empty($faq) ? $faq : ''), '</div>';
-				// @codingStandardsIgnoreEnd
+				'<div class="readme-content"><p class="atec-m-0">', wp_kses_post($readme), '</p>', (empty($faq) ? '' : wp_kses_post($faq)), '</div>';
 			}
 
 		echo

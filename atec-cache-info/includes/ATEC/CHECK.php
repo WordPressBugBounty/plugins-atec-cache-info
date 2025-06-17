@@ -123,7 +123,6 @@ final class CHECK
 	{
 		$option = get_option($args['opt-name'],[]); $field= $args['name'];
 		echo '<input id="ai_'.esc_attr($field).'" type="', esc_attr($type), '" name="', esc_attr($args['opt-name']), '[', esc_attr($field), ']" value="', esc_attr($option[$field]??''), '">';
-		//autocomplete=off
 	}
 
 	public static function input_color($args): void

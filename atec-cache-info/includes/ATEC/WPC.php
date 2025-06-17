@@ -90,16 +90,18 @@ public static function cache_block($dir, $una, $settings, $type, $enabled)
 	'<div class="atec-border-white">
 	
 		<h4>'; 
-			TOOLS::enabled($enabled[$type_lower]); 
-			echo ' ', self::fix_name($type);
+			TOOLS::enabled($enabled[$type_lower]);
+			echo ' ', esc_html(self::fix_name($type));	// phpcs:ignore
 			if ($enabled[$type_lower])
 			{
 				$href = INIT::build_url($una, 'flush', 'Cache', ['type' => $type]);
-				$range = $type==='WP' ? 'Site' : 'All';
 				echo 
 				'<a title="', esc_attr__('Empty cache', 'atec-cache-info'), '" ',
 					'class=" atec-float-right button" style="margin-top: -5px;" id="', esc_attr($type),'_flush" ',
-					'href="', esc_url($href), '">', wp_kses_post(self::dash_trash()), '<span>', esc_attr__($range, 'atec-cache-info'), '</span>',
+					'href="', esc_url($href), '">', wp_kses_post(self::dash_trash()), '<span>';
+					echo $type === 'WP' ?  esc_attr__('Site', 'atec-cache-info') : esc_attr__('All', 'atec-cache-info'); 
+					echo
+					'</span>',
 				'</a>';
 			}
 		echo 
@@ -170,9 +172,6 @@ public static function flush_cache($una, $settings, $type = null)
 
 		}
 	self::flushing_end($result);
-
-	// if ($result) TOOLS::redirect($una, 'flushed', $una->nav, ['type' => $type]);
-	// else TOOLS::msg(false, __('Flushing', 'atec-cache-info').' '.__('failed', 'atec-cache-info'));
 
 	TOOLS::badge($result, __('Flushing', 'atec-cache-info').' '.self::fix_name($type).' #'.__('succeeded', 'atec-cache-info'), __('failed', 'atec-cache-info'));
 

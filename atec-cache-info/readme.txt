@@ -6,7 +6,7 @@ Tested up to: 6.8
 Requires at least:4.9
 Requires PHP: 7.4
 Tested up to PHP: 8.4.5
-Stable tag: 1.8.0
+Stable tag: 1.8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,12 @@ Yes. It will display any supported caching features that are available in your c
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.8.2 [2025.06.17] =
+* SVN Update
+
+= 1.8.1 [2025.06.17] =
+* Integrity Fix
 
 = 1.8.0 [2025.06.15] =
 * AWF NextStep

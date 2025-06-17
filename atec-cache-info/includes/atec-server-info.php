@@ -230,7 +230,7 @@ public static function init()
 
 			global $wpdb;
 			// @codingStandardsIgnoreStart
-			$db_max_conn			= $wpdb->get_results('SHOW VARIABLES LIKE "max_connections"');
+			$db_max_conn		= $wpdb->get_results('SHOW VARIABLES LIKE "max_connections"');
 			$db_max_package 	= $wpdb->get_results('SHOW VARIABLES LIKE "max_allowed_packet"');
 			// @codingStandardsIgnoreEnd
 

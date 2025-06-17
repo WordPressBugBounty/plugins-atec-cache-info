@@ -44,10 +44,10 @@ private static function group_badge($str='', $ok=true, $slug = '', $nav= '', $wa
 
 	$url = INIT::build_url($slug, '', $nav);
 
-	$bg		= $str==='' ? '#fafafa' : ($ok ? '#e9f9ec' : ( $warn ? '#fffafa' : '#fbe9e9' ));	// soft background
-	$border	= $str==='' ? '#ddd' : ($ok ? '#b4e2c1' : ( $warn ? '#edd' : '#e2b4b4' ));	// gentle border
-	$color	 = $str==='' ? '#bbb' : ($ok ? '#2ebb71' : ( $warn ? '#a99' : '#bb2e2e' ));	// readable text
-	$btnColor  = $str==='' ? '#bbb' : ($ok ? '#00cc00' : ( $warn ? '#bbb' : '#cc0000' ));	// bold icon
+	$bg		= $str==='' ? '#fafafa' : ($ok ? '#e9f9ec' : ( $warn ? '#fffafa' : '#fbe9e9' ));			// soft background
+	$border	= $str==='' ? '#ddd' : ($ok ? '#b4e2c1' : ( $warn ? '#edd' : '#e2b4b4' ));		// gentle border
+	$color	 = $str==='' ? '#bbb' : ($ok ? '#2ebb71' : ( $warn ? '#a99' : '#bb2e2e' ));			// readable text
+	$btnColor  = $str==='' ? '#bbb' : ($ok ? '#00cc00' : ( $warn ? '#bbb' : '#cc0000' ));		// bold icon
 	
 	$on_demand = $str==='';
 
@@ -342,8 +342,6 @@ public static function init($plugin)
 				break;
 				
 			case 'pause':
-				echo ($una->action. ' '.$plugin_file);
-
 				deactivate_plugins($plugin_file);
 				break;
 		}			
