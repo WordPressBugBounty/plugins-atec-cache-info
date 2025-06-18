@@ -22,7 +22,7 @@
 --bg-success: #f0fff0;
 --bg-error: #fff0f0;
 --bg-hover: rgba(34, 113, 177, 0.05);
---bg-button-hover: rgba(34, 113, 177, 0.1);
+--bg-button-hover: rgba(250, 250, 255, 0.9);
 
 /* TABLE */
 
@@ -180,7 +180,6 @@
 .atec-float-left		{ float: left; margin-right: auto; }
 .atec-float-right	{ float: right; margin-left: auto; }
 
-/* .atec-vabase		{ vertical-align: baseline !important; align-self: self-end; } */
 .atec-vab			{ vertical-align: baseline !important; align-self: self-end; }
 .atec-vam			{ vertical-align: middle !important; }
 .atec-vat			{ vertical-align: top !important; align-self: self-start; }
@@ -262,12 +261,8 @@
 
 .atec-table THEAD TD, .atec-table-tr-bold TD { font-weight: bold; }
 .atec-table-td-bold-first td:first-child { font-weight: bold; text-align: left; }
-.atec-table-td-bold-first td:not(:first-child) { text-align: right; }
-/* .atec-table-td-bold-first th, */
 .atec-table-td-bold-first td:first-child { border-right: 1px solid var(--table-border-color); }
-
-/* .atec-table-td-bold-first TD:first-child, .atec-table-td-bold-first TH { border-right: 1px solid var(--table-border-color); } */
-/* .atec-align-right { text-align: right !important; white-space: nowrap !important; } */
+.atec-table-td-right-not-first td:not(:first-child) { text-align: right; }
 
 .atec-border-right { border-right: 1px solid var(--table-border-color); }
 .empty_TR:first-of-type { display:none !important; }

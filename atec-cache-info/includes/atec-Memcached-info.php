@@ -48,8 +48,8 @@ public static function init($una, $settings)
 		if (defined('Memcached::SERIALIZER_IGBINARY') && function_exists('igbinary_serialize')) $available_serializers[]= 'IGBINARY';
 		if (defined('Memcached::SERIALIZER_MSGPACK') && function_exists('msgpack_serialize')) $available_serializers[]= 'MSGPACK';
 
-		TOOLS::table_header([], '', 'bold');
-			if (isset($mem['version'])) TOOLS::table_tr(['Version', '2@'.$mem['version']], '', 'bold');
+		TOOLS::table_header([], '', 'summary');
+			if (isset($mem['version'])) TOOLS::table_tr(['Version', '2@'.$mem['version']]);
 			TOOLS::table_tr([__('Connection', 'atec-cache-info'), '2@'.$memConn]);
 			TOOLS::table_tr([__('Host', 'atec-cache-info'), '2@'.$memHost]);
 			TOOLS::table_tr([__('Port', 'atec-cache-info'), '2@'.$memPort]);
@@ -58,7 +58,7 @@ public static function init($una, $settings)
 			
 		if ($mem)
 		{
-			TOOLS::table_header([], '', 'bold');
+			TOOLS::table_header([], '', 'summary');
 				TOOLS::table_tr([__('Memory', 'atec-cache-info'), TOOLS::size_format($mem['limit_maxbytes']), '']);
 				TOOLS::table_tr([__('Used', 'atec-cache-info'), TOOLS::size_format($mem['bytes']), '<small>'.TOOLS::percent_format($percent).'</small>']);
 				TOOLS::table_tr([__('Items', 'atec-cache-info'), number_format($mem['total_items']), '']);

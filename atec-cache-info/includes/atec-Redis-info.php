@@ -58,7 +58,7 @@ public static function init($una, $settings)
 				$hits= $stats['keyspace_hits']*100/$total;
 				$misses= $stats['keyspace_misses']*100/$total;
 
-				TOOLS::table_header([], '', 'bold');
+				TOOLS::table_header([], '', 'summary');
 					TOOLS::table_tr(['Version', '2@'.$server['redis_version']]);
 					TOOLS::table_tr([__('Connection', 'atec-cache-info'), '2@'.$redConn]);
 					TOOLS::table_tr([__('Host', 'atec-cache-info'), '2@'.$redHost]);
@@ -67,7 +67,7 @@ public static function init($una, $settings)
 					if (!empty($available_serializers)) TOOLS::table_tr([__('Serializers', 'atec-cache-info'), '2@<small>'.implode(', ', $available_serializers).'</small>']);
 				TOOLS::table_footer();
 
-				TOOLS::table_header([], '', 'bold');
+				TOOLS::table_header([], '', 'summary');
 					TOOLS::table_tr([__('Used', 'atec-cache-info'), TOOLS::size_format($memory['used_memory']), '']);
 					if ($keyCount) TOOLS::table_tr([__('Items', 'atec-cache-info'), number_format($keyCount), '']);
 					TOOLS::table_tr([__('Hits', 'atec-cache-info'), number_format($stats['keyspace_hits']), '<small>'.sprintf(" (%.1f%%)", $hits).'</small>']);

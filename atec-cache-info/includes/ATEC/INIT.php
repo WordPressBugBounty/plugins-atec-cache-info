@@ -52,7 +52,10 @@ final class INIT {
 				'meta'  => $alt !== '' ? [ 'title' => $alt ] : [],
 				'title'	=> wp_kses('<div class="atec-admin-bar-row">'. $icon . $dash . $title. '</div>', self::$allowed_admin_tags)
 			];
-		if ($slug!== '') $args['href'] = esc_url(self::build_url($slug, $action, $nav));
+		if ($slug!== '') 
+		{
+			$args['href'] = esc_url((empty($action) && empty($nav)) ? self::admin_url($slug) : self::build_url($slug, $action, $nav));
+		}
 		$wp_admin_bar->add_node($args);
 	}
 
@@ -63,12 +66,13 @@ final class INIT {
 			$menu_slug = 'atec_'.$una_or_slug;
 			$una = (object)
 			array(
+				'slug' => $una_or_slug,
 				'url' => self::admin_url($una_or_slug),
 				'nonce' 	=> wp_create_nonce($menu_slug.'_nonce'),
 			);
 		}
 		else $una = $una_or_slug;
-		
+
 		$nav = $nav ?? ($una->nav ?? '');
 
 		if ($action!==null && str_contains($action, '&')) 	// If $actions is a combined string
@@ -139,7 +143,14 @@ final class INIT {
 	
 	public static function error_log($args)
 	{
-		is_scalar($args) ? error_log($args) : error_log(print_r($args));	// phpcs:ignore
+		$bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);	// phpcs:ignore
+		if (isset($bt[1])) {
+			$caller = $bt[1];
+			$file = str_replace(WP_CONTENT_DIR, '', $caller['file'] ?? '[unknown file]');
+			$line = $caller['line'] ?? '[unknown line]';
+			error_log("INIT::error_log() called from $file:$line");	// phpcs:ignore
+		}
+		is_scalar($args) ? error_log($args) : error_log(print_r($args,true));		// phpcs:ignore
 	}
 	
 	public static function bool($value): bool { return filter_var($value, FILTER_VALIDATE_BOOLEAN); }
@@ -380,7 +391,6 @@ final class INIT {
 		static $style_loaded = null;
 		static $atec_group_active = null;
 		static $single_slug = ['wpmc', 'wpct'];
-		// static $hidden_slug = ['wpu'];
 
 		$single = in_array($slug, $single_slug);
 		$menu_slug = 'atec_'.$slug;

@@ -35,7 +35,7 @@ public static function init()
 
 		$percent = $apcu_mem?$mem_used*100/$mem_size:-1;
 
-		TOOLS::table_header([], '', 'bold');
+		TOOLS::table_header([], '', 'summary');
 			TOOLS::table_tr([__('Version', 'atec-cache-info').':', phpversion('apcu'), '']);
 			TOOLS::table_tr([__('Type', 'atec-cache-info').':', $apcu_cache['memory_type'], '']);
 			TOOLS::table_tr();

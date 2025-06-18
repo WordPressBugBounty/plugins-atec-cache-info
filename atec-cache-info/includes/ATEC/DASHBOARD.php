@@ -353,12 +353,13 @@ public static function init($plugin)
 	$atec_group_arr = GROUP::all_plugins();
 	$una = TOOLS::una(__DIR__);
 
-	$integrity = TOOLS::clean_request('integrity', 'group_nonce');
+	$integrity = TOOLS::clean_request('integrity', 'atec_group_nonce');
 	if ($integrity!== '')
 	{
+		$integrity = INIT::bool($integrity);
 		$integrityString= 'Thank you. Connection to atecplugins.com is '.($integrity== 'true'?'enabled':'disabled');
-		if ($integrity== 'true') INIT::integrity_check($plugin);
-		update_option('allow_integrity_check', $integrity);
+		if ($integrity) INIT::integrity_check($plugin);
+		update_option('atec_allow_integrity_check', $integrity);
 	}
 	else $integrityString = '';
 
@@ -402,7 +403,7 @@ public static function init($plugin)
 					'</h3>',
 				'</div>';
 
-				if ($integrityString!== '') TOOLS::msg($integrity,$integrityString);
+				if ($integrityString!== '') { echo '<div class="atec-db atec-center atec-mb-10">'; TOOLS::msg($integrity,$integrityString); echo '</div>'; }
 
 				if ($show_active)
 				{

@@ -25,7 +25,7 @@ public static function init($una, $settings)	// fake parameters
 		$jit_size = MEMORY::KMG_2_Int($iniSize);
 	}
 
-	TOOLS::table_header([], '', 'bold');
+	TOOLS::table_header([], '', 'summary');
 		TOOLS::table_tr(['JIT '.__('config', 'atec-cache-info').':', ini_get('opcache.jit'), '']);
 		TOOLS::table_tr(['Debug:', ini_get('opcache.jit_debug'), '']);
 		TOOLS::table_tr();

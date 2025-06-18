@@ -15,7 +15,7 @@ public static function init($una, $settings)	// fake parameters
 	$hits 		= $wp_object_cache->cache_hits*100/$total;
 	$misses 	= $wp_object_cache->cache_misses*100/$total;
 
-	TOOLS::table_header([], '', 'bold');
+	TOOLS::table_header([], '', 'summary');
 		TOOLS::table_tr(['Version', SQLite_Object_Cache()->_version, '']);
 		TOOLS::table_tr([__('Hits', 'atec-cache-info'), number_format($wp_object_cache->cache_hits), '<small>'.TOOLS::percent_format($hits).'</small>']);
 		TOOLS::table_tr([__('Misses', 'atec-cache-info'), number_format($wp_object_cache->cache_misses), '<small>'.TOOLS::percent_format($misses).'</small>']);

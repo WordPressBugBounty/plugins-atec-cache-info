@@ -34,7 +34,7 @@ public static function init()
 	if (isset($wp_object_cache->cache_hits))
 	{
 		$hitrate = self::calc_hitrate($wp_object_cache->cache_hits, $wp_object_cache->cache_misses);
-		TOOLS::table_header([], '', 'bold');
+		TOOLS::table_header([], '', 'summary');
 			TOOLS::table_tr([__('Hits', 'atec-cache-info').':', number_format($wp_object_cache->cache_hits), TOOLS::percent_format($hitrate['hitsPerc'])]);
 			TOOLS::table_tr([__('Misses', 'atec-cache-info').':', number_format($wp_object_cache->cache_misses), TOOLS::percent_format($hitrate['missesPerc'])]);
 			if (isset($wp_object_cache->cache_sets))
@@ -53,7 +53,7 @@ public static function init()
 
 		$hitrate = self::calc_hitrate($ls_hit, $ls_miss);
 
-		TOOLS::table_header([], '', 'bold');
+		TOOLS::table_header([], '', 'summary');
 			TOOLS::table_tr([__('Items', 'atec-cache-info').':', number_format($ls_total), '']);
 			TOOLS::table_tr([__('Hits', 'atec-cache-info').':', number_format($ls_hit), TOOLS::percent_format($hitrate['hitsPerc'])]);
 			TOOLS::table_tr([__('Misses', 'atec-cache-info').':', number_format($ls_miss), TOOLS::percent_format($hitrate['missesPerc'])]);

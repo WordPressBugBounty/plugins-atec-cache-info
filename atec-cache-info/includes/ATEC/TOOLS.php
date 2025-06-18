@@ -88,7 +88,7 @@ public static function percent_format($value, $decimals = 1)
 public static function td_size_format($bytes, $decimals = 0, $class='') 
 {
 	if (!$bytes) { echo '<td>-/-</td>'; return; }
-	echo '<td class="atec-nowrap atec-table-td-right', $class==='' ? '' : ' '.esc_html($class), '">';
+	echo '<td class="atec-nowrap atec-right', $class==='' ? '' : ' '.esc_html($class), '">';
 		echo wp_kses_post(self::size_format($bytes, $decimals));
 	echo '</td>';
 }
@@ -122,22 +122,26 @@ public static function clear()
 
 public static function una($dir, $nav_default = '')
 {
-	$nav = self::clean_request('nav');
+	$nonce = INIT::nonce();
+	$nav = self::clean_request('nav', $nonce);
+	
 	if ($nav_default=== '') $nav_default = 'Dashboard';
 	if ($nav=== '') $nav= $nav_default;
-	$navs = $nav_default === 'Dashboard' ? ['#admin-home Dashboard'] : ($nav_default=== 'Settings'?['#admin-generic Settings']:[]);
-	$menu_slug = INIT::slug();
-	return (object)
-		[
-			'dir'		=> dirname($dir),
-			'url' 		=> self::url(),
-			'nonce' 	=> wp_create_nonce($menu_slug.'_nonce'),
-			'action' 	=> self::clean_request('action'),
-			'nav' 		=> $nav,
-			'navs' 	=> $navs,
-			'id'		=> self::clean_request('id'),
-			'slug' 	=> str_replace('atec_', '', $menu_slug)
-		];
+	$navs = $nav_default === 'Dashboard' ? ['#admin-home Dashboard'] : ($nav_default === 'Settings'?['#admin-generic Settings']:[]);
+
+	$arr =	
+	[
+		'dir'		=> dirname($dir),
+		'url' 		=> self::url(),
+		'nonce' 	=> wp_create_nonce($nonce),
+		'action' 	=> self::clean_request('action',$nonce),
+		'nav' 		=> $nav,
+		'navs' 	=> $navs,
+		'id'		=> self::clean_request('id',$nonce),
+		'slug' 	=> str_replace('atec_', '',  INIT::slug())
+	];
+
+	return (object) $arr;
 }
 
 public static function p($str= '', $class= ''): void
@@ -154,8 +158,7 @@ public static function enabled($enabled, $active=false): void
 public static function random_string($length, $lower=false): string
 {
 	$charset = 'abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ'; $string = '';
-	// phpcs:ignore
-	 while(strlen($string)<$length) { $string .= substr($charset,random_int(0,61),1); }
+	while(strlen($string)<$length) { $string .= substr($charset,random_int(0,61),1); }		// phpcs:ignore
 	return $lower?strtolower($string):$string;
 }
 
@@ -188,12 +191,7 @@ public static function format_duration($seconds)
 public static function url(): string
 {
 	static $cached = null;
-	if ($cached === null)
-	{
-		/* phpcs:disable WordPress.Security.NonceVerification.Recommended */
-		$cached = strtok(rtrim(add_query_arg($_GET, admin_url('admin.php')), '/'), '&');
-		/* phpcs:enable WordPress.Security.NonceVerification.Recommended */
-	}
+	if ($cached === null) $cached = strtok(rtrim(add_query_arg($_GET, admin_url('admin.php')), '/'), '&');	// phpcs:ignore
 	return $cached;
 }
 
@@ -212,7 +210,7 @@ public static function loader_div($id='', $str=''): void
 public static function loader_dots(int $count = 9): void
 {
 	echo '<div class="atec-loader-dots atec-dilb">';
-	for ($i = 1; $i <= $count; $i++) echo "<span style='--i:$i'></span>";	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	for ($i = 1; $i <= $count; $i++) echo "<span style='--i:$i'></span>";	// phpcs:ignore
 	echo '</div>';
 	self::flush();
 }
@@ -275,19 +273,20 @@ private static function dash_and_button_div($dnb, string $class = ''): void
 
 // PRO AREA START
 
-public static function integrity_banner($una) : void
+public static function integrity_banner($dir) : void
 {
-	$plugin = INIT::plugin_by_dir($una->dir);
+	//$una->nonce = wp_create_nonce('atec_group_nonce');
+	$plugin = INIT::plugin_by_dir($dir);
 	$link_yes = INIT::build_url('group', '', '', ['integrity' => true, 'plugin' => $plugin]);
 	$link_no= str_replace('true', 'false', $link_yes);
 	echo
 	'<div class="button atec-sticky-left">',
-		'<div class="atec-dilb atec-fs-10" style="line-height:12px;">',
-			'Connect to atecplugins.com<br><span class="atec-fs-8">One time connection on activation.</span>',
+		'<div class="atec-dilb" style="line-height:8px; padding-bottom: 2px;" title="One time connection on activation.">',
+			'<span class="atec-fs-8">Allow connection to</span><br><span class="atec-fs-10">atecplugins.com</span>',
 		'</div>',
 		'<div class="atec-row atec-ml-5">',
 			'<a style="background: rgba(0, 180, 0, 0.5);" class="atec-integritry" href="', esc_url($link_yes), '">YES</a>',
-			'<a style="background: rgba(180, 0, 0, 0.5);" class="atec-integritry" href="', esc_url($link_no), '">NO</a>',
+			'<a style="background: rgba(180, 0, 0, 0.5); margin-left: -5px;" class="atec-integritry" href="', esc_url($link_no), '">NO</a>',
 		'</div>',
 	'</div>';
 }
@@ -417,9 +416,7 @@ private static function single_nav_tab($una, $act_nav, $icon, $button, $licenseO
 public static function nav_tab($una, $break=999, $licenseOk=null, $about=false, $update=false, $debug=false): void
 {
 	self::progress();
-
 	$margin_top = $licenseOk ? '-15' : '-5';
-	//height: 32px; 
 	echo
 	'<h2 class="nav-tab-wrapper" style="padding: 0; margin: '.esc_attr($margin_top).'px 0 5px 0;">';
 		$c = 0;
@@ -450,7 +447,7 @@ public static function nav_tab($una, $break=999, $licenseOk=null, $about=false, 
 
 public static function table_header($tds = [], $id = '', $class = ''): void
 {
-	$class = str_replace('bold', 'atec-table-td-bold-first', $class);
+	$class = str_replace(['summary'], ['atec-table-td-bold-first atec-table-td-right-not-first'], $class);
 	echo '<table', esc_attr(!empty($id) ? ' id="'.$id.'"' : ''), ' class="atec-table atec-table-tiny atec-fit ', esc_attr($class), '">';
 	if (!empty($tds))
 	{
@@ -682,16 +679,17 @@ public static function clean_request_bool($key) : bool
 { return INIT::bool(self::clean_request($key)); }
 
 public static function clean_request($key, $nonce = '', $type= 'text')
-{
-	// phpcs:ignore
-	$source = $_POST['submit'] ?? false ? $_POST : $_REQUEST;
-	$nonce_to_check = $nonce !== '' ? $nonce : INIT::nonce(); // Validate nonce
+{	
+	$source = $_POST['submit'] ?? false ? $_POST : $_REQUEST;		// phpcs:ignore
+	if (!isset($source[$key])) return '';
+
+	$nonce_to_check = $nonce !== '' ? $nonce : INIT::nonce(); 		// Validate nonce
 
 	$nonce_valid =
 		(isset($_POST['submit']) && check_admin_referer($nonce_to_check)) ||
 		(isset($source['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($source['_wpnonce'])), $nonce_to_check));
 		
-	if (!$nonce_valid || !isset($source[$key])) { return ''; }
+	if (!$nonce_valid) return '';
 	$value = wp_unslash($source[$key]);
 	return $type=== 'textarea' ? sanitize_textarea_field($value) : sanitize_text_field($value);
 }
@@ -775,8 +773,7 @@ public static function header($una): bool
 
 	$version			= wp_cache_get('atec_'.$una->slug.'_version', 'atec_np');
 	$licenseOk 		= self::pro_banner($una->slug);
-
-	if (is_null(get_option('atec_allow_integrity_check',null))) self::integrity_banner($una);
+	if (is_null(get_option('atec_allow_integrity_check',null))) self::integrity_banner($una->dir);
 
 	echo
 	'<div class="atec-header">',

@@ -18,7 +18,7 @@ public static function init($una, $settings)	// fake parameters
 	
 	if ($opc_file_only)
 	{
-		TOOLS::table_header([], '', 'bold');
+		TOOLS::table_header([], '', 'summary');
 			TOOLS::table_tr(['Mode', 'File only']);
 			TOOLS::table_tr(['Max files', ini_get('opcache.max_accelerated_files')]);
 		TOOLS::table_footer();
@@ -31,7 +31,7 @@ public static function init($una, $settings)	// fake parameters
 			$megaByte = 1048576;
 			$total_mem = (int) $opc_conf['directives']['opcache.memory_consumption'];
 			
-			TOOLS::table_header([], '', 'bold');
+			TOOLS::table_header([], '', 'summary');
 				TOOLS::table_tr([__('Memory', 'atec-cache-info'), TOOLS::size_format($total_mem), '']);
 				if ($opStats)
 				{
@@ -88,14 +88,14 @@ public static function init($una, $settings)	// fake parameters
 			}
 
 			$str_buffer = $opc_conf['directives']['opcache.interned_strings_buffer'];
-			TOOLS::table_header([], '', 'bold');
+			TOOLS::table_header([], '', 'summary');
 				TOOLS::table_tr([__('Strings', 'atec-cache-info'), $str_buffer.' <small>MB</small>', '']);
 				if ($opStats)
 				{
 					$percent_str 	= $opc_status['interned_strings_usage']['used_memory']*100/$opc_status['interned_strings_usage']['buffer_size'];
 					$rec_str 			= $str_buffer;
-					if ($percent_str>75) $rec_str= $this->increase_in_steps($rec_str,1.50,8);
-					elseif ($percent_str>50) $rec_str= $this->increase_in_steps($rec_str,1.25,8);
+					if ($percent_str>75) $rec_str= self::increase_in_steps($rec_str,1.50,8);
+					elseif ($percent_str>50) $rec_str= self::increase_in_steps($rec_str,1.25,8);
 					$OPC_recommended['strings']= $rec_str;
 					
 					TOOLS::table_tr(['  '.__('Used', 'atec-cache-info'), TOOLS::size_format($opc_status['interned_strings_usage']['used_memory']), '<small>'.TOOLS::percent_format($percent_str)]);
@@ -122,7 +122,7 @@ public static function init($una, $settings)	// fake parameters
 			<div class="atec-border-white">
 				<h4>OPcache ', esc_attr__('Details', 'atec-cache-info'), '</h4><hr>';
 	
-				TOOLS::table_header([], '', 'bold');
+				TOOLS::table_header([], '', 'summary');
 					TOOLS::table_tr([__('Version', 'atec-cache-info'), $opc_conf['version']['version'] ?? '']);
 					TOOLS::table_tr([__('Revalidate freq.', 'atec-cache-info'), $opc_conf['directives']['opcache.revalidate_freq'] ?? 0]);
 					TOOLS::table_tr([__('Validate TS.', 'atec-cache-info'), TOOLS::on_off($validate_timestamps)]);
@@ -134,7 +134,7 @@ public static function init($una, $settings)	// fake parameters
 						
 				$max_accelerated_files = $opc_conf['directives']['opcache.max_accelerated_files']??0;
 			
-				TOOLS::table_header([], '', 'bold');
+				TOOLS::table_header([], '', 'summary');
 					TOOLS::table_tr([__('Max acc. files', 'atec-cache-info'), number_format($max_accelerated_files)]);
 					if ($opStats && $max_accelerated_files!==0)
 					{
@@ -145,8 +145,8 @@ public static function init($una, $settings)	// fake parameters
 						$percentFiles	 	= ($numScripts+$numKeys)*100/$maxReal;
 						$recFiles	 			= $max_accelerated_files;
 	
-						if ($percentFiles>75) $recFiles= $this->increase_in_steps($max_accelerated_files, 1.5, 1000);
-						elseif ($percentFiles>50) $recFiles= $this->increase_in_steps($max_accelerated_files, 1.25, 1000);
+						if ($percentFiles>75) $recFiles= self::increase_in_steps($max_accelerated_files, 1.5, 1000);
+						elseif ($percentFiles>50) $recFiles= self::increase_in_steps($max_accelerated_files, 1.25, 1000);
 						$OPC_recommended['files']= $recFiles;
 
 						TOOLS::table_tr(['  '.__('Max real', 'atec-cache-info'), number_format($maxReal)]);
