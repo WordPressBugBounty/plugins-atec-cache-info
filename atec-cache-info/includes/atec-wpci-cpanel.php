@@ -60,7 +60,6 @@ return function($una)
 	}
 
 	TOOLS::little_block('Zend Opcode & WP '.__('Object Cache', 'atec-cache-info'));
-	TOOLS::loader_dots();
 	
 	switch ($una->action)
 	{
@@ -69,10 +68,10 @@ return function($una)
 			break;
 	}
 
-//	TOOLS::reg_inline_style('wpci_cache', 'table td:nth-of-type(2), table td:nth-of-type(3) { text-align: right; }');
-
 	echo
 	'<div class="atec-g atec-g-25">';
+
+		TOOLS::loader_dots();
 
 		foreach(['OP', 'WP', 'JIT'] as $type)
 		{ WPC::cache_block(__DIR__, $una, $cache_settings, $type, $enabled); }

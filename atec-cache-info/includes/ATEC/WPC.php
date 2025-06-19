@@ -23,7 +23,7 @@ public static function fix_name($type)
 		case 'PC':
 			$tmp = __('Page Cache', 'atec-cache-info');
 			break;
-
+					
 		default:
 			$tmp = $type;
 			break;
@@ -120,7 +120,7 @@ public static function cache_block($dir, $una, $settings, $type, $enabled)
 				? __('is NOT enabled', 'atec-cache-info') 
 				: __('extension is NOT installed/enabled', 'atec-cache-info')
 				));
-			if (in_array($type, ['APCu', 'JIT'])) require $dir.'/atec-'.$type_lower.'-Help.php';
+			if (in_array($type, ['APCu', 'JIT'])) require $dir.'/atec-'.$type.'-help.php';
 		}
 	
 	echo
@@ -173,7 +173,7 @@ public static function flush_cache($una, $settings, $type = null)
 		}
 	self::flushing_end($result);
 
-	TOOLS::badge($result, __('Flushing', 'atec-cache-info').' '.self::fix_name($type).' #'.__('succeeded', 'atec-cache-info'), __('failed', 'atec-cache-info'));
+	TOOLS::badge($result, __('Flushing', 'atec-cache-info').' '.self::fix_name($type).'#'.__('succeeded', 'atec-cache-info'), __('failed', 'atec-cache-info'));
 
 	return $result;
 }
