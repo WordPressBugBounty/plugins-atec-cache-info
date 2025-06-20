@@ -148,7 +148,7 @@ final class INIT {
 			$caller = $bt[1];
 			$file = str_replace(WP_CONTENT_DIR, '', $caller['file'] ?? '[unknown file]');
 			$line = $caller['line'] ?? '[unknown line]';
-			error_log("INIT::error_log() called from $file:$line");	// phpcs:ignore
+			error_log("error_log() called from $file:$line");	// phpcs:ignore
 		}
 		is_scalar($args) ? error_log($args) : error_log(print_r($args,true));		// phpcs:ignore
 	}

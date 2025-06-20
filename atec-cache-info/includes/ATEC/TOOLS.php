@@ -242,7 +242,7 @@ public static function flush(): void
 
 // DASH AREA START
 
-private static $dashArr = ['admin-comments', 'admin-generic', 'admin-home', 'admin-plugins', 'admin-settings', 'admin-site', 'admin-tools', 'analytics', 'archive', 'awards', 'backup', 'businessman', 'clipboard', 'code-standards', 'controls-play', 'cover-image', 'database', 'editor-code', 'editor-removeformatting', 'editor-table', 'forms', 'groups', 'hourglass', 'info', 'insert', 'list-view', 'performance', 'trash', 'translation', 'update'];
+private static $dashArr = ['admin-comments', 'admin-generic', 'admin-home', 'admin-plugins', 'admin-settings', 'admin-site', 'admin-tools', 'analytics', 'archive', 'awards', 'backup', 'businessman', 'clipboard', 'code-standards', 'controls-play', 'cover-image', 'database', 'database-add', 'editor-code', 'editor-removeformatting', 'editor-table', 'forms', 'groups', 'hourglass', 'info', 'insert', 'list-view', 'performance', 'trash', 'translation', 'update'];
 
 public static function dash_class($icon, $class = ''): string
 { return 'dashicons dashicons-' . $icon . ($class ? ' ' . $class : ''); }
@@ -915,7 +915,7 @@ public static function page_header($una, $break=999, $about=false, $update=false
 	'<div class="atec-page">';
 		$licenseOk = self::header($una);
 
-		if ($break<0) $break = $licenseOk ? 999 : abs($break);
+		//if ($break<0) $break = $licenseOk ? 999 : abs($break);
 
 		echo
 		'<div class="atec-main">';

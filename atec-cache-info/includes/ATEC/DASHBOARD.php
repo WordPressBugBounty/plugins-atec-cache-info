@@ -139,7 +139,7 @@ private static function plugin_div($p)
 			break;
 
 		case 'database':
-			self::group_badge('Transitions', INIT::get_settings('wpb','auto_timedout'), $p->slug);
+			self::group_badge('Transitions', INIT::get_settings('wpdb','auto_timedout'), $p->slug);
 			break;
 
 		case 'debug':
