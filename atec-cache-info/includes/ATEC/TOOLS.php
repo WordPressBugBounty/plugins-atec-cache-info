@@ -30,18 +30,26 @@ public static function gmdate($ts, $format= 'm/d H:i')
 	return gmdate($format, $ts); 
 }
 
-public static function progress_percent($id)
+public static function progress_percent($id, $percent=null)
 {
-	echo
-	'<div class="atec-border atec-percent-block" style="width:260px; background:rgb(250, 250, 250);">',
-		'<div class="atec-dilb atec-fs-12">Progress</div><div class="atec-dilb atec-float-right atec-fs-12">100%</div><br>',
-		'<div class="atec-percent-div" style="width:250px; background: rgb(235, 235, 235);">',
-			'<span  id="atec_progress_percent_', esc_attr($id), '" style="background-color:lightgreen;"></span>',
-		'</div>',
-	'</div>';
+	if ($percent === null)
+	{		
+		echo
+		'<div class="atec-border atec-percent-block" style="width:260px; background:rgb(250, 250, 250);">',
+			'<div class="atec-dilb atec-fs-12">Progress</div><div class="atec-dilb atec-float-right atec-fs-12">100%</div><br>',
+			'<div class="atec-percent-div" style="width:250px; background: rgb(235, 235, 235);">',
+				'<span  id="atec_progress_percent_', esc_attr($id), '" style="background-color:lightgreen;"></span>',
+			'</div>',
+		'</div>';
+	}
+	else
+	{
+		echo '<script>jQuery("#atec_progress_percent_', esc_attr($id), '").css("width","', esc_attr($percent), '%"); jQuery(document.currentScript).remove();</script>'; 
+		self::flush();
+	}
 }
 
-public static function lazy_require_class(string $dir, string $path, string $class= '', mixed ...$args): bool
+public static function lazy_require_class(string $dir, string $path, string $class= '', ...$args): bool
 {
 	$full_path = "$dir/$path";
 	if (is_file($full_path)) 
@@ -62,7 +70,7 @@ public static function lazy_require_class(string $dir, string $path, string $cla
 	return false;
 }
 
-public static function lazy_require(string $dir, string $path, mixed ...$args): void
+public static function lazy_require(string $dir, string $path, ...$args): void
 {
 	$full_path = "$dir/$path";
 	if (is_file($full_path)) 
@@ -247,7 +255,7 @@ public static function flush(): void
 
 // DASH AREA START
 
-private static $dashArr = ['admin-comments', 'admin-generic', 'admin-home', 'admin-plugins', 'admin-settings', 'admin-site', 'admin-tools', 'analytics', 'archive', 'awards', 'backup', 'businessman', 'clipboard', 'code-standards', 'controls-play', 'cover-image', 'database', 'database-add', 'editor-code', 'editor-removeformatting', 'editor-table', 'forms', 'groups', 'hourglass', 'info', 'insert', 'list-view', 'performance', 'trash', 'translation', 'update'];
+private static $dashArr = ['admin-comments', 'admin-generic', 'admin-home', 'admin-plugins', 'admin-settings', 'admin-site', 'admin-tools', 'analytics', 'archive', 'awards', 'backup', 'businessman', 'clipboard', 'code-standards', 'controls-play', 'cover-image', 'database', 'database-add', 'edit', 'editor-code', 'editor-removeformatting', 'editor-table', 'feedback', 'forms', 'groups', 'hourglass', 'info', 'insert', 'list-view', 'performance', 'trash', 'translation', 'update'];
 
 public static function dash_class($icon, $class = ''): string
 { return 'dashicons dashicons-' . $icon . ($class !== '' ? ' '.$class : ''); }
@@ -486,7 +494,8 @@ private static $allowed_tr =
 		'small'	=> [],
 		'b' 		=> [],
 		'a'			=> ['href' => [], 'target'=> [] ],
-		'span'	=> ['class' => [] ],
+		'span'	=> ['class' => [], 'style' => [] ],
+		'img'		=> ['src' => [], 'style' => [] ],
 		'hr'		=> ['class' => [] ] 
 	];
 
@@ -599,7 +608,11 @@ public static function dash_button($una, $action, $nav, $dash, $enabled, $id, $p
 }
 
 public static function dash_button_td($una, $action, $nav, $dash, $enabled, $id, $primary=false): void
-{ echo '<td>'; self::dash_button($una, $action, $nav, $dash, $enabled, $id, $primary); echo '</td>'; }
+{ 
+	echo '<td>'; 
+		self::dash_button($una, $action, $nav, $dash, $enabled, $id, $primary); 
+	echo '</td>'; 
+}
 
 // MSG AREA START
 
@@ -641,6 +654,11 @@ public static function p_info($str, $bold=false, $class= ''): void
 		echo '<div>🔹</div>';
 		echo '<div ', ($bold ? ' atec-bold' : ''), '">', wp_kses_post($str), '</div>';
 	echo '</div>';
+}
+
+public static function p_bold($title, $str, $class= ''): void
+{
+	echo '<p', ($class !== '' ? ' class="'.esc_attr($class).'"' : ''), '"><b>', esc_html($title), '</b>: ', wp_kses_post($str) ,'</p>';
 }
 
 public static function msg($ok, $str, $before=false, $after=false): void
@@ -721,7 +739,9 @@ public static function submit_button($button= '', $inline=false)
 }
 
 public static function safe_redirect($una, $action=null, $nav=null, $args = []): void
-{ wp_safe_redirect(INIT::build_url($una, $action, $nav)); }
+{ 
+	wp_safe_redirect(INIT::build_url($una, $action, $nav)); 
+}
 
 public static function redirect($una, $action=null, $nav=null, $args = []): void
 {
@@ -900,8 +920,7 @@ public static function little_block($str, $class = '', $info= ''): void
 		'</div>'; 
 		if ($info!== '')
 		{
-			echo'<div class="atec-dilb atec-ml-10">';
-				// phpcs:ignore
+			echo '<div class="atec-dilb atec-ml-10">';
 				self::p_info($info);
 			echo '</div>';
 		}

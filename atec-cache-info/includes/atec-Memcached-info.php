@@ -43,8 +43,8 @@ public static function init($una, $settings)
 		else $percent = false;
 		
 		$available_serializers = [];
-		if (defined('Memcached::SERIALIZER_PHP') && function_exists('igbinary_serialize')) $available_serializers[]= 'PHP';
-		if (defined('Memcached::SERIALIZER_JSON') && function_exists('igbinary_serialize')) $available_serializers[]= 'JSON';
+		if (defined('Memcached::SERIALIZER_PHP')) $available_serializers[]= 'PHP';
+		if (defined('Memcached::SERIALIZER_JSON') && function_exists('json_encode')) $available_serializers[]= 'JSON';
 		if (defined('Memcached::SERIALIZER_IGBINARY') && function_exists('igbinary_serialize')) $available_serializers[]= 'IGBINARY';
 		if (defined('Memcached::SERIALIZER_MSGPACK') && function_exists('msgpack_serialize')) $available_serializers[]= 'MSGPACK';
 

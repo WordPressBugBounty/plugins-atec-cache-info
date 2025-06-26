@@ -6,7 +6,7 @@ Tested up to: 6.8
 Requires at least:4.9
 Requires PHP: 7.4
 Tested up to PHP: 8.4.5
-Stable tag: 1.8.9
+Stable tag: 1.8.11
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,7 +28,6 @@ Use this plugin to diagnose performance bottlenecks, verify cache setup, and ens
 
 === Specifications ===
 
-* CPU footprint (idle): <5 ms.
 * Compatible with: APCu, Memcached, Redis, SQLite
 * Displays runtime statistics and limits
 
@@ -61,6 +60,12 @@ Yes. It will display any supported caching features that are available in your c
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.8.11 [2025.06.26] =
+* Framework change: Removed mixed ...$args
+
+= 1.8.10 [2025.06.26] =
+* Framework change, admin_debug_all()
 
 = 1.8.9 [2025.06.24] =
 * Framework change | License check improved

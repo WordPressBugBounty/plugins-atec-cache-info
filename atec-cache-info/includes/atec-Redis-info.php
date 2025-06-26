@@ -12,7 +12,7 @@ private static function test_redis_writable($redis)
 	$testKey= 'atec_redis_test_key';
 	$redis->set($testKey, 'hello');
 	$success= $redis->get($testKey)== 'hello';
-	TOOLS::badge($success, 'Redis '.__('is writeable', 'atec-cache-info'), 'Writing to cache failed');
+	TOOLS::badge($success, 'Redis '.'is writeable', 'Writing to cache failed');
 	if ($success) $redis->del($testKey);
 }
 
@@ -49,10 +49,10 @@ public static function init($una, $settings)
 				$keyCount 		= $redis->dbSize();
 
 				$available_serializers = [];
-				if (defined('Redis::SERIALIZER_PHP') && function_exists('igbinary_serialize')) $available_serializers[]= 'PHP';
-				if (defined('Redis::SERIALIZER_JSON') && function_exists('igbinary_serialize')) $available_serializers[]= 'JSON';
-				if (defined('Redis::SERIALIZER_IGBINARY') && function_exists('igbinary_serialize')) $available_serializers[]= 'IGBINARY';
-				if (defined('Redis::SERIALIZER_MSGPACK') && function_exists('msgpack_serialize')) $available_serializers[]= 'MSGPACK';
+				if (defined('Redis::SERIALIZER_PHP')) { $available_serializers[] = 'PHP'; }
+				if (defined('Redis::SERIALIZER_JSON') && function_exists('json_encode')) { $available_serializers[] = 'JSON'; }
+				if (defined('Redis::SERIALIZER_IGBINARY') && function_exists('igbinary_serialize')) { $available_serializers[] = 'IGBINARY'; }
+				if (defined('Redis::SERIALIZER_MSGPACK') && function_exists('msgpack_serialize')) { $available_serializers[] = 'MSGPACK'; }
 
 				$total= $stats['keyspace_hits']+$stats['keyspace_misses']+0.0000001;
 				$hits= $stats['keyspace_hits']*100/$total;
@@ -60,18 +60,18 @@ public static function init($una, $settings)
 
 				TOOLS::table_header([], '', 'summary');
 					TOOLS::table_tr(['Version', '2@'.$server['redis_version']]);
-					TOOLS::table_tr([__('Connection', 'atec-cache-info'), '2@'.$redConn]);
-					TOOLS::table_tr([__('Host', 'atec-cache-info'), '2@'.$redHost]);
-					if ($redConn=== 'TCP/IP') TOOLS::table_tr([__('Port', 'atec-cache-info'), '2@'.$redPort]);
-					if ($redPwd!== '') TOOLS::table_tr([__('Password', 'atec-cache-info'), '2@'.$redPwd]);
-					if (!empty($available_serializers)) TOOLS::table_tr([__('Serializers', 'atec-cache-info'), '2@<small>'.implode(', ', $available_serializers).'</small>']);
+					TOOLS::table_tr(['Connection', '2@'.$redConn]);
+					TOOLS::table_tr(['Host', '2@'.$redHost]);
+					if ($redConn=== 'TCP/IP') TOOLS::table_tr(['Port', '2@'.$redPort]);
+					if ($redPwd!== '') TOOLS::table_tr(['Password', '2@'.$redPwd]);
+					if (!empty($available_serializers)) TOOLS::table_tr(['Serializers', '2@<small>'.implode(', ', $available_serializers).'</small>']);
 				TOOLS::table_footer();
 
 				TOOLS::table_header([], '', 'summary');
-					TOOLS::table_tr([__('Used', 'atec-cache-info'), TOOLS::size_format($memory['used_memory']), '']);
-					if ($keyCount) TOOLS::table_tr([__('Items', 'atec-cache-info'), number_format($keyCount), '']);
-					TOOLS::table_tr([__('Hits', 'atec-cache-info'), number_format($stats['keyspace_hits']), '<small>'.sprintf(" (%.1f%%)", $hits).'</small>']);
-					TOOLS::table_tr([__('Misses', 'atec-cache-info'), number_format($stats['keyspace_misses']), '<small>'.sprintf(" (%.1f%%)", $misses).'</small>']);
+					TOOLS::table_tr(['Used', TOOLS::size_format($memory['used_memory']), '']);
+					if ($keyCount) TOOLS::table_tr(['Items', number_format($keyCount), '']);
+					TOOLS::table_tr(['Hits', number_format($stats['keyspace_hits']), '<small>'.sprintf(" (%.1f%%)", $hits).'</small>']);
+					TOOLS::table_tr(['Misses', number_format($stats['keyspace_misses']), '<small>'.sprintf(" (%.1f%%)", $misses).'</small>']);
 				TOOLS::table_footer();
 
 				WPC::hitrate($hits, $misses);
@@ -93,7 +93,7 @@ public static function init($una, $settings)
 					'<table>
 					
 						<tr>
-							<td colspan="3"><label for="redis_conn">', esc_attr__('Connection', 'atec-cache-info'), '</label><br>
+							<td colspan="3"><label for="redis_conn">', esc_attr('Connection'), '</label><br>
 								<select name="redis_conn">
 									<option value="TCP/IP"', ($redConn=== 'TCP/IP'?' selected="selected"' : ''), '>TCP/IP</option>
 									<option value="SOCKET"', ($redConn=== 'SOCKET'?' selected="selected"' : ''), '>SOCKET</option>
@@ -102,20 +102,20 @@ public static function init($una, $settings)
 						</tr>
 						
 						<tr>
-							<td class="atec-left"><label for="redis_host">', esc_attr__('Host or UNIX path', 'atec-cache-info'), '</label><br>
+							<td class="atec-left"><label for="redis_host">', esc_attr('Host or UNIX path'), '</label><br>
 								<input size="15" type="text" placeholder="localhost" name="redis_host" value="', esc_attr($redHost), '"><br><br>
 							</td>
-							<td class="atec-left"><label for="redis_port">', esc_attr__('Port', 'atec-cache-info'), '</label><br>
+							<td class="atec-left"><label for="redis_port">', esc_attr('Port'), '</label><br>
 								<input size="3" type="text" placeholder="6379" name="redis_port" value="', esc_attr($redPort), '"><br>
 								<span class="atec-fs-8">(TCP/IP only)</small>
 							</td>
-							<td class="atec-left"><label for="redis_pwd">', esc_attr__('Password', 'atec-cache-info'), '</label><br>
+							<td class="atec-left"><label for="redis_pwd">', esc_attr('Password'), '</label><br>
 								<input size="6" type="text" placeholder="Password" name="redis_pwd" value="', esc_attr($redPwd), '"><br><br>
 							</td>
 						</tr>
 						
 						<tr>
-							<td colspan="3">'; TOOLS::submit_button('#editor-break '.esc_attr__('Save', 'atec-cache-info'), true); echo '</td>
+							<td colspan="3">'; TOOLS::submit_button('#editor-break '.esc_attr('Save'), true); echo '</td>
 						</tr>
 						
 					</table>';

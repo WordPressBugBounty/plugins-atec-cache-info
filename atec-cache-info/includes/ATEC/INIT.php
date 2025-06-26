@@ -13,7 +13,7 @@ defined('ABSPATH') || exit;
 final class INIT {
 
 static $require_install = [ 'wpau', 'wpc', 'wpca', 'wpcm', 'wpco', 'wpcr', 'wpd', 'wpds', 'wpf', 'wpfm', 'wpm', 'wppp', 'wps', 'wpsi', 'wpsh', 'wpwp' ];
-static $skip_load_check = ['wpau', 'wpds', 'wpht', 'wpdpp', 'wpll', 'wplu', 'wpocb', 'wppp', 'wps', 'wpsi', 'wpsmc', 'wpsr', 'wpsv', 'wpu'];
+static $skip_load_check = ['wp4t', 'wpau', 'wpds', 'wpht', 'wpdpp', 'wpll', 'wplu', 'wpmsc', 'wpocb', 'wppp', 'wps', 'wpsi', 'wpsmc', 'wpsr', 'wpsv', 'wpu'];
 static $admin_styles_loaded = false;
 static $allowed_admin_tags = 
 	[	
@@ -506,6 +506,18 @@ public static function admin_debug($slug, $dir = ''): void
 
 	if ($dir) self::add_admin_notice_action($dir, $notice['type'], $notice['message']);
 	else self::admin_notice($slug, $notice['type'], $notice['message']);
+}
+
+public static function admin_debug_all(): void 
+{
+	$arr = self::get_admin_debug();
+	if (empty($arr)) return;
+	foreach($arr as $key => $notice)
+	{
+		$type = $notice['type'];
+		$msg = $notice['message'];
+		add_action('admin_notices', function () use ($key, $type, $msg) { self::admin_notice($key, $type, $msg); });
+	}
 }
 
 public static function admin_notice($slug, $type= '', $msg= ''): void 
