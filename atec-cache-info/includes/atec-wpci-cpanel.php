@@ -79,8 +79,7 @@ return function($una)
 	echo
 	'</div>';
 
-	TOOLS::reg_inline_script('wpci_processing', 'jQuery(".atec-loader-dots").remove();');
-
+	TOOLS::loader_dots(0);
 	TOOLS::little_block(__('Persistent', 'atec-cache-info').' '.__('Object Cache', 'atec-cache-info'));
 	echo
 	'<div class="atec-g atec-g-25">';

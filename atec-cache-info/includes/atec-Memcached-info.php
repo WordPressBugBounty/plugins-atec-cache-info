@@ -1,6 +1,7 @@
 	<?php
 defined('ABSPATH') || exit;
 
+use ATEC\ALIAS;
 use ATEC\TOOLS;
 use ATEC\WPC;
 
@@ -49,22 +50,22 @@ public static function init($una, $settings)
 		if (defined('Memcached::SERIALIZER_MSGPACK') && function_exists('msgpack_serialize')) $available_serializers[]= 'MSGPACK';
 
 		TOOLS::table_header([], '', 'summary');
-			if (isset($mem['version'])) TOOLS::table_tr(['Version', '2@'.$mem['version']]);
-			TOOLS::table_tr([__('Connection', 'atec-cache-info'), '2@'.$memConn]);
-			TOOLS::table_tr([__('Host', 'atec-cache-info'), '2@'.$memHost]);
-			TOOLS::table_tr([__('Port', 'atec-cache-info'), '2@'.$memPort]);
-			if (!empty($available_serializers)) TOOLS::table_tr([__('Serializers', 'atec-cache-info'), '2@<small>'.implode(', ', $available_serializers).'</small>']);
+			if (isset($mem['version'])) ALIAS::tr(['Version', '2@'.$mem['version']]);
+			ALIAS::tr([__('Connection', 'atec-cache-info'), '2@'.$memConn]);
+			ALIAS::tr([__('Host', 'atec-cache-info'), '2@'.$memHost]);
+			ALIAS::tr([__('Port', 'atec-cache-info'), '2@'.$memPort]);
+			if (!empty($available_serializers)) ALIAS::tr([__('Serializers', 'atec-cache-info'), '2@<small>'.implode(', ', $available_serializers).'</small>']);
 		TOOLS::table_footer();
 			
 		if ($mem)
 		{
 			TOOLS::table_header([], '', 'summary');
-				TOOLS::table_tr([__('Memory', 'atec-cache-info'), TOOLS::size_format($mem['limit_maxbytes']), '']);
-				TOOLS::table_tr([__('Used', 'atec-cache-info'), TOOLS::size_format($mem['bytes']), '<small>'.TOOLS::percent_format($percent).'</small>']);
-				TOOLS::table_tr([__('Items', 'atec-cache-info'), number_format($mem['total_items']), '']);
-				TOOLS::table_tr([__('Hits', 'atec-cache-info'), number_format($mem['get_hits']), '<small>'.TOOLS::percent_format($hits).'</small>']);
-				TOOLS::table_tr([__('Memory', 'atec-cache-info'), TOOLS::size_format($mem['limit_maxbytes']), '']);
-				TOOLS::table_tr([__('Misses', 'atec-cache-info'), number_format($mem['get_misses']), '<small>'.TOOLS::percent_format($misses).'</small>']);
+				ALIAS::tr([__('Memory', 'atec-cache-info'), TOOLS::size_format($mem['limit_maxbytes']), '']);
+				ALIAS::tr([__('Used', 'atec-cache-info'), TOOLS::size_format($mem['bytes']), '<small>'.TOOLS::percent_format($percent).'</small>']);
+				ALIAS::tr([__('Items', 'atec-cache-info'), number_format($mem['total_items']), '']);
+				ALIAS::tr([__('Hits', 'atec-cache-info'), number_format($mem['get_hits']), '<small>'.TOOLS::percent_format($hits).'</small>']);
+				ALIAS::tr([__('Memory', 'atec-cache-info'), TOOLS::size_format($mem['limit_maxbytes']), '']);
+				ALIAS::tr([__('Misses', 'atec-cache-info'), number_format($mem['get_misses']), '<small>'.TOOLS::percent_format($misses).'</small>']);
 			TOOLS::table_footer();
 		}
 		

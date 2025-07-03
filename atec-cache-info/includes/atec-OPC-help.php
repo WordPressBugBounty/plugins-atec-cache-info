@@ -8,7 +8,7 @@ if (!isset($OPC_recommended)) $OPC_recommended = ['memory'=>128, 'strings'=>8, '
 $title = __('Recommended settings', 'atec-cache-info');
 TOOLS::help(
 	$title,
-	'<ul>
+	'<ul class="atec-m-0">
 		<li>opcache.enable=1</li>
 		<li>opcache.memory_consumption=<b>'. ($OPC_recommended['memory']). '</b></li>
 		<li>opcache.interned_strings_buffer=<b>'. ($OPC_recommended['strings']). '</b></li>

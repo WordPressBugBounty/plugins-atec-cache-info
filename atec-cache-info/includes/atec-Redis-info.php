@@ -2,6 +2,7 @@
 // 1: redis-cli: | 2: auth pwd | 3: CONFIG SET requirepass pwd
 defined('ABSPATH') || exit;
 
+use ATEC\ALIAS;
 use ATEC\TOOLS;
 use ATEC\WPC;
 
@@ -59,19 +60,19 @@ public static function init($una, $settings)
 				$misses= $stats['keyspace_misses']*100/$total;
 
 				TOOLS::table_header([], '', 'summary');
-					TOOLS::table_tr(['Version', '2@'.$server['redis_version']]);
-					TOOLS::table_tr(['Connection', '2@'.$redConn]);
-					TOOLS::table_tr(['Host', '2@'.$redHost]);
-					if ($redConn=== 'TCP/IP') TOOLS::table_tr(['Port', '2@'.$redPort]);
-					if ($redPwd!== '') TOOLS::table_tr(['Password', '2@'.$redPwd]);
-					if (!empty($available_serializers)) TOOLS::table_tr(['Serializers', '2@<small>'.implode(', ', $available_serializers).'</small>']);
+					ALIAS::tr(['Version', '2@'.$server['redis_version']]);
+					ALIAS::tr(['Connection', '2@'.$redConn]);
+					ALIAS::tr(['Host', '2@'.$redHost]);
+					if ($redConn=== 'TCP/IP') ALIAS::tr(['Port', '2@'.$redPort]);
+					if ($redPwd!== '') ALIAS::tr(['Password', '2@'.$redPwd]);
+					if (!empty($available_serializers)) ALIAS::tr(['Serializers', '2@<small>'.implode(', ', $available_serializers).'</small>']);
 				TOOLS::table_footer();
 
 				TOOLS::table_header([], '', 'summary');
-					TOOLS::table_tr(['Used', TOOLS::size_format($memory['used_memory']), '']);
-					if ($keyCount) TOOLS::table_tr(['Items', number_format($keyCount), '']);
-					TOOLS::table_tr(['Hits', number_format($stats['keyspace_hits']), '<small>'.sprintf(" (%.1f%%)", $hits).'</small>']);
-					TOOLS::table_tr(['Misses', number_format($stats['keyspace_misses']), '<small>'.sprintf(" (%.1f%%)", $misses).'</small>']);
+					ALIAS::tr(['Used', TOOLS::size_format($memory['used_memory']), '']);
+					if ($keyCount) ALIAS::tr(['Items', number_format($keyCount), '']);
+					ALIAS::tr(['Hits', number_format($stats['keyspace_hits']), '<small>'.sprintf(" (%.1f%%)", $hits).'</small>']);
+					ALIAS::tr(['Misses', number_format($stats['keyspace_misses']), '<small>'.sprintf(" (%.1f%%)", $misses).'</small>']);
 				TOOLS::table_footer();
 
 				WPC::hitrate($hits, $misses);
