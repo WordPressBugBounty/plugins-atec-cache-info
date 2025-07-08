@@ -7,8 +7,6 @@ use ATEC\TOOLS;
 
 final class ATEC_Server_Info {
 
-private static function envExists($str): string { return isset($_SERVER[$str])?sanitize_text_field(wp_unslash
-($_SERVER[$str])):''; }
 private static function offset2Str($tzOffset): string { return ($tzOffset>0?'+' : '').$tzOffset; }
 
 private static function getGeo($ip): string
@@ -52,7 +50,7 @@ public static function init()
 	}
 
 	$host = $php_uname['n'];
-	$ip		= self::envExists('SERVER_ADDR');
+	$ip		= INIT::_SERVER('SERVER_ADDR');
 	if ($ip!= '') { $host .= ($host!== ''?' | ' : '').$ip; }
 	if (function_exists('curl_version')) { $curl = @curl_version(); }
 	else { $curl= array('version'=>'n/a', 'ssl_version'=>'n/a'); }
@@ -121,8 +119,8 @@ public static function init()
 			$headArray[] = 'Server';
 			$headArray[] = 'CURL';
 			self::tblHeader('server',__('Server', 'atec-cache-info'), $headArray);
-			$serverSoftware	= self::envExists('SERVER_SOFTWARE');
-			$serverName		= self::envExists('SERVER_NAME');
+			$serverSoftware	= INIT::_SERVER('SERVER_SOFTWARE');
+			$serverName		= INIT::_SERVER('SERVER_NAME');
 
 			$icon= '';
 			$lowSoft= strtolower($serverSoftware);
