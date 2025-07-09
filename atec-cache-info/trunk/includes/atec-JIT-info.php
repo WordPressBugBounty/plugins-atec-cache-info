@@ -1,34 +1,45 @@
 <?php
-if (!defined( 'ABSPATH' )) { exit; }
+defined('ABSPATH') || exit;
 
-class ATEC_JIT_info { function __construct($wpc_tools,$op_status) {	
+use ATEC\ALIAS;
+use ATEC\MEMORY;
+use ATEC\TOOLS;
+use ATEC\WPC;
 
-$percent=false;
-if ($op_status)
+final class ATEC_JIT_Info {
+
+public static function init($una, $settings)	// fake parameters
 {
-	$jit_size=$op_status['jit']['buffer_size'];
-	$jit_free=$op_status['jit']['buffer_free'];
-	$percent=$jit_free/($jit_size+0.0001);
-}
-else
-{
-	$jit_size=(int) wp_convert_hr_to_bytes(ini_get('opcache.jit_buffer_size'));
+
+	$opc_status = function_exists('opcache_get_status') ? opcache_get_status() : false;
+
+	$percent=false;
+	if ($opc_status)
+	{
+		$jit_size 	= $opc_status['jit']['buffer_size'];
+		$jit_free	= $opc_status['jit']['buffer_free'];
+		$percent	= $jit_free/($jit_size+0.0001);
+	}
+	else
+	{
+		$iniSize = ini_get('opcache.jit_buffer_size');
+		$jit_size = MEMORY::KMG_2_Int($iniSize);
+	}
+
+	TOOLS::table_header([], '', 'summary');
+		ALIAS::tr(['JIT '.__('config', 'atec-cache-info').':', ini_get('opcache.jit'), '']);
+		ALIAS::tr(['Debug:', ini_get('opcache.jit_debug'), '']);
+		ALIAS::tr();
+		ALIAS::tr([__('Memory', 'atec-cache-info').':', TOOLS::size_format($jit_size), '']);
+		if ($percent) ALIAS::tr([__('Used', 'atec-cache-info').':', TOOLS::size_format($jit_size-$jit_free), TOOLS::percent_format($percent)]);
+	TOOLS::table_footer();
+
+	if ($percent) WPC::usage($percent);
+		
+	if (extension_loaded('xdebug') && strtolower(ini_get('xdebug.mode')) !== 'off') 
+		TOOLS::msg(false, 'Xdebug '.__('is enabled, so JIT will not work', 'atec-cache-info'));
+
 }
 
-echo '
-<table class="atec-table atec-table-tiny atec-table-td-first">
-<tbody>
-	<tr><td>JIT ', esc_attr__('config','atec-cache-info'), ':</td><td>', esc_attr(ini_get('opcache.jit')), '</td><td></td></tr>
-	<tr><td>Debug:</td><td>', esc_attr(ini_get('opcache.jit_debug')), '</td><td></td></tr>';
-	atec_empty_tr();
-	echo '
-	<tr><td>', esc_attr__('Memory','atec-cache-info'), ':</td><td>', esc_attr(size_format($jit_size)), '</td><td></td></tr>';
-	if ($percent) echo '<tr><td>', esc_attr__('Used','atec-cache-info'), ':</td>
-		<td>', esc_attr(size_format($jit_size-$jit_free)), '</td><td><small>', esc_attr(sprintf("%.1f%%",$percent)), '</small></td></tr>';
-echo '
-</tbody>
-</table>';
-
-if ($percent) $wpc_tools->usage($percent);	
-}}
+}
 ?>

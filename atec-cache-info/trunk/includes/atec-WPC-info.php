@@ -1,67 +1,88 @@
 <?php
-if (!defined( 'ABSPATH' )) { exit; }
+defined('ABSPATH') || exit;
 
-class ATEC_WPcache_info { function __construct($wpc_tools) {	
+use ATEC\ALIAS;
+use ATEC\TOOLS;
+use ATEC\WPC;
 
-global $wp_object_cache;
-if (isset($wp_object_cache->cache_hits))
+final class ATEC_WPC_Info {
+
+private static function calc_hitrate($a, $b)
 {
-	$total		= $wp_object_cache->cache_hits+$wp_object_cache->cache_misses+0.001;
-	$hits		= $wp_object_cache->cache_hits*100/$total;
-	$misses		= $wp_object_cache->cache_misses*100/$total;
-	echo'
-	<table class="atec-table atec-table-tiny atec-table-td-first">
-		<tbody>
-			<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td>
-				<td>', esc_attr(number_format($wp_object_cache->cache_hits)), '</td><td><small>', esc_attr(sprintf("%.1f%%",$hits)), '</small></td></tr>
-			<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td>
-				<td>', esc_attr(number_format($wp_object_cache->cache_misses)), '</td><td><small>', esc_attr(sprintf("%.1f%%",$misses)), '</small></td></tr>
-		</tbody>
-	</table>';
-	
-	$wpc_tools->hitrate($hits,$misses);
-}
-
-if (defined('LSCWP_OBJECT_CACHE') && LSCWP_OBJECT_CACHE=='true' && (method_exists('WP_Object_Cache', 'debug'))) 
-{
-	$debug=$wp_object_cache->debug();
-	preg_match('/\[total\]\s(\d+)\s/', $debug, $matches); $ls_total=(int) $matches[1];
-	preg_match('/\[hit\]\s(\d+)\s/', $debug, $matches); $ls_hit=(int) $matches[1];
-	preg_match('/\[miss\]\s(\d+)\s/', $debug, $matches); $ls_miss=(int) $matches[1];
-	$total=$ls_hit+$ls_miss+0.001;
-	$hits=$ls_hit*100/$total;
-	$misses=$ls_miss*100/$total;
-	echo ' 
-	<table class="atec-table atec-table-tiny atec-table-td-first">
-	<tbody>
-		<tr><td>', esc_attr__('Items','atec-cache-info'), ':</td><td>', esc_attr(number_format($ls_total)), '</td><td></td></tr>
-		<tr><td>', esc_attr__('Hits','atec-cache-info'), ':</td>
-			<td>', esc_attr(number_format($ls_hit)), '</td><td><small>', esc_attr(sprintf(" (%.1f%%)",$hits)), '</small></td></tr>
-		<tr><td>', esc_attr__('Misses','atec-cache-info'), ':</td>
-			<td>', esc_attr(number_format($ls_miss)), '</td><td><small>', esc_attr(sprintf(" (%.1f%%)",$misses)), '</small></td></tr>
-	</tbody>
-	</table>';
-
-	$wpc_tools->hitrate($hits,$misses);
-
-	if (defined('LSCWP_V')) 
+	$total = $a+$b;
+	if ($total === 0) { $hitsPerc = $missesPerc = 0; }
+	else
 	{
-		echo '<p>'; atec_server_sys_icon(__DIR__,'litespeed'); echo ' LiteSpeed ', esc_attr__('cache','atec-cache-info'), ' v.', esc_html(LSCWP_V), ' ', esc_attr__('is active','atec-cache-info'), '.</p>';
+		$hitsPerc 		= $a * 100 / $total;
+		$missesPerc 	= $b * 100 / $total;
 	}
+	return ['total'=>$total, 'hitsPerc'=>$hitsPerc, 'missesPerc'=>$missesPerc];
 }
 
-global $_wp_using_ext_object_cache;
-if ($_wp_using_ext_object_cache) atec_success_msg('WP '.__('object cache','atec-cache-info').' '.__('is persistent','atec-cache-info'),false,true);
+private static function test_wp_writable()
+{
+	$testKey= 'atec_wp_test_key';
+	wp_cache_set($testKey, 'hello');
+	$success=wp_cache_get($testKey)=== 'hello';
+	TOOLS::badge($success, 'WP '.__('object cache', 'atec-cache-info').' '.__('is writeable', 'atec-cache-info'), 'Writing to WP '.__('object cache', 'atec-cache-info').' failed');
+	if ($success) wp_cache_delete($testKey);
+}
 
-$testKey='atec_wp_test_key';
-wp_cache_set($testKey,'hello');
-$success=wp_cache_get($testKey)=='hello';
-atec_badge('WP '.__('object cache','atec-cache-info').' '.__('is writeable','atec-cache-info'),'Writing to WP '.__('object cache','atec-cache-info').' failed',$success);
-if ($success) wp_cache_delete($testKey);
+public static function init()
+{
 
-echo '<br>';
-atec_help('WPcache','WP '.__('object cache','atec-cache-info').' '.__('explained','atec-cache-info'));
-echo '<div id="WPcache_help" class="atec-help atec-dn">', esc_html__('The WP object cache boosts performance by storing keys that might be used by multiple scripts while handling a page request.','atec-cache-info').' '.esc_html__('Nonetheless, this cache is solely valid for the current request, unless a persistent object cache, such as APCu, is installed','atec-cache-info'), '.</div>';
+	global $wp_object_cache;
+	if (isset($wp_object_cache->cache_hits))
+	{
+		$hitrate = self::calc_hitrate($wp_object_cache->cache_hits, $wp_object_cache->cache_misses);
+		TOOLS::table_header([], '', 'summary');
+			ALIAS::tr([__('Hits', 'atec-cache-info').':', number_format($wp_object_cache->cache_hits), TOOLS::percent_format($hitrate['hitsPerc'])]);
+			ALIAS::tr([__('Misses', 'atec-cache-info').':', number_format($wp_object_cache->cache_misses), TOOLS::percent_format($hitrate['missesPerc'])]);
+			if (isset($wp_object_cache->cache_sets))
+			{ ALIAS::tr([__('Sets', 'atec-cache-info').':', number_format($wp_object_cache->cache_sets), '']); }
+		TOOLS::table_footer();
 
-}}
+		WPC::hitrate($hitrate['hitsPerc'], $hitrate['missesPerc']);
+	}
+
+	if (defined('LSCWP_OBJECT_CACHE') && LSCWP_OBJECT_CACHE== 'true' && (method_exists('WP_Object_Cache', 'debug')))
+	{
+		$debug= $wp_object_cache->debug();
+		preg_match('/\[total\]\s(\d+)\s/', $debug, $m); $ls_total=(int) $m[1];
+		preg_match('/\[hit\]\s(\d+)\s/', $debug, $m); $ls_hit=(int) $m[1];
+		preg_match('/\[miss\]\s(\d+)\s/', $debug, $m); $ls_miss=(int) $m[1];
+
+		$hitrate = self::calc_hitrate($ls_hit, $ls_miss);
+
+		TOOLS::table_header([], '', 'summary');
+			ALIAS::tr([__('Items', 'atec-cache-info').':', number_format($ls_total), '']);
+			ALIAS::tr([__('Hits', 'atec-cache-info').':', number_format($ls_hit), TOOLS::percent_format($hitrate['hitsPerc'])]);
+			ALIAS::tr([__('Misses', 'atec-cache-info').':', number_format($ls_miss), TOOLS::percent_format($hitrate['missesPerc'])]);
+		TOOLS::table_footer();
+
+		WPC::hitrate($hitrate['hitsPerc'], $hitrate['missesPerc']);
+
+		if (defined('LSCWP_V'))
+		{
+			echo 
+			'<p>'; 
+				\ATEC\SVG::echo('litespeed'); 
+				echo ' LiteSpeed ', esc_attr__('cache', 'atec-cache-info'), ' v.', esc_html(LSCWP_V), ' ', esc_attr__('is active', 'atec-cache-info'), 
+			'.</p>';
+		}
+	}
+
+	global $_wp_using_ext_object_cache;
+	if ($_wp_using_ext_object_cache) TOOLS::msg(true, 'WP '.__('object cache', 'atec-cache-info').' '.__('is persistent', 'atec-cache-info'));
+
+	self::test_wp_writable();
+
+	TOOLS::help(
+		'WP '.__('object cache', 'atec-cache-info').' '.__('explained', 'atec-cache-info'),
+		__('The WP object cache boosts performance by storing keys that might be used by multiple scripts while handling a page request.', 'atec-cache-info').'<br>'.
+		__('Nonetheless, this cache is solely valid for the current request, unless a persistent object cache, such as APCu, is installed', 'atec-cache-info'));
+
+}
+
+}
 ?>

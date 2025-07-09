@@ -1,13 +1,15 @@
 <?php
-if (!defined('ABSPATH')) { exit; }
-if (!function_exists('atec_header')) @require(__DIR__.'/atec-tools.php');
-atec_integrity_check(__DIR__);
+defined('ABSPATH') || exit;
 
-$optName = 'atec_WPCI_settings';
-$options=get_option($optName,[]); $updateOpt = false;
+use ATEC\INIT;
 
-if (!isset($options['redis'])) { $options['redis']=['host'=>'localhost', 'port'=>6379, 'conn'=>'TCP/IP']; $updateOpt=true; }
-if (!isset($options['memcached'])) { $options['memcached']=['host'=>'localhost', 'port'=>11211, 'conn'=>'TCP/IP']; $updateOpt=true; }
+(function() {
 
-update_option($optName, $options, false);
+	$settings = INIT::get_settings('wpci');
+	$updateOpt = false;
+		if (!isset($settings['redis'])) { $settings['redis']=['host'=>'localhost', 'port'=>6379, 'conn'=>'TCP/IP']; $updateOpt=true; }
+		if (!isset($settings['memcached'])) { $settings['memcached']=['host'=>'localhost', 'port'=>11211, 'conn'=>'TCP/IP']; $updateOpt=true; }
+	if ($updateOpt) INIT::update_settings('wpci', $settings);
+
+})();
 ?>
