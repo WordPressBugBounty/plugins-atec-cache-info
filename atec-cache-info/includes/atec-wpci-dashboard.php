@@ -25,14 +25,14 @@ use ATEC\TOOLS;
 				
 				
 			case 'PHP_'.__('Extensions', 'atec-cache-info'):
-				if (TOOLS::pro_feature($una, '„Extension“ lists all active PHP extensions and checks whether recommended extensions are installed', false, $license_ok))
+				if (TOOLS::pro_feature($una, '‘Extension’ lists all active PHP extensions and checks whether recommended extensions are installed', false, $license_ok))
 					TOOLS::lazy_require_class(__DIR__, 'atec-extensions-info-pro.php', 'Extensions_Info');
 				break;
 				
 			default:
 				if (strpos($una->nav, 'OPC_')===0)
 				{
-					if (TOOLS::pro_feature($una, '„OPC Scripts“ lists all scripts files and statistics of in the OPcache memory', false, $license_ok))
+					if (TOOLS::pro_feature($una, '‘OPC Scripts’ lists all scripts files and statistics of in the OPcache memory', false, $license_ok))
 						TOOLS::lazy_require_class(__DIR__, 'atec-OPC-groups-pro.php', 'OPC_Groups', $una);
 				}
 				break;

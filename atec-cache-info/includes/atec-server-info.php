@@ -50,6 +50,7 @@ public static function init()
 	}
 
 	$host = $php_uname['n'];
+	//OUTDATED: 250710 | CLEANUP: use is_localhost
 	$ip		= INIT::_SERVER('SERVER_ADDR');
 	if ($ip!= '') { $host .= ($host!== ''?' | ' : '').$ip; }
 	if (function_exists('curl_version')) { $curl = @curl_version(); }
@@ -187,7 +188,7 @@ public static function init()
 
 			echo '<br>';
 
-			self::tblHeader('php',__('PHP Settings', 'atec-cache-info'),['„max. exec. time“', '„max. input vars“', '„post max. size“', '„upload max. filesize“']);
+			self::tblHeader('php',__('PHP Settings', 'atec-cache-info'),['‘max. exec. time’', '‘max. input vars’', '‘post max. size’', '‘upload max. filesize’']);
 			echo '<td>', esc_html(gmdate('H:i:s', ini_get('max_execution_time'))), ' <small>h</small></td>
 				<td>', esc_html(number_format(ini_get('max_input_vars'))), '</td>
 				<td>', esc_html(ini_get('post_max_size')), '</td>

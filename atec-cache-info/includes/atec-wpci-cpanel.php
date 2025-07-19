@@ -55,7 +55,7 @@ return function($una)
 			$settings[strtolower($type)] = $cache_settings[$type];
 			INIT::update_settings('wpci', $settings);
 		}
-		
+		// OUTDATED: 250710 | CLEANUP: use TOOLS::history
 		TOOLS::reg_inline_script('wpci_cache','window.history.replaceState({}, "", window.location.pathname + "?page=atec_wpci");');	// prevent re-saving
 	}
 
