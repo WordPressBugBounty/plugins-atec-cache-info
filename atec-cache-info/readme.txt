@@ -6,7 +6,7 @@ Tested up to: 6.8
 Requires at least:4.9
 Requires PHP: 7.4
 Tested up to PHP: 8.4.5
-Stable tag: 1.8.18
+Stable tag: 1.8.19
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,9 @@ Yes. It will display any supported caching features that are available in your c
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.8.19 [2025.07.30] =
+* WP_PLUGIN_DIR
 
 = 1.8.18 [2025.07.23] =
 * Line 424 in INIT fixed
