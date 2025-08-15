@@ -1180,9 +1180,7 @@ public static function header($una): bool
 				\ATEC\SVG::echo('wpa');
 				echo 
 				'<span class="atec-logo-text">atec</span>', 
-				'<h1 class="atec-dilb">',
-					esc_html(str_replace('atec','',INIT::plugin_fixed_name($plugin))),
-				'</h1>';
+				'<h1 class="atec-dilb">', 	esc_html(str_replace('atec','',INIT::plugin_fixed_name($plugin))), '</h1>';
 				\ATEC\SVG::echo($una->slug);
 			}
 			echo '<div class="atec-fs-10 atec-vab">v', esc_attr($version), '</div>';
