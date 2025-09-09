@@ -552,7 +552,7 @@ public static function menu($dir, $slug, $title, $css=[], $js=[]): bool
 	
 	static $style_loaded = null;
 	static $atec_group_active = null;
-	static $single_slug = ['wpmc', 'wpct'];
+	static $single_slug = ['wpmc'];
 
 	$single = in_array($slug, $single_slug);
 	$menu_slug = 'atec_'.$slug;

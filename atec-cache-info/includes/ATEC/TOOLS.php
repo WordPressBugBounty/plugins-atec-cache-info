@@ -372,7 +372,7 @@ private static function pro_banner($slug): bool
 			self::dash_span('awards', 'atec-'.($license_ok ? 'green' : 'blue'));
 			echo
 			'<span>',
-				$slug=== 'wpmc' ? 'MC ' : ($slug=== 'wpct' ? 'CT4W ' : ''),
+				$slug=== 'wpmc' ? 'MC ' : '',
 				($license_ok ? '‘PRO’ version' : 'Upgrade to ‘PRO’'),
 			'.</span>',
 		'</a>
@@ -527,10 +527,7 @@ public static function ul($title = '', $lis = [], $class = ''): void
 
 	foreach ($lis as $li)
 	{
-		echo 
-		'<li>',
-			wp_kses($li, self::$allowed_tr),
-		'</li>';
+		echo '<li>', wp_kses_post($li, self::$allowed_tr), '</li>';
 	}
 
 	echo '</ul>';
@@ -1083,7 +1080,6 @@ public static function load_script($id, $dir, $js, $ver, $deps = []): void
 
 	self::prefix_id($id);
 	$url = INIT::plugin_url_by_dir($dir).'/assets/js/'.$js;
-
 	wp_enqueue_script($id, $url, $deps, $ver, true);
 }
 
