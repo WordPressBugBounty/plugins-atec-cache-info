@@ -1,7 +1,7 @@
 <?php
 defined('ABSPATH') || exit;
 
-use ATEC\ALIAS;
+
 use ATEC\MEMORY;
 use ATEC\TOOLS;
 use ATEC\WPC;
@@ -27,11 +27,11 @@ public static function init($una, $settings)	// fake parameters
 	}
 
 	TOOLS::table_header([], '', 'summary');
-		ALIAS::tr(['JIT '.__('config', 'atec-cache-info').':', ini_get('opcache.jit'), '']);
-		ALIAS::tr(['Debug:', ini_get('opcache.jit_debug'), '']);
-		ALIAS::tr();
-		ALIAS::tr([__('Memory', 'atec-cache-info').':', TOOLS::size_format($jit_size), '']);
-		if ($percent) ALIAS::tr([__('Used', 'atec-cache-info').':', TOOLS::size_format($jit_size-$jit_free), TOOLS::percent_format($percent)]);
+		TOOLS::tr(['JIT '.__('config', 'atec-cache-info').':', ini_get('opcache.jit'), '']);
+		TOOLS::tr(['Debug:', ini_get('opcache.jit_debug'), '']);
+		TOOLS::tr();
+		TOOLS::tr([__('Memory', 'atec-cache-info').':', TOOLS::size_format($jit_size), '']);
+		if ($percent) TOOLS::tr([__('Used', 'atec-cache-info').':', TOOLS::size_format($jit_size-$jit_free), TOOLS::percent_format($percent)]);
 	TOOLS::table_footer();
 
 	if ($percent) WPC::usage($percent);

@@ -88,9 +88,9 @@ public static function init()
 	}
 
 	echo
-	'<div class="atec-g atec-g-auto-2 atec-pt-10">
+	'<div class="atec-g atec-g-auto-2 atec-pt-10">';
 	
-		<div class="atec-border-white">';
+		TOOLS::div('border');
 
 			self::tblHeader('computer',__('Operating system', 'atec-cache-info'),['OS', 'Version',__('Architecture', 'atec-cache-info'),__('Date/Time', 'atec-cache-info'), 'Disk '.__('total', 'atec-cache-info'), 'Disk '.__('free', 'atec-cache-info')]);
 				echo
@@ -146,10 +146,9 @@ public static function init()
 			'</td>';
 			self::tblFooter();
 
-		echo 
-		'</div>
+		TOOLS::div(-1);
 		
-		<div class="atec-border-white">';
+		TOOLS::div('border');
 
 			$ram= '';
 			if (function_exists('exec'))
@@ -195,72 +194,66 @@ public static function init()
 				<td>', esc_html(ini_get('upload_max_filesize')), '</td>';
 			self::tblFooter();
 
-		echo 
-		'</div>
+	TOOLS::div(-2);
 		
-	</div>';
-
 	if ($unlimited)
 	{
-	echo '
-	<div class="atec-g atec-g-50">
-	
-		<div class="atec-border-white">';
+		TOOLS::div('g-50');
 
-			$isWP = !function_exists('classicpress_version');
-			$short = ($isWP?'WP' : 'CP');
-			self::tblHeader($isWP?'wordpress' : 'classicpress', $isWP?'WordPress' : 'ClassicPress',[$short.' '.__('root', 'atec-cache-info'), $short.' '.__('size', 'atec-cache-info')]);
-			echo '<td>', esc_url(defined('ABSPATH')?ABSPATH:$empty), '</td>';
-			TOOLS::td_size_format(get_dirsize(get_home_path()));
-			self::tblFooter();
+				TOOLS::div('border');
 
-			echo '<br>';
-
-			self::tblHeader('calendar',__('Versions', 'atec-cache-info'),['WP', 'PHP', 'SQL']);
-			echo '<td>Ver. ', esc_html($isWP?get_bloginfo('version'):classicpress_version()), '</td>
-				<td>Ver. ', esc_attr(phpversion().(function_exists( 'php_sapi_name')?' | '.php_sapi_name():'')), '</td>
-				<td>Ver. ', esc_attr($mysql_version ?? 'n/a'), '</td>';
-			self::tblFooter();
-
-		echo 
-		'</div>
+					$isWP = !function_exists('classicpress_version');
+					$short = ($isWP?'WP' : 'CP');
+					self::tblHeader($isWP?'wordpress' : 'classicpress', $isWP?'WordPress' : 'ClassicPress',[$short.' '.__('root', 'atec-cache-info'), $short.' '.__('size', 'atec-cache-info')]);
+					echo '<td>', esc_url(defined('ABSPATH')?ABSPATH:$empty), '</td>';
+					TOOLS::td_size_format(get_dirsize(get_home_path()));
+					self::tblFooter();
 		
-		<div class="atec-border-white">';
-
-			global $wpdb;
-			// @codingStandardsIgnoreStart
-			$db_max_conn		= $wpdb->get_results('SHOW VARIABLES LIKE "max_connections"');
-			$db_max_package 	= $wpdb->get_results('SHOW VARIABLES LIKE "max_allowed_packet"');
-			// @codingStandardsIgnoreEnd
-
-			$db_size = DB::db_size();
-			$db_info = DB::db_info();
-			
-			self::tblHeader($db_info['name'], __('Database', 'atec-cache-info'),
-				['DB '.__('driver', 'atec-cache-info'), 'DB ver.', 'DB '.__('user', 'atec-cache-info'), 'DB '.__('user', 'atec-cache-info')]);
-				echo 
-				'<td>', esc_html($db_info['software']), '</td>
-				<td>Ver. ', esc_html($db_info['version']), '</td>
-				<td>', esc_attr(defined('DB_NAME')?DB_NAME:esc_attr($empty)), '</td>
-				<td>', esc_attr(defined('DB_USER')?DB_USER:esc_attr($empty)), '</td>';
-			self::tblFooter();
-
-			echo '<br>';
-
-			self::tblHeader($db_info['name'], __('Database settings', 'atec-cache-info'),
-				['DB max. '.__('conn.', 'atec-cache-info'), 'DB max. '.__('packages', 'atec-cache-info'), 'DB '.__('size', 'atec-cache-info'), 'DB Index '.__('size', 'atec-cache-info')]);
-				echo 
-				'<td>', ($db_max_conn?esc_attr($db_max_conn[0]->Value):esc_attr($empty)), '</td>';
-				if (!$db_max_package) echo '<td>-/-</td>';
-				else TOOLS::td_size_format($db_max_package[0]->Value);
-				TOOLS::td_size_format($db_size['data']);
-				TOOLS::td_size_format($db_size['index']);
-			self::tblFooter();
-
-		echo 
-		'</div>
+					echo '<br>';
 		
-	</div>';
+					self::tblHeader('calendar',__('Versions', 'atec-cache-info'),['WP', 'PHP', 'SQL']);
+					echo '<td>Ver. ', esc_html($isWP?get_bloginfo('version'):classicpress_version()), '</td>
+						<td>Ver. ', esc_attr(phpversion().(function_exists( 'php_sapi_name')?' | '.php_sapi_name():'')), '</td>
+						<td>Ver. ', esc_attr($mysql_version ?? 'n/a'), '</td>';
+					self::tblFooter();
+
+				TOOLS::div(-1);
+					
+			TOOLS::div(0);
+
+				TOOLS::div('border');
+				
+					global $wpdb;
+					// @codingStandardsIgnoreStart
+					$db_max_conn		= $wpdb->get_results('SHOW VARIABLES LIKE "max_connections"');
+					$db_max_package 	= $wpdb->get_results('SHOW VARIABLES LIKE "max_allowed_packet"');
+					// @codingStandardsIgnoreEnd
+
+					$db_size = DB::db_size();
+					$db_info = DB::db_info();
+					
+					self::tblHeader($db_info['name'], __('Database', 'atec-cache-info'),
+						['DB '.__('driver', 'atec-cache-info'), 'DB ver.', 'DB '.__('user', 'atec-cache-info'), 'DB '.__('user', 'atec-cache-info')]);
+						echo 
+						'<td>', esc_html($db_info['software']), '</td>
+						<td>Ver. ', esc_html($db_info['version']), '</td>
+						<td>', esc_attr(defined('DB_NAME')?DB_NAME:esc_attr($empty)), '</td>
+						<td>', esc_attr(defined('DB_USER')?DB_USER:esc_attr($empty)), '</td>';
+					self::tblFooter();
+
+					echo '<br>';
+		
+					self::tblHeader($db_info['name'], __('Database settings', 'atec-cache-info'),
+						['DB max. '.__('conn.', 'atec-cache-info'), 'DB max. '.__('packages', 'atec-cache-info'), 'DB '.__('size', 'atec-cache-info'), 'DB Index '.__('size', 'atec-cache-info')]);
+						echo 
+						'<td>', ($db_max_conn?esc_attr($db_max_conn[0]->Value):esc_attr($empty)), '</td>';
+						if (!$db_max_package) echo '<td>-/-</td>';
+						else TOOLS::td_size_format($db_max_package[0]->Value);
+						TOOLS::td_size_format($db_size['data']);
+						TOOLS::td_size_format($db_size['index']);
+					self::tblFooter();
+
+	TOOLS::div(-3);
 	}
 
 }

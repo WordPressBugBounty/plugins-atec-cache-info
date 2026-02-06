@@ -68,27 +68,30 @@ return function($una)
 			break;
 	}
 
-	echo
-	'<div class="atec-g atec-g-25">';
+	TOOLS::div('g-25');
 
-		TOOLS::loader_dots();
-
-		foreach(['OP', 'WP', 'JIT'] as $type)
-		{ WPC::cache_block(__DIR__, $una, $cache_settings, $type, $enabled); }
-
-	echo
-	'</div>';
+			TOOLS::loader_dots();
+	
+			foreach(['OP', 'WP', 'JIT'] as $type)
+			{ 
+				WPC::cache_block(__DIR__, $una, $cache_settings, $type, $enabled);
+				TOOLS::div($type==='JIT'?-1:0);
+			}
+	
+	TOOLS::div(-1);
 
 	TOOLS::loader_dots(0);
 	TOOLS::little_block(__('Persistent', 'atec-cache-info').' '.__('Object Cache', 'atec-cache-info'));
-	echo
-	'<div class="atec-g atec-g-25">';
+	
+	TOOLS::div('g-25');
 	
 		foreach(['APCu', 'Redis', 'Memcached', 'SQLite'] as $type)
-		{ WPC::cache_block(__DIR__, $una, $cache_settings, $type, $enabled); }
+		{ 
+			WPC::cache_block(__DIR__, $una, $cache_settings, $type, $enabled); 
+			TOOLS::div($type==='SQLite'?-1:0);
+		}
 
-	echo
-	'</div>';
+	TOOLS::div(-1);
 	
 	if ($opc_file_only) TOOLS::reg_inline_script('wpci_file_only','jQuery("#OP_flush, #JIT_flush").hide();');
 }

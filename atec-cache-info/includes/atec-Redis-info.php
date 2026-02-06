@@ -2,7 +2,7 @@
 // 1: redis-cli: | 2: auth pwd | 3: CONFIG SET requirepass pwd
 defined('ABSPATH') || exit;
 
-use ATEC\ALIAS;
+
 use ATEC\TOOLS;
 use ATEC\WPC;
 
@@ -60,19 +60,19 @@ public static function init($una, $settings)
 				$misses= $stats['keyspace_misses']*100/$total;
 
 				TOOLS::table_header([], '', 'summary');
-					ALIAS::tr(['Version', '2@'.$server['redis_version']]);
-					ALIAS::tr(['Connection', '2@'.$redConn]);
-					ALIAS::tr(['Host', '2@'.$redHost]);
-					if ($redConn=== 'TCP/IP') ALIAS::tr(['Port', '2@'.$redPort]);
-					if ($redPwd!== '') ALIAS::tr(['Password', '2@'.$redPwd]);
-					if (!empty($available_serializers)) ALIAS::tr(['Serializers', '2@<small>'.implode(', ', $available_serializers).'</small>']);
+					TOOLS::tr(['Version', '2@'.$server['redis_version']]);
+					TOOLS::tr(['Connection', '2@'.$redConn]);
+					TOOLS::tr(['Host', '2@'.$redHost]);
+					if ($redConn=== 'TCP/IP') TOOLS::tr(['Port', '2@'.$redPort]);
+					if ($redPwd!== '') TOOLS::tr(['Password', '2@'.$redPwd]);
+					if (!empty($available_serializers)) TOOLS::tr(['Serializers', '2@<small>'.implode(', ', $available_serializers).'</small>']);
 				TOOLS::table_footer();
 
 				TOOLS::table_header([], '', 'summary');
-					ALIAS::tr(['Used', TOOLS::size_format($memory['used_memory']), '']);
-					if ($keyCount) ALIAS::tr(['Items', number_format($keyCount), '']);
-					ALIAS::tr(['Hits', number_format($stats['keyspace_hits']), '<small>'.sprintf(" (%.1f%%)", $hits).'</small>']);
-					ALIAS::tr(['Misses', number_format($stats['keyspace_misses']), '<small>'.sprintf(" (%.1f%%)", $misses).'</small>']);
+					TOOLS::tr(['Used', TOOLS::size_format($memory['used_memory']), '']);
+					if ($keyCount) TOOLS::tr(['Items', number_format($keyCount), '']);
+					TOOLS::tr(['Hits', number_format($stats['keyspace_hits']), '<small>'.sprintf(" (%.1f%%)", $hits).'</small>']);
+					TOOLS::tr(['Misses', number_format($stats['keyspace_misses']), '<small>'.sprintf(" (%.1f%%)", $misses).'</small>']);
 				TOOLS::table_footer();
 
 				WPC::hitrate($hits, $misses);
@@ -127,6 +127,7 @@ public static function init($una, $settings)
 	}
 	else 
 	{
+		TOOLS::msg(false, 'Redis '.__('server is not reachable', 'atec-cache-info'));
 		TOOLS::reg_inline_script('wpx_redis_flush', 'jQuery("#Redis_flush").hide();', true);
 	}
 

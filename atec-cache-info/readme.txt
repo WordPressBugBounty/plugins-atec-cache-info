@@ -2,11 +2,11 @@
 Contributors: DocJoJo
 Tags: opcache, object cache, apcu, memcached, redis
 Requires CP: 1.7
-Tested up to: 6.8
+Tested up to: 6.9
 Requires at least:4.9
 Requires PHP: 7.4
 Tested up to PHP: 8.4.5
-Stable tag: 1.8.26
+Stable tag: 1.8.31
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,21 @@ Yes. It will display any supported caching features that are available in your c
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.8.31 [2025.12.09] =
+* WP 6.9 tested
+
+= 1.8.30 [2025.12.06] =
+* Minor fixes
+
+= 1.8.29 [2025.12.02] =
+* WP 6.9 tested
+
+= 1.8.28 [2025.12.02] =
+* WP 6.9 tested
+
+= 1.8.27 [2025.11.04] =
+* SVN cleanup
 
 = 1.8.26 [2025.09.27] =
 * Plugin prefix fixed for all
