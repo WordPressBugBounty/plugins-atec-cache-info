@@ -33,7 +33,6 @@ private static function render_on_off_button($fill, $isOn = true)
 	</div>';
 }
 
-
 private static function group_badge($str='', $ok=true, $slug = '', $nav= '', $warn=false, $status=[]): void
 {
 	if ($str==='' && in_array($slug, ['wpfd','wprt']))
@@ -483,11 +482,14 @@ public static function init($plugin)
 					
 						$atecplugins = 'https://atecplugins.com/';
 						$megacache = 'https://wpmegacache.com/';
-						
+						$license_ok = INIT::license_ok();
+						$isDevMode = get_option('atec_dev_mode');
+
 						foreach ($atec_group_arr as $a)
 						{
 							if (!isset($not_installed[$a->name])) continue;
-	
+							if (!$isDevMode && $a->name==='chat-sessions') continue;
+
 							$href = 
 								$a->wp
 								? 'https://wordpress.org/plugins/'.$not_installed[$a->name].'/'
@@ -502,11 +504,17 @@ public static function init($plugin)
 									self::pro_or_free($a);
 									$p = INIT::plugin_prefix($a->name).$a->name;
 									echo
-									'<div class="atec-row-right">
-										<a title="Download from atecplugins.com" class="atec-nodeco button button-secondary atec-btn-small" ',
-											'href="', esc_url($atecplugins), 'WP-Plugins/', esc_attr($p), '.zip" download>',
-											'<span class="', esc_attr(TOOLS::dash_class('download')), '"></span>',
-										'</a>',
+									'<div class="atec-row-right">';
+										if ($license_ok || $a->pro !== 'PRO')
+										{
+											echo 
+											'<a title="Download from atecplugins.com" class="atec-nodeco button button-secondary atec-btn-small" ',
+												'href="', esc_url($atecplugins), 'WP-Plugins/', esc_attr($p), '.zip" download>',
+												'<span class="', esc_attr(TOOLS::dash_class('download')), '"></span>',
+											'</a>';
+										}
+										else echo '<a class="atec-nodeco button atec-btn-small" style="visibility:hidden;"></a>';
+									echo 
 									'</div>';
 								self::row_end();
 								

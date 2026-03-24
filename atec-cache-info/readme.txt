@@ -6,7 +6,7 @@ Tested up to: 6.9
 Requires at least:4.9
 Requires PHP: 7.4
 Tested up to PHP: 8.4.5
-Stable tag: 1.8.31
+Stable tag: 1.8.34
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,15 @@ Yes. It will display any supported caching features that are available in your c
 3. PHP Extensions
 
 == Changelog ==
+
+= 1.8.34 [2026.03.23] =
+* Dashboard undefined issue
+
+= 1.8.33 [2026.01.28] =
+* compatible with PHP 7.x
+
+= 1.8.32 [2026.01.28] =
+* OPcache contains scripts outside this account path. 
 
 = 1.8.31 [2025.12.09] =
 * WP 6.9 tested

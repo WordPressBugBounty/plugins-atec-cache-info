@@ -7,15 +7,18 @@ use ATEC\TOOLS;
 use ATEC\WPC;
 
 final class ATEC_OPC_Info {
+	
+private static $megaByte = 1048576;
 
 private static function increase_in_steps($value, $factor, $step = 128) { return ceil(($value * $factor) / $step) * $step; }
 
-private static function opcache_total_memory_bytes(?array $opc_conf = null, ?array $opc_status = null): int
+private static function opcache_total_memory_bytes(?array $opc_conf = null, ?array $opc_status = null, $used_memory=0, $free_memory=0, $wasted_memory=0): int
 {
-	$MB = 1048576;
-
 	// 1) Prefer configuration if present
-	$cfg = $opc_conf['directives']['opcache.memory_consumption'] ?? null;
+	$cfg = null;
+	if (is_array($opc_conf) && isset($opc_conf['directives']['opcache.memory_consumption'])) {
+		$cfg = $opc_conf['directives']['opcache.memory_consumption'];
+	}
 
 	if ($cfg !== null && $cfg !== '') 
 	{
@@ -26,11 +29,27 @@ private static function opcache_total_memory_bytes(?array $opc_conf = null, ?arr
 		if (preg_match('/^\s*(\d+(?:\.\d+)?)\s*([KMG])\s*B?\s*$/i', $v, $m)) {
 			$n = (float)$m[1];
 			$u = strtoupper($m[2]);
-			$mul = match ($u) {
-				'K' => 1024,
-				'M' => $MB,
-				'G' => 1024 * $MB,
-			};
+
+			// Not compatible with PHP 7.x			
+			// $mul = match ($u) {
+			// 	'K' => 1024,
+			// 	'M' => self::$megaByte,
+			// 	'G' => 1024 * self::$megaByte,
+			// };
+			
+			$mul = 1;
+			switch ($u) {
+				case 'K':
+					$mul = 1024;
+					break;
+				case 'M':
+					$mul = self::$megaByte;
+					break;
+				case 'G':
+					$mul = 1024 * self::$megaByte;
+					break;
+			}
+
 			return (int) round($n * $mul);
 		}
 
@@ -40,18 +59,15 @@ private static function opcache_total_memory_bytes(?array $opc_conf = null, ?arr
 
 			// Guard against environments that return bytes here (rare, but your TB indicates it can happen)
 			// Heuristic: if it's >= 1MB, assume it's already bytes.
-			if ($n >= $MB) return (int)$n;
+			if ($n >= self::$megaByte) return (int)$n;
 
-			return (int) round($n * $MB);
+			return (int) round($n * self::$megaByte);
 		}
 	}
 
 	// 2) Fallback to status totals (these are bytes)
-	$used   = $opc_status['memory_usage']['used_memory'] ?? 0;
-	$free   = $opc_status['memory_usage']['free_memory'] ?? 0;
-	$wasted = $opc_status['memory_usage']['wasted_memory'] ?? 0;
+	$sum = (int)($used_memory + $free_memory + $wasted_memory);
 
-	$sum = (int)($used + $free + $wasted);
 	return max(0, $sum);
 }
 
@@ -74,8 +90,21 @@ public static function init($una, $settings)	// fake parameters
 		$percent=0;
 		if ($opc_conf)
 		{
-			$megaByte = 1048576;
-			$total_mem = self::opcache_total_memory_bytes($opc_conf, $opc_status);
+			
+			if (is_array($opc_status))
+			{
+				$used_memory		= $opc_status['memory_usage']['used_memory'] ?? 0;
+				$free_memory		= $opc_status['memory_usage']['free_memory'] ?? 0;
+				$wasted_memory	= $opc_status['memory_usage']['wasted_memory'] ?? 0;
+			}
+			else
+			{
+				$used_memory		= 0;
+				$free_memory		= 0;
+				$wasted_memory	= 0;
+			}
+			
+			$total_mem = self::opcache_total_memory_bytes($opc_conf, $opc_status, $used_memory, $free_memory, $wasted_memory);
 			
 			TOOLS::table_header([], '', 'summary');
 				TOOLS::tr([__('Memory','atec-cache-info'), TOOLS::size_format($total_mem), '']);
@@ -88,14 +117,10 @@ public static function init($una, $settings)	// fake parameters
 					$hits_perc				= $hits/$totalStats*100;
 					$misses_perc		= $misses/$totalStats*100;
 
-					$used_memory		= $opc_status['memory_usage']['used_memory'] ?? 0;
-					$free_memory		= $opc_status['memory_usage']['free_memory'] ?? 0;
-					$wasted_memory	= $opc_status['memory_usage']['wasted_memory'] ?? 0;
-
 					if ($used_memory<0) $used_memory = max(0, $total_mem - $free_memory);
 					$percent = ($total_mem > 0) ? ($used_memory / $total_mem * 100) : 0;
 	
-					$total_mem_mb = $total_mem / $megaByte;
+					$total_mem_mb = $total_mem / self::$megaByte;
 					$rec_memory = $total_mem_mb;
 					if ($percent>75) $rec_memory = self::increase_in_steps($rec_memory,1.50);
 					elseif ($percent>50) $rec_memory = self::increase_in_steps($rec_memory,1.25);
@@ -211,7 +236,7 @@ public static function init($una, $settings)	// fake parameters
 				}
 		}
 	}
-
+	
 	require('atec-OPC-help.php');
 }
 
