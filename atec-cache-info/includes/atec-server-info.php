@@ -9,6 +9,64 @@ final class ATEC_Server_Info {
 
 private static function offset2Str($tzOffset): string { return ($tzOffset>0?'+' : '').$tzOffset; }
 
+private static function kbToBytes($value): int
+{
+	return intval($value) * 1024;
+}
+
+private static function getLinuxRamBytes()
+{
+	$ram = '';
+
+	if (function_exists('exec'))
+	{
+		$output = null; $retval = null;
+		@exec('free', $output, $retval);
+		if ($retval==0 && getType($output)== 'array' && !empty($output) && isset($output[1]))
+		{
+			preg_match('/\s+([\d]*)\s+/', $output[1], $match);
+			if (isset($match[1]) && $match[1]!== '') return self::kbToBytes($match[1]);
+		}
+	}
+
+	// Fallback where exec/free is unavailable or restricted.
+	if (is_readable('/proc/meminfo'))
+	{
+		$meminfo = @file_get_contents('/proc/meminfo');
+		if (is_string($meminfo) && preg_match('/^MemTotal:\s+(\d+)\s+kB$/mi', $meminfo, $match))
+		{
+			return self::kbToBytes($match[1]);
+		}
+	}
+
+	// Final fallback where PHP file access is restricted.
+	if (function_exists('shell_exec'))
+	{
+		$memTotal = @shell_exec("awk '/^MemTotal:/ {print $2}' /proc/meminfo");
+		if (is_string($memTotal))
+		{
+			$memTotal = trim($memTotal);
+			if (is_numeric($memTotal)) return self::kbToBytes($memTotal);
+		}
+	}
+
+	return $ram;
+}
+
+private static function getSystemRamBytes($os)
+{
+	if ($os== 'Windows') return '';
+
+	if ($os== 'Darwin' && function_exists('exec'))
+	{
+		$output = null; $retval = null;
+		@exec('/usr/sbin/sysctl -n hw.memsize', $output, $retval);
+		return ($retval==0 && getType($output)== 'array' && !empty($output))?intval($output[0]):'';
+	}
+
+	return self::getLinuxRamBytes();
+}
+
 private static function getGeo($ip): string
 {
 	$url			= 'https://ipinfo.io/'.$ip.'/json?token=274eb3cf12e5f5';
@@ -150,27 +208,7 @@ public static function init()
 		
 		TOOLS::div('border');
 
-			$ram= '';
-			if (function_exists('exec'))
-			{
-				if ($php_uname['s']== 'Darwin')
-				{
-					$output=null; $retval=null; $cmd= '/usr/sbin/sysctl -n hw.memsize';
-					@exec($cmd, $output, $retval);
-					$ram = ($retval==0 && getType($output)== 'array' && !empty($output))?intval($output[0]):0;
-				}
-				elseif ($php_uname['s']!== 'Windows')
-				{
-					$output=null; $retval=null; $cmd= 'free';
-					@exec($cmd, $output, $retval);
-					$ram = ($retval==0 && getType($output)== 'array' && !empty($output) && count($output)>=1)?$output[1]:'';
-					if ($ram!== '')
-					{
-						preg_match('/\s+([\d]*)\s+/', $ram, $match);
-						$ram = $match[1] ?? '';
-					}
-				}
-			}
+			$ram= self::getSystemRamBytes($php_uname['s']);
 			$memArr=[];
 			if (!(empty($ram))) $memArr[] = 'System RAM';
 			$limitStr = __('limit', 'atec-cache-info');

@@ -1,6 +1,6 @@
 <?php
 if (!defined('WP_UNINSTALL_PLUGIN')) {	exit; }
-if (!defined('ATEC_LOADER')) require __DIR__ . '/includes/ATEC/LOADER.php';
+defined('ATEC_LOADER') || require __DIR__ . '/includes/ATEC/LOADER.php';
 
 use ATEC\INIT;
 
