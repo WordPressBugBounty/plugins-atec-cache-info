@@ -14,6 +14,33 @@ private static function kbToBytes($value): int
 	return intval($value) * 1024;
 }
 
+private static function isPathAllowedByOpenBasedir($path): bool
+{
+	$baseDirs = ini_get('open_basedir');
+	if (!is_string($baseDirs) || $baseDirs== '') return true;
+
+	// Never call realpath($path): outside open_basedir it warns (e.g. /proc/meminfo).
+	$normalizedPath = rtrim(str_replace('\\', '/', $path), '/');
+
+	foreach (explode(PATH_SEPARATOR, $baseDirs) as $baseDir)
+	{
+		$baseDir = trim($baseDir);
+		if ($baseDir== '') continue;
+		if ($baseDir== '.') return true;
+
+		$realBase = @realpath($baseDir);
+		if ($realBase=== false) $realBase = $baseDir;
+
+		$normalizedBase = rtrim(str_replace('\\', '/', $realBase), '/');
+		if ($normalizedBase== '') continue;
+
+		if ($normalizedPath === $normalizedBase) return true;
+		if (str_starts_with($normalizedPath, $normalizedBase.'/')) return true;
+	}
+
+	return false;
+}
+
 private static function getLinuxRamBytes()
 {
 	$ram = '';
@@ -30,7 +57,7 @@ private static function getLinuxRamBytes()
 	}
 
 	// Fallback where exec/free is unavailable or restricted.
-	if (is_readable('/proc/meminfo'))
+	if (self::isPathAllowedByOpenBasedir('/proc/meminfo') && is_readable('/proc/meminfo'))
 	{
 		$meminfo = @file_get_contents('/proc/meminfo');
 		if (is_string($meminfo) && preg_match('/^MemTotal:\s+(\d+)\s+kB$/mi', $meminfo, $match))
@@ -47,6 +74,14 @@ private static function getLinuxRamBytes()
 		{
 			$memTotal = trim($memTotal);
 			if (is_numeric($memTotal)) return self::kbToBytes($memTotal);
+		}
+
+		// Fallback for restricted shells where awk or /proc access is blocked.
+		$freeOutput = @shell_exec("free -k 2>/dev/null | awk 'NR==2{print $2}'");
+		if (is_string($freeOutput))
+		{
+			$freeOutput = trim($freeOutput);
+			if (is_numeric($freeOutput)) return self::kbToBytes($freeOutput);
 		}
 	}
 
