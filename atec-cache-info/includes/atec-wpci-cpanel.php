@@ -1,17 +1,20 @@
 <?php
 defined('ABSPATH') || exit;
 
+use ATEC\CPANEL;
 use ATEC\INIT;
 use ATEC\TOOLS;
 use ATEC\WPC;
 
-return function($una) 
+return function($una, $license_ok = true) 
 {
+
 	global $wp_object_cache;
 	
 	$opc_enabled = false;
 	$opc_file_only = false;
 	$jit_enabled = false; 
+	
 	if (function_exists('opcache_get_configuration'))
 	{
 		$opc_conf=opcache_get_configuration();
@@ -36,63 +39,64 @@ return function($una)
 	$cache_settings = [];
 	$cache_settings['redis'] = $settings['redis'] ?? [];
 	$cache_settings['memcached'] = $settings['memcached'] ?? [];
-
-	if ($una->action !== '')	// set redis/memcached settings
-	{
-		switch ($una->action)
-		{
-			case 'saveRed': $a = ['type'=>'redis', 'fields'=>['conn', 'host', 'port', 'pwd']]; break;
-			case 'saveMem': $a = ['type'=>'memcached', 'fields'=>['conn', 'host', 'port']]; break;
-			default: $a = [];
-		}
-
-		if (!empty($a))
-		{
-			$type = $a['type'];
-			foreach($a['fields'] as $field)
-				$cache_settings[$type][$field] = TOOLS::clean_request($type.'_'.$field);
-			
-			$settings[strtolower($type)] = $cache_settings[$type];
-			INIT::update_settings('wpci', $settings);
-		}
-		// OUTDATED: 250710 | CLEANUP: use TOOLS::history
-		TOOLS::reg_inline_script('wpci_cache','window.history.replaceState({}, "", window.location.pathname + "?page=atec_wpci");');	// prevent re-saving
-	}
-
-	TOOLS::little_block('Zend Opcode & WP '.__('Object Cache', 'atec-cache-info'));
 	
-	switch ($una->action)
-	{
-		case 'flush':
-			$result = WPC::flush_cache($una, $settings);
-			break;
-	}
-
-	TOOLS::div('g-25');
-
-			TOOLS::loader_dots();
+	CPANEL::cpanel_header($una, 'Zend Opcode & WP '.__('Object Cache', 'atec-cache-info'));
 	
-			foreach(['OP', 'WP', 'JIT'] as $type)
-			{ 
-				WPC::cache_block(__DIR__, $una, $cache_settings, $type, $enabled);
-				TOOLS::div($type==='JIT'?-1:0);
+	TOOLS::div('border-g');
+
+		if ($una->action !== '')	// set redis/memcached settings
+		{
+			switch ($una->action)
+			{
+				case 'saveRed': $a = ['type'=>'redis', 'fields'=>['conn', 'host', 'port', 'pwd']]; break;
+				case 'saveMem': $a = ['type'=>'memcached', 'fields'=>['conn', 'host', 'port']]; break;
+				default: $a = [];
 			}
 	
-	TOOLS::div(-1);
-
-	TOOLS::loader_dots(0);
-	TOOLS::little_block(__('Persistent', 'atec-cache-info').' '.__('Object Cache', 'atec-cache-info'));
-	
-	TOOLS::div('g-25');
-	
-		foreach(['APCu', 'Redis', 'Memcached', 'SQLite'] as $type)
-		{ 
-			WPC::cache_block(__DIR__, $una, $cache_settings, $type, $enabled); 
-			TOOLS::div($type==='SQLite'?-1:0);
+			if (!empty($a))
+			{
+				$type = $a['type'];
+				foreach($a['fields'] as $field)
+					$cache_settings[$type][$field] = TOOLS::clean_request($type.'_'.$field);
+				
+				$settings[strtolower($type)] = $cache_settings[$type];
+				INIT::update_settings('wpci', $settings);
+			}
+			TOOLS::history('wpci');
 		}
 
-	TOOLS::div(-1);
+		switch ($una->action)
+		{
+			case 'flush':
+				$result = WPC::flush_cache($una, $settings);
+				break;
+		}
+
+		TOOLS::div('g-25');
+	
+				foreach(['OP', 'WP', 'JIT'] as $type)
+				{ 
+					WPC::cache_block(__DIR__, $una, $cache_settings, $type, $enabled);
+					TOOLS::div($type==='JIT'?-1:0);
+				}
+		
+		TOOLS::div(-2);
+
+	TOOLS::little_block(__('Persistent', 'atec-cache-info').' '.__('Object Cache', 'atec-cache-info'));
+
+	TOOLS::div('border-g');		
+
+		TOOLS::div('g-25');
+		
+			foreach(['APCu', 'Redis', 'Memcached', 'SQLite'] as $type)
+			{ 
+				WPC::cache_block(__DIR__, $una, $cache_settings, $type, $enabled); 
+				TOOLS::div($type==='SQLite'?-1:0);
+			}
+	
+	TOOLS::div(-2);
 	
 	if ($opc_file_only) TOOLS::reg_inline_script('wpci_file_only','jQuery("#OP_flush, #JIT_flush").hide();');
-}
+	
+};
 ?>

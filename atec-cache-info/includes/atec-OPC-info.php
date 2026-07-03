@@ -73,6 +73,7 @@ private static function opcache_total_memory_bytes(?array $opc_conf = null, ?arr
 
 public static function init($una, $settings)	// fake parameters
 {
+	
 	$opc_conf = opcache_get_configuration();
 	$opc_status = function_exists('opcache_get_status') ? opcache_get_status() : false;
 	$opc_file_only = $opc_conf['directives']['opcache.file_cache_only'];
@@ -190,10 +191,12 @@ public static function init($una, $settings)	// fake parameters
 				
 		TOOLS::div(0);
 			
-			TOOLS::div('border');
+			echo 
+			'<div class="atec-head" style="height: 36px !important;">
+				<h3>OPcache ', esc_attr__('Details', 'atec-cache-info'), '</h3>
+			</div>';
 				
-				echo
-				'<h4>OPcache ', esc_attr__('Details', 'atec-cache-info'), '</h4><hr>';
+			TOOLS::div('border');
 	
 				TOOLS::table_header([], '', 'summary');
 					TOOLS::tr([__('Version', 'atec-cache-info'), $opc_conf['version']['version'] ?? '']);
@@ -234,7 +237,10 @@ public static function init($una, $settings)	// fake parameters
 					if ($recFiles!== $max_accelerated_files) TOOLS::msg('warning', 'Try raising the limit to '.$recFiles);
 					WPC::usage($percentFiles);
 				}
+			
+			//TOOLS::div(-1);
 		}
+
 	}
 	
 	require('atec-OPC-help.php');
